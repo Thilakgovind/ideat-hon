@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Safe route at night</title>
+
+</head>
+<body>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;700&display=swap">
+<style>
+body{margin:0;font-family:'Noto Sans','Noto Sans Tamil',system-ui,sans-serif;color:#F4EEF8}
+a{color:#FF8FB6}a:hover{color:#FFFFFF}
+button{font-family:inherit}
+</style>
+
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #120F19; position: relative; overflow: hidden">
+  <!-- night map -->
+  <svg width="390" height="844" viewBox="0 0 390 844" aria-hidden="true" style="position: absolute; inset: 0">
+    <defs>
+      <radialGradient id="crowd"><stop offset="0" stop-color="#FFB52E" stop-opacity=".55"/><stop offset="1" stop-color="#FFB52E" stop-opacity="0"/></radialGradient>
+      <radialGradient id="crowdSoft"><stop offset="0" stop-color="#FFB52E" stop-opacity=".3"/><stop offset="1" stop-color="#FFB52E" stop-opacity="0"/></radialGradient>
+    </defs>
+    <rect width="390" height="844" fill="#120F19"/>
+    <g fill="#1A1624"><rect x="20" y="120" width="80" height="90" rx="6"/><rect x="150" y="150" width="70" height="60" rx="6"/><rect x="260" y="110" width="100" height="80" rx="6"/><rect x="230" y="260" width="60" height="110" rx="6"/><rect x="20" y="300" width="70" height="80" rx="6"/><rect x="310" y="300" width="60" height="70" rx="6"/></g>
+    <!-- streets -->
+    <g stroke="#221D2E" stroke-width="18" stroke-linecap="round" fill="none">
+      <path d="M120 470 L120 90"/><path d="M120 90 L360 90"/><path d="M120 470 L330 470"/><path d="M330 470 L330 230"/><path d="M200 470 L200 230"/><path d="M200 230 L330 230"/><path d="M330 230 L360 90"/><path d="M-10 250 L120 250"/>
+    </g>
+    <!-- crowd glow: where people are (anonymous) -->
+    <circle cx="120" cy="300" r="70" fill="url(#crowd)"/><circle cx="120" cy="160" r="60" fill="url(#crowd)"/><circle cx="240" cy="90" r="70" fill="url(#crowd)"/>
+    <circle cx="330" cy="380" r="40" fill="url(#crowdSoft)"/>
+    <!-- quiet route (option B) -->
+    <path d="M120 470 L330 470 L330 230 L360 90" stroke="#6E6680" stroke-width="5" stroke-dasharray="3 9" stroke-linecap="round" fill="none"/>
+    <!-- safe route (option A) -->
+    <path d="M120 470 L120 90 L360 90" stroke="#2EE6A8" stroke-width="14" stroke-opacity=".22" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M120 470 L120 90 L360 90" stroke="#2EE6A8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- open shops along the safe route -->
+    <g>
+      <circle cx="142" cy="410" r="9" fill="#FF4F8B" stroke="#120F19" stroke-width="3"/>
+      <circle cx="98" cy="330" r="9" fill="#2EE6A8" stroke="#120F19" stroke-width="3"/>
+      <circle cx="142" cy="260" r="9" fill="#2EE6A8" stroke="#120F19" stroke-width="3"/>
+      <circle cx="98" cy="190" r="9" fill="#7FA8FF" stroke="#120F19" stroke-width="3"/>
+      <circle cx="200" cy="112" r="9" fill="#2EE6A8" stroke="#120F19" stroke-width="3"/>
+      <circle cx="290" cy="68" r="9" fill="#2EE6A8" stroke="#120F19" stroke-width="3"/>
+    </g>
+    <!-- closed shops on the quiet route -->
+    <g fill="#3A3448"><circle cx="250" cy="492" r="7"/><circle cx="352" cy="400" r="7"/><circle cx="308" cy="300" r="7"/></g>
+    <!-- start / end -->
+    <circle cx="120" cy="470" r="30" fill="#FF4F8B" opacity=".14"/><circle cx="120" cy="470" r="10" fill="#FF4F8B" stroke="#FFFFFF" stroke-width="3"/>
+    <rect x="350" y="80" width="20" height="20" rx="6" fill="#FFFFFF"/><path d="M355 90 l4 4 l7 -8" stroke="#120F19" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>
+
+  <!-- people labels on map -->
+  <span style="position: absolute; left: 92px; top: 486px; background: #FFFFFF; color: #120F19; font-size: 12px; font-weight: 800; padding: 4px 9px; border-radius: 10px">You · bus stop</span>
+  <div style="position: absolute; left: 22px; top: 140px; display: flex; align-items: center; gap: 6px; background: rgba(18,15,25,0.9); border: 1.5px solid #FFB52E; border-radius: 999px; padding: 4px 10px 4px 4px">
+    <span style="width: 26px; height: 26px; border-radius: 13px; background: #FFB52E; color: #24132F; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center">K</span>
+    <span style="font-size: 11px; font-weight: 700">Kavya · 80 m off route</span></div>
+  <div style="position: absolute; left: 232px; top: 120px; display: flex; align-items: center; gap: 6px; background: rgba(18,15,25,0.9); border: 1.5px solid #FF4F8B; border-radius: 999px; padding: 4px 10px 4px 4px">
+    <span style="width: 26px; height: 26px; border-radius: 13px; background: #FF4F8B; color: #FFFFFF; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center">A</span>
+    <span style="font-size: 11px; font-weight: 700">Amma · at home</span></div>
+  <span style="position: absolute; left: 240px; top: 410px; font-size: 11px; font-weight: 700; color: #8E86A0; background: rgba(18,15,25,0.85); padding: 3px 8px; border-radius: 8px">Quiet · shops closed</span>
+
+  <!-- top bar -->
+  <div style="position: absolute; top: 16px; left: 16px; right: 16px; display: flex; gap: 10px; align-items: center">
+    <a href="Home.html" aria-label="Back" style="width: 44px; height: 44px; border-radius: 22px; background: rgba(36,30,48,0.92); display: flex; align-items: center; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F4EEF8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></a>
+    <div style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 17px; font-weight: 800">Safe way home</span><span style="font-size: 12px; color: #B9AFC8">9:40 pm · bus stop → home</span></div>
+    <span style="height: 32px; padding: 0 10px; border-radius: 999px; background: rgba(36,30,48,0.92); font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px"><span style="width: 8px; height: 8px; border-radius: 4px; background: #2EE6A8"></span>Live</span>
+  </div>
+
+  <!-- legend -->
+  <div style="position: absolute; top: 72px; left: 16px; display: flex; gap: 10px; background: rgba(18,15,25,0.85); border-radius: 12px; padding: 6px 10px; font-size: 11px; font-weight: 600; color: #D8CFE4">
+    <span style="display: flex; align-items: center; gap: 4px"><span style="width: 10px; height: 10px; border-radius: 5px; background: #FFB52E; opacity: 0.8"></span>People around</span>
+    <span style="display: flex; align-items: center; gap: 4px"><span style="width: 10px; height: 10px; border-radius: 5px; background: #2EE6A8"></span>Open now</span>
+    <span style="display: flex; align-items: center; gap: 4px"><span style="width: 10px; height: 10px; border-radius: 5px; background: #3A3448"></span>Closed</span>
+  </div>
+
+  <!-- bottom sheet: route comparison -->
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; background: #F7F2FA; color: #24132F; border-radius: 28px 28px 0 0; padding: 10px 16px 22px; display: flex; flex-direction: column; gap: 10px">
+    <span style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #D6C8E2"></span>
+
+    <div style="background: #FFFFFF; border-radius: 20px; padding: 12px 14px; border: 2.5px solid #0FA596; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <div style="display: flex; align-items: center; gap: 8px"><span style="width: 14px; height: 4px; border-radius: 2px; background: #0FA596"></span><span style="font-size: 16px; font-weight: 800">Main road</span><span style="font-size: 11px; font-weight: 800; color: #0B7F74; background: #E2F7F3; padding: 3px 8px; border-radius: 999px">SAFEST</span></div>
+        <span style="font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums">12 min · 900 m</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+        <div style="background: #FFF4E0; border-radius: 12px; padding: 8px; display: flex; flex-direction: column"><span style="font-size: 11px; color: #8A5300; font-weight: 700">People around</span><span style="font-size: 15px; font-weight: 800">Busy</span></div>
+        <div style="background: #E2F7F3; border-radius: 12px; padding: 8px; display: flex; flex-direction: column"><span style="font-size: 11px; color: #0B7F74; font-weight: 700">Open at night</span><span style="font-size: 15px; font-weight: 800">6 shops</span></div>
+        <div style="background: #FFE6EF; border-radius: 12px; padding: 8px; display: flex; flex-direction: column"><span style="font-size: 11px; color: #B32A5B; font-weight: 700">Your people</span><span style="font-size: 15px; font-weight: 800">Kavya near</span></div>
+      </div>
+      <span style="font-size: 12px; color: #4A3A58">Pharmacy (24 h) · tea shop · Lakshmi kiosk · ATM · bakery · petrol bunk</span>
+    </div>
+
+    <div style="background: #FFFFFF; border-radius: 20px; padding: 12px 14px; border: 1.5px solid #EADCF1; display: flex; justify-content: space-between; align-items: center">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <div style="display: flex; align-items: center; gap: 8px"><span style="width: 14px; height: 4px; border-radius: 2px; background: #8E86A0"></span><span style="font-size: 15px; font-weight: 800">Back lane</span></div>
+        <span style="font-size: 12px; color: #6A5878">Quiet · 0 shops open · no one you know</span>
+      </div>
+      <span style="font-size: 14px; font-weight: 700; color: #6A5878">8 min</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
+      <a href="Connect.html" style="height: 54px; border-radius: 16px; border: 2px solid #5B1F96; color: #5B1F96; background: #FFFFFF; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Ask Kavya to meet</a>
+      <a href="LiveTrip.html" style="height: 54px; border-radius: 16px; background: #0FA596; color: #FFFFFF; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Walk main road</a>
+    </div>
+    <span style="font-size: 11px; color: #6A5878; text-align: center">Crowd shown as anonymous areas, never individuals · sample data</span>
+  </div>
+</div>
+
+
+</body>
+</html>

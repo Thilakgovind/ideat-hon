@@ -1,0 +1,152 @@
+{
+  "source": "sample",
+  "note": "Sample Chennai MTC bus data for the demo. Not live timetables.",
+  "routes": [
+    {
+      "id": "21G",
+      "number": "21G",
+      "mode": "bus",
+      "name": "Anna Nagar West - Nungambakkam",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 15,
+      "operator": "MTC",
+      "stops": [
+        {"name": "Anna Nagar West", "code": "ANW", "min": 0},
+        {"name": "Anna Nagar Arch", "code": "ANA", "min": 8},
+        {"name": "Kilpauk", "code": "KLP", "min": 18},
+        {"name": "Nungambakkam", "code": "NMB", "min": 30}
+      ],
+      "first": "05:00",
+      "last": "22:30",
+      "frequency_minutes": 12,
+      "walk_start_min": 3,
+      "walk_end_min": 2,
+      "stops_well_lit": true,
+      "notes": "Free ordinary bus for women. Busy, well-lit stops. Passes the school on 2nd Avenue.",
+      "source": "sample"
+    },
+    {
+      "id": "70",
+      "number": "70",
+      "mode": "bus",
+      "name": "Anna Nagar West - Koyambedu",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 10,
+      "operator": "MTC",
+      "stops": [
+        {"name": "Anna Nagar West", "code": "ANW", "min": 0},
+        {"name": "Thirumangalam", "code": "TMG", "min": 5},
+        {"name": "Koyambedu", "code": "KBD", "min": 11}
+      ],
+      "first": "05:15",
+      "last": "23:00",
+      "frequency_minutes": 10,
+      "walk_start_min": 3,
+      "walk_end_min": 0,
+      "stops_well_lit": true,
+      "notes": "Free ordinary bus. Connects to Metro at Koyambedu.",
+      "source": "sample"
+    },
+    {
+      "id": "11G",
+      "number": "11G",
+      "mode": "bus",
+      "name": "T. Nagar - Nungambakkam",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 12,
+      "operator": "MTC",
+      "stops": [
+        {"name": "T. Nagar Depot", "code": "TND", "min": 0},
+        {"name": "Ramnagar", "code": "RMN", "min": 6},
+        {"name": "Teynampet", "code": "TEN", "min": 14},
+        {"name": "Nungambakkam", "code": "NMB", "min": 24}
+      ],
+      "first": "05:30",
+      "last": "22:00",
+      "frequency_minutes": 15,
+      "walk_start_min": 3,
+      "walk_end_min": 2,
+      "stops_well_lit": true,
+      "notes": "Free ordinary bus, runs every 15-20 min",
+      "source": "sample"
+    },
+    {
+      "id": "5A",
+      "number": "5A",
+      "mode": "bus",
+      "name": "Anna Nagar - Central",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 15,
+      "operator": "MTC",
+      "stops": [
+        {"name": "Anna Nagar", "code": "ANN", "min": 0},
+        {"name": "Kodambakkam", "code": "KOD", "min": 14},
+        {"name": "Teynampet", "code": "TEN", "min": 26},
+        {"name": "Central", "code": "CTL", "min": 40}
+      ],
+      "first": "05:00",
+      "last": "22:00",
+      "frequency_minutes": 12,
+      "walk_start_min": 3,
+      "walk_end_min": 2,
+      "stops_well_lit": false,
+      "notes": "Free ordinary bus",
+      "source": "sample"
+    },
+    {
+      "id": "15M",
+      "number": "15M",
+      "mode": "bus",
+      "name": "T. Nagar - Velachery (AC)",
+      "is_free": false,
+      "free_for_women": false,
+      "fare_inr": 30,
+      "fare_others_inr": 30,
+      "operator": "MTC",
+      "stops": [
+        {"name": "T. Nagar Depot", "code": "TND", "min": 0},
+        {"name": "Guindy", "code": "GUI", "min": 15},
+        {"name": "Velachery", "code": "VEL", "min": 28}
+      ],
+      "first": "06:30",
+      "last": "22:00",
+      "frequency_minutes": 20,
+      "walk_start_min": 3,
+      "walk_end_min": 3,
+      "stops_well_lit": true,
+      "notes": "AC deluxe, fast but paid",
+      "source": "sample"
+    },
+    {
+      "id": "2K",
+      "number": "2K",
+      "mode": "bus",
+      "name": "Nungambakkam - Teynampet",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 8,
+      "operator": "MTC",
+      "stops": [
+        {"name": "Nungambakkam", "code": "NMB", "min": 0},
+        {"name": "Teynampet", "code": "TEN", "min": 10}
+      ],
+      "first": "06:00",
+      "last": "22:00",
+      "frequency_minutes": 10,
+      "walk_start_min": 2,
+      "walk_end_min": 2,
+      "stops_well_lit": true,
+      "notes": "Free, very frequent",
+      "source": "sample"
+    }
+  ]
+}

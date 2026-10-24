@@ -1,0 +1,74 @@
+{
+  "source": "sample",
+  "note": "Sample trusted circle. No real phone numbers are stored in the repo. Real numbers are added at runtime via POST /api/circle and kept only in memory.",
+  "max_contacts": 5,
+  "users": [
+    {
+      "user_id": "u_demo",
+      "display_name": "Priya",
+      "home_area": "Nungambakkam",
+      "home": {
+        "lat": 13.066,
+        "lng": 80.244
+      },
+      "contacts": [
+        {
+          "id": "c1",
+          "label": "Amma",
+          "label_ta": "அம்மா",
+          "relation": "mother",
+          "phone": null,
+          "phone_masked": "+91 ••••• •••01",
+          "accepted": true,
+          "status": "at_home",
+          "area": "Nungambakkam",
+          "lat": 13.066,
+          "lng": 80.244,
+          "source": "sample"
+        },
+        {
+          "id": "c2",
+          "label": "Kavya",
+          "label_ta": "காவ்யா",
+          "relation": "friend",
+          "phone": null,
+          "phone_masked": "+91 ••••• •••02",
+          "accepted": true,
+          "status": "nearby",
+          "area": "Nungambakkam",
+          "lat": 13.0626,
+          "lng": 80.2422,
+          "source": "sample"
+        },
+        {
+          "id": "c3",
+          "label": "Akka",
+          "label_ta": "அக்கா",
+          "relation": "sister",
+          "phone": null,
+          "phone_masked": "+91 ••••• •••03",
+          "accepted": true,
+          "status": "away",
+          "area": "Velachery",
+          "lat": 12.9815,
+          "lng": 80.218,
+          "source": "sample"
+        },
+        {
+          "id": "c4",
+          "label": "Divya",
+          "label_ta": "திவ்யா",
+          "relation": "colleague",
+          "phone": null,
+          "phone_masked": "+91 ••••• •••04",
+          "accepted": false,
+          "status": "invite_pending",
+          "area": null,
+          "lat": null,
+          "lng": null,
+          "source": "sample"
+        }
+      ]
+    }
+  ]
+}

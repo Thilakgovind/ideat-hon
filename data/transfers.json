@@ -1,0 +1,7 @@
+{
+  "source": "sample",
+  "transfers": [
+    {"at": "Koyambedu", "code": "KBD", "from": "bus", "to": "metro", "walk_min": 4, "lit": true, "note": "Lit covered walkway from the bus bay to Metro Exit A", "source": "sample"},
+    {"at": "Kilpauk", "code": "KLP", "from": "bus", "to": "metro", "walk_min": 5, "lit": true, "note": "Cross at the signal, metro entry next to the hospital", "source": "sample"}
+  ]
+}

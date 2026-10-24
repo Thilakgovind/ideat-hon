@@ -1,0 +1,38 @@
+{
+  "source": "sample",
+  "note": "Walking options from a bus stop to home, used by the Safe way home screen. Crowd = anonymous area level, never individuals.",
+  "paths": [
+    {
+      "id": "w-nmb-main", "stop": "NMB", "name": "Main road", "name_ta": "பிரதான சாலை",
+      "distance_m": 900, "minutes": 12, "well_lit": true,
+      "place_ids": ["p9", "p10", "p11", "p12", "p13", "p14"],
+      "crowd_by_hour": {"06": "moderate", "08": "busy", "14": "moderate", "17": "busy", "22": "busy", "23": "moderate"},
+      "polyline": [[13.0604, 80.2422], [13.0634, 80.2432], [13.0660, 80.2440]],
+      "source": "sample"
+    },
+    {
+      "id": "w-nmb-lane", "stop": "NMB", "name": "Back lane", "name_ta": "பின் தெரு",
+      "distance_m": 600, "minutes": 8, "well_lit": false,
+      "place_ids": ["p15"],
+      "crowd_by_hour": {"07": "moderate", "12": "quiet", "18": "quiet", "20": "empty"},
+      "polyline": [[13.0604, 80.2422], [13.0615, 80.2455], [13.0660, 80.2440]],
+      "source": "sample"
+    },
+    {
+      "id": "w-anw-main", "stop": "ANW", "name": "2nd Avenue", "name_ta": "2வது அவென்யூ",
+      "distance_m": 450, "minutes": 6, "well_lit": true,
+      "place_ids": ["p1", "p2", "p3", "p4", "p5"],
+      "crowd_by_hour": {"06": "moderate", "08": "busy", "14": "moderate", "17": "busy", "22": "moderate"},
+      "polyline": [[13.0878, 80.2006], [13.0882, 80.2010], [13.0895, 80.2025]],
+      "source": "sample"
+    },
+    {
+      "id": "w-anw-lane", "stop": "ANW", "name": "Park side lane", "name_ta": "பூங்கா பக்க தெரு",
+      "distance_m": 350, "minutes": 5, "well_lit": false,
+      "place_ids": [],
+      "crowd_by_hour": {"07": "moderate", "12": "quiet", "19": "empty"},
+      "polyline": [[13.0878, 80.2006], [13.0890, 80.1998], [13.0895, 80.2025]],
+      "source": "sample"
+    }
+  ]
+}

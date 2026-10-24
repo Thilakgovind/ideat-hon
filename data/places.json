@@ -1,0 +1,185 @@
+{
+  "source": "sample",
+  "note": "Sample places along the demo corridor Anna Nagar West -> Nungambakkam. Hours, crowd levels and reviews are illustrative.",
+  "places": [
+    {
+      "id": "p1", "name": "Lakshmi SHG Kiosk", "name_ta": "லக்ஷ்மி SHG கடை", "type": "shg_kiosk",
+      "category": "Tea, snacks & essentials", "address": "2nd Avenue, Anna Nagar", "near_stop": "ANW",
+      "lat": 13.0882, "lng": 80.2010, "open": "06:00", "close": "23:00", "open_24h": false,
+      "women_run": true, "well_lit": true, "can_wait_inside": true,
+      "crowd_by_hour": {"06": "moderate", "07": "busy", "10": "moderate", "14": "quiet", "17": "busy", "22": "moderate", "23": "quiet"},
+      "rating": 4.7, "reviews_count": 212, "photo": "kiosk",
+      "reviews": [
+        {"author": "Deepa", "rating": 5, "days_ago": 2, "lang": "en", "text": "I wait here for the 21G after my evening shift. Akka lets me sit inside when it rains."},
+        {"author": "Farhana", "rating": 4, "days_ago": 7, "lang": "ta", "text": "இரவு 10 மணி வரை கூட்டம் இருக்கும். பாதுகாப்பாக உணர்ந்தேன்."},
+        {"author": "Meena", "rating": 5, "days_ago": 15, "lang": "en", "text": "Bright light right next to the stop. Good place to wait with kids."}
+      ],
+      "source": "sample"
+    },
+    {
+      "id": "p2", "name": "Sri Ram Medicals (24 h)", "name_ta": "ஸ்ரீ ராம் மெடிக்கல்ஸ்", "type": "pharmacy",
+      "category": "Pharmacy", "address": "2nd Avenue, Anna Nagar", "near_stop": "ANW",
+      "lat": 13.0875, "lng": 80.2015, "open": "00:00", "close": "23:59", "open_24h": true,
+      "women_run": false, "well_lit": true, "can_wait_inside": true,
+      "crowd_by_hour": {"00": "quiet", "07": "moderate", "18": "busy", "22": "moderate"},
+      "rating": 4.4, "reviews_count": 96, "photo": "pharmacy",
+      "reviews": [
+        {"author": "Kavitha", "rating": 4, "days_ago": 4, "lang": "en", "text": "Open all night, staff are polite. They let me charge my phone once."}
+      ],
+      "source": "sample"
+    },
+    {
+      "id": "p3", "name": "Thendral Tea Stall", "name_ta": "தென்றல் டீ கடை", "type": "tea_shop",
+      "category": "Tea & snacks", "address": "Near Anna Nagar West bus stop", "near_stop": "ANW",
+      "lat": 13.0880, "lng": 80.2001, "open": "05:30", "close": "22:00", "open_24h": false,
+      "women_run": false, "well_lit": true, "can_wait_inside": false,
+      "crowd_by_hour": {"05": "moderate", "07": "busy", "11": "moderate", "16": "busy", "21": "moderate"},
+      "rating": 4.1, "reviews_count": 58, "photo": "tea",
+      "reviews": [
+        {"author": "Revathi", "rating": 4, "days_ago": 10, "lang": "en", "text": "Always people around in the morning. Good to wait for the bus."}
+      ],
+      "source": "sample"
+    },
+    {
+      "id": "p4", "name": "Anna Nagar West Police Booth", "name_ta": "அண்ணா நகர் மேற்கு காவல் பூத்", "type": "police_booth",
+      "category": "Police & help", "address": "Anna Nagar West roundabout", "near_stop": "ANW",
+      "lat": 13.0870, "lng": 80.2003, "open": "00:00", "close": "23:59", "open_24h": true,
+      "women_run": false, "well_lit": true, "can_wait_inside": false,
+      "crowd_by_hour": {"00": "quiet", "08": "moderate", "20": "moderate"},
+      "rating": 4.0, "reviews_count": 21, "photo": "police",
+      "reviews": [],
+      "source": "sample"
+    },
+    {
+      "id": "p5", "name": "Anu Grocery", "name_ta": "அனு மளிகை", "type": "grocery",
+      "category": "Groceries", "address": "3rd Main Road, Anna Nagar West", "near_stop": "ANW",
+      "lat": 13.0889, "lng": 80.2019, "open": "07:00", "close": "21:30", "open_24h": false,
+      "women_run": true, "well_lit": true, "can_wait_inside": true,
+      "crowd_by_hour": {"07": "moderate", "10": "busy", "14": "quiet", "18": "busy", "21": "quiet"},
+      "rating": 4.6, "reviews_count": 74, "photo": "grocery",
+      "reviews": [
+        {"author": "Shalini", "rating": 5, "days_ago": 3, "lang": "en", "text": "Anu akka knows everyone on the street. Feels very safe."}
+      ],
+      "source": "sample"
+    },
+    {
+      "id": "p6", "name": "Meena Bakery", "name_ta": "மீனா பேக்கரி", "type": "bakery",
+      "category": "Bakery & tea", "address": "Anna Nagar Arch", "near_stop": "ANA",
+      "lat": 13.0848, "lng": 80.2183, "open": "07:00", "close": "22:30", "open_24h": false,
+      "women_run": true, "well_lit": true, "can_wait_inside": true,
+      "crowd_by_hour": {"07": "moderate", "17": "busy", "21": "moderate", "22": "quiet"},
+      "rating": 4.5, "reviews_count": 133, "photo": "bakery",
+      "reviews": [
+        {"author": "Nisha", "rating": 5, "days_ago": 6, "lang": "en", "text": "Lots of families in the evening. Clean and bright."}
+      ],
+      "source": "sample"
+    },
+    {
+      "id": "p7", "name": "Kilpauk Government Hospital", "name_ta": "கீழ்ப்பாக்கம் அரசு மருத்துவமனை", "type": "hospital",
+      "category": "Hospital (24 h casualty)", "address": "Poonamallee High Road, Kilpauk", "near_stop": "KLP",
+      "lat": 13.0812, "lng": 80.2427, "open": "00:00", "close": "23:59", "open_24h": true,
+      "women_run": false, "well_lit": true, "can_wait_inside": true,
+      "crowd_by_hour": {"00": "moderate", "08": "busy", "22": "moderate"},
+      "rating": 4.0, "reviews_count": 310, "photo": "hospital",
+      "reviews": [],
+      "source": "sample"
+    },
+    {
+      "id": "p8", "name": "Kilpauk Bus Shelter", "name_ta": "கீழ்ப்பாக்கம் பேருந்து நிறுத்தம்", "type": "bus_shelter",
+      "category": "Bus & metro", "address": "Poonamallee High Road, Kilpauk", "near_stop": "KLP",
+      "lat": 13.0829, "lng": 80.2417, "open": "00:00", "close": "23:59", "open_24h": true,
+      "women_run": false, "well_lit": true, "can_wait_inside": false,
+      "crowd_by_hour": {"00": "empty", "06": "moderate", "08": "busy", "20": "moderate", "23": "quiet"},
+      "rating": 3.8, "reviews_count": 40, "photo": "shelter",
+      "reviews": [],
+      "source": "sample"
+    },
+    {
+      "id": "p9", "name": "Lakshmi Tea Stall (SHG)", "name_ta": "லக்ஷ்மி டீ கடை (SHG)", "type": "shg_kiosk",
+      "category": "Tea & snacks", "address": "Opposite Nungambakkam bus stop, under the lamp", "near_stop": "NMB",
+      "lat": 13.0610, "lng": 80.2424, "open": "06:00", "close": "22:30", "open_24h": false,
+      "women_run": true, "well_lit": true, "can_wait_inside": false,
+      "crowd_by_hour": {"06": "moderate", "08": "busy", "13": "moderate", "17": "busy", "21": "busy", "22": "moderate"},
+      "rating": 4.8, "reviews_count": 167, "photo": "kiosk",
+      "reviews": [
+        {"author": "Priya", "rating": 5, "days_ago": 1, "lang": "en", "text": "Akka waits with me till the bus comes."},
+        {"author": "Saranya", "rating": 5, "days_ago": 9, "lang": "ta", "text": "இரவிலும் வெளிச்சமாக இருக்கும்."}
+      ],
+      "source": "sample"
+    },
+    {
+      "id": "p10", "name": "Nungambakkam 24h Pharmacy", "name_ta": "நுங்கம்பாக்கம் 24 மணி மருந்தகம்", "type": "pharmacy",
+      "category": "Pharmacy (24 h)", "address": "Nungambakkam High Road", "near_stop": "NMB",
+      "lat": 13.0618, "lng": 80.2426, "open": "00:00", "close": "23:59", "open_24h": true,
+      "women_run": false, "well_lit": true, "can_wait_inside": true,
+      "crowd_by_hour": {"00": "quiet", "08": "moderate", "18": "busy", "22": "moderate"},
+      "rating": 4.3, "reviews_count": 88, "photo": "pharmacy",
+      "reviews": [
+        {"author": "Divya", "rating": 4, "days_ago": 12, "lang": "en", "text": "Open late, there is always a pharmacist at the counter."}
+      ],
+      "source": "sample"
+    },
+    {
+      "id": "p11", "name": "Kumar Tea Shop", "name_ta": "குமார் டீ கடை", "type": "tea_shop",
+      "category": "Tea & snacks", "address": "Nungambakkam High Road", "near_stop": "NMB",
+      "lat": 13.0626, "lng": 80.2429, "open": "05:00", "close": "23:30", "open_24h": false,
+      "women_run": false, "well_lit": true, "can_wait_inside": false,
+      "crowd_by_hour": {"05": "moderate", "08": "busy", "15": "moderate", "19": "busy", "22": "moderate", "23": "quiet"},
+      "rating": 4.0, "reviews_count": 61, "photo": "tea",
+      "reviews": [],
+      "source": "sample"
+    },
+    {
+      "id": "p12", "name": "ATM - High Road", "name_ta": "ஏடிஎம் - ஹை ரோடு", "type": "atm",
+      "category": "ATM", "address": "Nungambakkam High Road", "near_stop": "NMB",
+      "lat": 13.0634, "lng": 80.2432, "open": "00:00", "close": "23:59", "open_24h": true,
+      "women_run": false, "well_lit": true, "can_wait_inside": true,
+      "crowd_by_hour": {"00": "quiet", "09": "moderate", "20": "moderate"},
+      "rating": 3.9, "reviews_count": 17, "photo": "atm",
+      "reviews": [],
+      "source": "sample"
+    },
+    {
+      "id": "p13", "name": "Rose Bakery", "name_ta": "ரோஸ் பேக்கரி", "type": "bakery",
+      "category": "Bakery", "address": "Nungambakkam High Road", "near_stop": "NMB",
+      "lat": 13.0642, "lng": 80.2435, "open": "07:00", "close": "23:00", "open_24h": false,
+      "women_run": true, "well_lit": true, "can_wait_inside": true,
+      "crowd_by_hour": {"07": "moderate", "17": "busy", "21": "busy", "22": "moderate"},
+      "rating": 4.6, "reviews_count": 145, "photo": "bakery",
+      "reviews": [
+        {"author": "Anitha", "rating": 5, "days_ago": 5, "lang": "en", "text": "Run by two sisters. Busy till late, I feel fine walking past here."}
+      ],
+      "source": "sample"
+    },
+    {
+      "id": "p14", "name": "Petrol Bunk, High Road", "name_ta": "பெட்ரோல் பங்க், ஹை ரோடு", "type": "petrol_bunk",
+      "category": "Petrol bunk (24 h)", "address": "Nungambakkam High Road", "near_stop": "NMB",
+      "lat": 13.0652, "lng": 80.2438, "open": "00:00", "close": "23:59", "open_24h": true,
+      "women_run": false, "well_lit": true, "can_wait_inside": false,
+      "crowd_by_hour": {"00": "quiet", "07": "busy", "21": "moderate"},
+      "rating": 4.0, "reviews_count": 39, "photo": "petrol",
+      "reviews": [],
+      "source": "sample"
+    },
+    {
+      "id": "p15", "name": "Sundari Stores", "name_ta": "சுந்தரி ஸ்டோர்ஸ்", "type": "grocery",
+      "category": "Groceries", "address": "Back lane behind High Road", "near_stop": "NMB",
+      "lat": 13.0615, "lng": 80.2455, "open": "08:00", "close": "20:00", "open_24h": false,
+      "women_run": true, "well_lit": false, "can_wait_inside": true,
+      "crowd_by_hour": {"08": "moderate", "12": "quiet", "17": "moderate", "20": "empty"},
+      "rating": 4.2, "reviews_count": 22, "photo": "grocery",
+      "reviews": [],
+      "source": "sample"
+    },
+    {
+      "id": "p16", "name": "Koyambedu Metro Security Desk", "name_ta": "கோயம்பேடு மெட்ரோ பாதுகாப்பு மேசை", "type": "police_booth",
+      "category": "Police & help", "address": "Koyambedu Metro, Exit A", "near_stop": "KBD",
+      "lat": 13.0697, "lng": 80.1952, "open": "05:00", "close": "23:00", "open_24h": false,
+      "women_run": false, "well_lit": true, "can_wait_inside": true,
+      "crowd_by_hour": {"05": "moderate", "08": "busy", "20": "busy", "22": "moderate"},
+      "rating": 4.2, "reviews_count": 50, "photo": "police",
+      "reviews": [],
+      "source": "sample"
+    }
+  ]
+}

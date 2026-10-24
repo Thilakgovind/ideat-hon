@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AVAL agent</title>
+
+</head>
+<body>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;700&family=Noto+Serif+Tamil:wght@800&display=swap">
+<style>
+body{margin:0;font-family:'Noto Sans','Noto Sans Tamil',system-ui,sans-serif;color:#24132F}
+a{color:#4A1D6E}a:hover{color:#E0457B}
+button{font-family:inherit}
+</style>
+
+<div style="width: 390px; height: 980px; box-sizing: border-box; background: #FFF7EC; display: flex; flex-direction: column; overflow: hidden">
+
+  <!-- top bar -->
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 18px 16px 10px">
+    <button aria-label="Back" style="width: 44px; height: 44px; border-radius: 22px; border: none; background: #FFFFFF; display: flex; align-items: center; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#24132F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div style="display: flex; align-items: baseline; gap: 8px">
+      <span style="font-size: 22px; font-weight: 800; color: #4A1D6E; letter-spacing: 0.04em">AVAL</span>
+      <span style="font-family: 'Noto Serif Tamil', serif; font-size: 18px; font-weight: 800; color: #E0457B">அவள்</span>
+    </div>
+    <div style="display: flex; background: #FFFFFF; border-radius: 999px; padding: 4px; gap: 2px">
+      <button style="height: 36px; padding: 0 10px; border: none; border-radius: 999px; background: #4A1D6E; color: #FFFFFF; font-size: 13px; font-weight: 700; font-family: 'Noto Sans Tamil', sans-serif">தமிழ்</button>
+      <button style="height: 36px; padding: 0 10px; border: none; border-radius: 999px; background: transparent; color: #24132F; font-size: 13px; font-weight: 700">EN</button>
+    </div>
+  </div>
+
+  <!-- greeting -->
+  <div style="display: flex; align-items: flex-end; gap: 4px; padding: 0 16px; height: 168px">
+    <img src="../assets/aval_wave_v2.png" alt="AVAL waving" style="width: 128px; height: 165px; object-fit: contain; flex: none">
+    <div style="background: #FFFFFF; border-radius: 22px 22px 22px 6px; padding: 14px 16px; margin-bottom: 40px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 2px 0 #EADCF1">
+      <span style="font-size: 17px; font-weight: 700; line-height: 1.3">Hi Priya! Where are you going today?</span>
+      <span style="font-family: 'Noto Sans Tamil', sans-serif; font-size: 14px; color: #6A5878; line-height: 1.5">வணக்கம்! இன்று எங்கே போகிறீர்கள்?</span>
+    </div>
+  </div>
+
+  <!-- chat -->
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 4px 16px 12px">
+
+    <div style="align-self: flex-end; max-width: 78%; background: #4A1D6E; color: #FFFFFF; border-radius: 20px 20px 6px 20px; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px">
+      <span style="font-size: 15px; font-weight: 600; line-height: 1.4">Nungambakkam, 8am, with my daughter</span>
+      <span style="font-size: 12px; opacity: 0.8; display: flex; align-items: center; gap: 4px">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+        Spoken in Tamil · 0:04
+      </span>
+    </div>
+
+    <div style="display: flex; gap: 8px; align-items: flex-start">
+      <img src="../assets/aval_face_v2.png" alt="" style="width: 34px; height: 34px; border-radius: 17px; background: #F3E8FA; flex: none">
+      <div style="flex: 1; min-width: 0; background: #FFFFFF; border-radius: 6px 22px 22px 22px; padding: 14px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 2px 0 #EADCF1">
+        <span style="font-size: 15px; line-height: 1.45">Here's your safest way. School is on the route, so you'll reach by 8:40.</span>
+
+        <!-- route card -->
+        <div style="border: 2px solid #F3E8FA; border-radius: 18px; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span style="background: #E0457B; color: #FFFFFF; font-weight: 800; font-size: 16px; padding: 4px 10px; border-radius: 10px">21G</span>
+              <span style="background: #E6F4F2; color: #0B5F59; font-weight: 700; font-size: 12px; padding: 4px 8px; border-radius: 999px">FREE · இலவசம்</span>
+            </div>
+            <span style="font-size: 13px; color: #6A5878; font-variant-numeric: tabular-nums">35 min</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px; font-size: 14px">
+            <div style="display: flex; justify-content: space-between"><span style="color: #6A5878">Board at</span><span style="font-weight: 600">Anna Nagar West</span></div>
+            <div style="display: flex; justify-content: space-between"><span style="color: #6A5878">Next bus</span><span style="font-weight: 600; font-variant-numeric: tabular-nums">8:05 · then 8:17</span></div>
+          </div>
+          <div style="background: #FFF7EC; border-radius: 12px; padding: 10px; display: flex; gap: 10px; align-items: center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7C74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+            <div style="display: flex; flex-direction: column; gap: 1px">
+              <span style="font-size: 13px; font-weight: 700">Wait at Lakshmi SHG kiosk</span>
+              <span style="font-size: 12px; color: #6A5878">50 m left · women-run · open now</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px">
+          <button style="flex: 1; height: 48px; border: none; border-radius: 14px; background: #0E7C74; color: #FFFFFF; font-size: 15px; font-weight: 700">Start trip</button>
+          <button style="flex: 1; height: 48px; border: 2px solid #4A1D6E; border-radius: 14px; background: #FFFFFF; color: #4A1D6E; font-size: 15px; font-weight: 700">Metro instead</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- agent steps -->
+    <div style="margin-left: 42px; background: #F3E8FA; border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px">
+      <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #4A1D6E">What AVAL did</span>
+      <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">
+        <div style="display: flex; gap: 8px; align-items: center"><span style="width: 18px; height: 18px; border-radius: 9px; background: #0E7C74; color: #FFFFFF; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">✓</span>Understood your Tamil request</div>
+        <div style="display: flex; gap: 8px; align-items: center"><span style="width: 18px; height: 18px; border-radius: 9px; background: #0E7C74; color: #FFFFFF; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">✓</span>Compared bus, metro and auto</div>
+        <div style="display: flex; gap: 8px; align-items: center"><span style="width: 18px; height: 18px; border-radius: 9px; background: #0E7C74; color: #FFFFFF; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">✓</span>Ranked 4 safe places near the stop</div>
+        <div style="display: flex; gap: 8px; align-items: center"><span style="width: 18px; height: 18px; border-radius: 9px; background: #F6A623; color: #24132F; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">!</span>Amma will get your trip when you start</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- quick asks -->
+  <div style="display: flex; gap: 8px; padding: 0 16px 10px; overflow: hidden">
+    <button style="flex: none; height: 40px; padding: 0 14px; border-radius: 999px; border: 1.5px solid #EADCF1; background: #FFFFFF; font-size: 13px; font-weight: 600; color: #24132F">Free bus now?</button>
+    <button style="flex: none; height: 40px; padding: 0 14px; border-radius: 999px; border: 1.5px solid #EADCF1; background: #FFFFFF; font-size: 13px; font-weight: 600; color: #24132F">Safe shops near me</button>
+    <button style="flex: none; height: 40px; padding: 0 14px; border-radius: 999px; border: 1.5px solid #EADCF1; background: #FFFFFF; font-size: 13px; font-weight: 600; color: #24132F">Call Amma</button>
+  </div>
+
+  <!-- composer -->
+  <div style="display: flex; gap: 10px; align-items: center; padding: 0 16px 14px">
+    <label for="ask" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Ask AVAL</label>
+    <input id="ask" placeholder="Type or hold the mic…" style="flex: 1; min-width: 0; height: 52px; border-radius: 26px; border: 2px solid #EADCF1; background: #FFFFFF; padding: 0 18px; font-size: 15px; font-family: inherit; color: #24132F">
+    <button aria-label="Hold to speak in Tamil" style="width: 64px; height: 64px; border-radius: 32px; border: none; background: #E0457B; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #FBD9E5; flex: none">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+    </button>
+  </div>
+
+  <!-- bottom nav -->
+  <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: #FFFFFF; border-top: 1px solid #EADCF1; padding: 8px 4px 18px">
+    <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; color: #6A5878; font-size: 11px; font-weight: 600; min-height: 48px; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9H3z"/><path d="M10 20v-6h4v6"/></svg>Home</a>
+    <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; color: #6A5878; font-size: 11px; font-weight: 600; min-height: 48px; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Nearby</a>
+    <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; color: #4A1D6E; font-size: 11px; font-weight: 800; min-height: 48px; justify-content: center">
+      <img src="../assets/aval_face_v2.png" alt="" style="width: 30px; height: 30px; border-radius: 15px; background: #F3E8FA; box-shadow: 0 0 0 2px #4A1D6E">AVAL</a>
+    <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; color: #6A5878; font-size: 11px; font-weight: 600; min-height: 48px; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 15c3 0 6 2 6 5"/></svg>Circle</a>
+    <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; color: #6A5878; font-size: 11px; font-weight: 600; min-height: 48px; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18M7 15h4"/></svg>Tickets</a>
+  </div>
+</div>
+
+
+</body>
+</html>

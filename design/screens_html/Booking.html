@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Choose your ride</title>
+
+</head>
+<body>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;700&display=swap">
+<style>
+body{margin:0;font-family:'Noto Sans','Noto Sans Tamil',system-ui,sans-serif;color:#24132F}
+a{color:#5B1F96}a:hover{color:#FF4F8B}
+button,input{font-family:inherit}
+</style>
+
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FFF7EC; display: flex; flex-direction: column; overflow: hidden">
+  <div style="display: flex; align-items: center; gap: 12px; padding: 18px 16px 10px">
+    <a href="Home.html" aria-label="Back" style="width: 44px; height: 44px; border-radius: 22px; background: #FFFFFF; display: flex; align-items: center; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#24132F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></a>
+    <span style="font-size: 20px; font-weight: 800">Choose your ride</span>
+  </div>
+
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 0 16px; overflow: hidden">
+    <!-- from / to -->
+    <div style="background: #FFFFFF; border-radius: 20px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; border: 1.5px solid #EADCF1">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+        <span style="width: 12px; height: 12px; border-radius: 6px; border: 3px solid #0FA596; box-sizing: border-box"></span>
+        <span style="width: 2px; height: 26px; background: repeating-linear-gradient(#C9B8D6 0 4px, transparent 4px 8px)"></span>
+        <span style="width: 12px; height: 12px; border-radius: 3px; background: #FF4F8B"></span>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; flex-direction: column"><span style="font-size: 11px; color: #6A5878; font-weight: 600">FROM</span><span style="font-size: 16px; font-weight: 700">Anna Nagar West</span></div>
+        <div style="display: flex; flex-direction: column"><span style="font-size: 11px; color: #6A5878; font-weight: 600">TO</span><span style="font-size: 16px; font-weight: 700">Nungambakkam</span></div>
+      </div>
+      <button aria-label="Swap from and to" style="width: 44px; height: 44px; border-radius: 14px; border: 1.5px solid #EADCF1; background: #FFF7EC; display: flex; align-items: center; justify-content: center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B1F96" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16M3 8l4-4 4 4M17 20V4M13 16l4 4 4-4"/></svg></button>
+    </div>
+
+    <div style="display: flex; gap: 8px; align-items: center">
+      <span style="height: 36px; padding: 0 14px; border-radius: 999px; background: #24132F; color: #FFFFFF; font-size: 13px; font-weight: 700; display: flex; align-items: center">Leave now · 8:00</span>
+      <span style="height: 36px; padding: 0 14px; border-radius: 999px; background: #FFFFFF; border: 1.5px solid #EADCF1; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px">
+        <span style="width: 30px; height: 18px; border-radius: 9px; background: #0FA596; position: relative; display: inline-block"><span style="position: absolute; right: 2px; top: 2px; width: 14px; height: 14px; border-radius: 7px; background: #FFFFFF"></span></span>With child</span>
+    </div>
+
+    <!-- tabs -->
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: #F0E6F6; border-radius: 14px; padding: 4px; gap: 4px">
+      <button style="height: 40px; border: none; border-radius: 11px; background: #FFFFFF; font-size: 14px; font-weight: 800; color: #5B1F96">Safest</button>
+      <button style="height: 40px; border: none; border-radius: 11px; background: transparent; font-size: 14px; font-weight: 600; color: #6A5878">Cheapest</button>
+      <button style="height: 40px; border: none; border-radius: 11px; background: transparent; font-size: 14px; font-weight: 600; color: #6A5878">Fastest</button>
+    </div>
+
+    <!-- option 1 selected -->
+    <a href="LiveTrip.html" style="background: #FFFFFF; border-radius: 20px; padding: 14px; border: 2.5px solid #5B1F96; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: #24132F">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <div style="display: flex; gap: 6px; align-items: center"><span style="background: #FF4F8B; color: #FFFFFF; font-size: 14px; font-weight: 800; padding: 3px 9px; border-radius: 8px">21G</span><span style="background: #E2F7F3; color: #0B7F74; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 999px">FREE</span></div>
+        <div style="display: flex; flex-direction: column; align-items: flex-end"><span style="font-size: 18px; font-weight: 800">35 min</span><span style="font-size: 12px; color: #6A5878">reach 8:40</span></div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #4A3A58; font-weight: 600">
+        <span>Walk 3 min</span><span style="flex: 1; height: 3px; border-radius: 2px; background: #FF4F8B"></span><span>Bus 30 min</span><span style="flex: 0.3; height: 3px; border-radius: 2px; background: #C9B8D6"></span><span>2 min</span>
+      </div>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap">
+        <span style="font-size: 12px; font-weight: 700; color: #0B7F74; background: #E2F7F3; padding: 4px 8px; border-radius: 8px">Safe wait: SHG kiosk</span>
+        <span style="font-size: 12px; font-weight: 700; color: #5B1F96; background: #F3E8FA; padding: 4px 8px; border-radius: 8px">No switches</span>
+        <span style="font-size: 12px; font-weight: 700; color: #5B1F96; background: #F3E8FA; padding: 4px 8px; border-radius: 8px">Busy, well-lit stops</span>
+      </div>
+    </a>
+
+    <!-- option 2 -->
+    <a href="Payment.html" style="background: #FFFFFF; border-radius: 20px; padding: 14px; border: 1.5px solid #EADCF1; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #24132F">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <div style="display: flex; gap: 6px; align-items: center"><span style="background: #FF4F8B; color: #FFFFFF; font-size: 13px; font-weight: 800; padding: 3px 8px; border-radius: 8px">70</span><span style="color: #6A5878">→</span><span style="background: #1F5BDA; color: #FFFFFF; font-size: 13px; font-weight: 800; padding: 3px 8px; border-radius: 8px">Metro</span></div>
+        <div style="display: flex; flex-direction: column; align-items: flex-end"><span style="font-size: 18px; font-weight: 800">28 min</span><span style="font-size: 12px; color: #6A5878">₹30 · 1 switch</span></div>
+      </div>
+      <span style="font-size: 12px; color: #4A3A58">Switch at Koyambedu · lit walkway, 4 min</span>
+    </a>
+
+    <!-- option 3 -->
+    <a href="Payment.html" style="background: #FFFFFF; border-radius: 20px; padding: 14px; border: 1.5px solid #EADCF1; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: #24132F">
+      <div style="display: flex; gap: 8px; align-items: center"><span style="background: #FFC21C; color: #24132F; font-size: 13px; font-weight: 800; padding: 3px 8px; border-radius: 8px">Auto</span><span style="font-size: 12px; color: #4A3A58">Door to door</span></div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end"><span style="font-size: 18px; font-weight: 800">22 min</span><span style="font-size: 12px; color: #6A5878">~₹180</span></div>
+    </a>
+
+    <!-- AVAL tip -->
+    <div style="display: flex; align-items: flex-end; gap: 6px; margin-top: -4px">
+      <img src="../assets/pose_guide.png" alt="AVAL pointing" style="width: 64px; height: 84px; object-fit: contain">
+      <div style="background: #24132F; color: #FFFFFF; border-radius: 16px 16px 16px 4px; padding: 10px 12px; margin-bottom: 18px; font-size: 13px; line-height: 1.4">21G is safest at 8am. It's free and stops by the school.</div>
+    </div>
+  </div>
+
+  <div style="padding: 10px 16px 22px; background: #FFF7EC; border-top: 1px solid #EADCF1">
+    <a href="LiveTrip.html" style="height: 56px; border-radius: 16px; background: #0FA596; color: #FFFFFF; font-size: 17px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Start free trip · 21G</a>
+  </div>
+</div>
+
+
+</body>
+</html>

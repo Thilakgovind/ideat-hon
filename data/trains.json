@@ -1,0 +1,35 @@
+{
+  "source": "sample",
+  "note": "Sample suburban train data for the demo. Not the live Southern Railway timetable.",
+  "lines": [
+    {
+      "id": "T-BEACH-TBM",
+      "name": "Chennai Beach - Tambaram (suburban)",
+      "fare_inr": 5,
+      "fare_first_class_inr": 50,
+      "ladies_coaches": [
+        {"position": "front", "coach_numbers": [1], "note": "Ladies coach right behind the engine"},
+        {"position": "middle", "coach_numbers": [5], "note": "Ladies coach in the middle, near the guard"}
+      ],
+      "total_coaches": 9,
+      "ladies_special": ["08:10", "17:50"],
+      "first": "04:15",
+      "last_train": "23:55",
+      "frequency_minutes": 10,
+      "delays_sample": {"08:10": 3, "18:20": 5, "21:40": 8},
+      "stations": [
+        {"name": "Chennai Beach", "code": "MSB", "min": 0, "platform": "1"},
+        {"name": "Park", "code": "MPK", "min": 6, "platform": "2"},
+        {"name": "Egmore", "code": "MS", "min": 10, "platform": "10"},
+        {"name": "Chetpet", "code": "MSC", "min": 13, "platform": "2"},
+        {"name": "Nungambakkam", "code": "NBK", "min": 16, "platform": "2"},
+        {"name": "Kodambakkam", "code": "MKK", "min": 19, "platform": "2"},
+        {"name": "Mambalam", "code": "MBM", "min": 22, "platform": "3"},
+        {"name": "Saidapet", "code": "SP", "min": 26, "platform": "2"},
+        {"name": "Guindy", "code": "GDY", "min": 30, "platform": "2"},
+        {"name": "Tambaram", "code": "TBM", "min": 52, "platform": "4"}
+      ],
+      "source": "sample"
+    }
+  ]
+}

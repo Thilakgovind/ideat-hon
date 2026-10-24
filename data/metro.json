@@ -1,0 +1,48 @@
+{
+  "source": "sample",
+  "note": "Sample Chennai Metro data for the demo. The Koyambedu-Nungambakkam link is illustrative.",
+  "fare_by_stations": {"1": 10, "2": 20, "3": 30, "4": 30, "5": 40, "6": 40, "7": 50},
+  "fare_max_inr": 50,
+  "lines": [
+    {
+      "id": "M-PURPLE",
+      "name": "Purple Line (sample)",
+      "color": "#7B3FC4",
+      "first": "05:00",
+      "last": "23:00",
+      "headway_peak_min": 6,
+      "headway_offpeak_min": 10,
+      "peak_hours": ["07:00-10:30", "17:00-20:30"],
+      "women_coach": "First coach (front of the train)",
+      "stations": [
+        {"name": "Koyambedu", "code": "KBD", "min": 0, "platform": "2", "best_exit": "Exit A - bus terminus side, lit walkway"},
+        {"name": "Vadapalani", "code": "VDP", "min": 4, "platform": "2", "best_exit": "Exit B - main road"},
+        {"name": "Kodambakkam", "code": "KOD", "min": 7, "platform": "2", "best_exit": "Exit A - flyover side"},
+        {"name": "Nungambakkam", "code": "NMB", "min": 10, "platform": "1", "best_exit": "Exit C - High Road, near the bus stop"}
+      ],
+      "source": "sample"
+    },
+    {
+      "id": "M-GREEN",
+      "name": "Green Line",
+      "color": "#2E9E4F",
+      "first": "05:00",
+      "last": "23:00",
+      "headway_peak_min": 6,
+      "headway_offpeak_min": 10,
+      "peak_hours": ["07:00-10:30", "17:00-20:30"],
+      "women_coach": "First coach (front of the train)",
+      "stations": [
+        {"name": "Koyambedu", "code": "KBD", "min": 0, "platform": "1", "best_exit": "Exit A - bus terminus side"},
+        {"name": "Thirumangalam", "code": "TMG", "min": 3, "platform": "1", "best_exit": "Exit B - 2nd Avenue"},
+        {"name": "Anna Nagar Tower", "code": "ANT", "min": 5, "platform": "1", "best_exit": "Exit A - Tower Park"},
+        {"name": "Anna Nagar East", "code": "ANE", "min": 7, "platform": "1", "best_exit": "Exit B - main road"},
+        {"name": "Shenoy Nagar", "code": "SHN", "min": 9, "platform": "1", "best_exit": "Exit A"},
+        {"name": "Kilpauk", "code": "KLP", "min": 12, "platform": "1", "best_exit": "Exit B - hospital side"},
+        {"name": "Egmore", "code": "EGM", "min": 15, "platform": "1", "best_exit": "Exit A - railway station"},
+        {"name": "Central", "code": "CTL", "min": 18, "platform": "1", "best_exit": "Exit C - Central station"}
+      ],
+      "source": "sample"
+    }
+  ]
+}
