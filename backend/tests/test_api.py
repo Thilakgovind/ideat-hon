@@ -82,3 +82,31 @@ def test_sms_webhook_twiml():
     r = c.post("/api/sms/webhook", data={"From": "+15550002222", "Body": "START"})
     assert "Journey Watch ON" in r.text
     assert "2222" not in c.get("/api/demo/outbox").text
+
+
+def test_profile_has_no_phone():
+    p = c.get("/api/profile").json()
+    assert p["display_name"] == "Priya" and p["start_area"] == "Anna Nagar West"
+    assert [s["label"] for s in p["saved_places"]][0] == "Work"
+    assert "phone" not in str(p)
+
+
+def test_walk_home_trip():
+    trip = c.post("/api/trip/start", json={"from": "Nungambakkam", "to": "Nungambakkam", "time": "21:40",
+                                          "option_id": "walk:w-nmb-main", "confirmed": True}).json()["trip"]
+    assert trip["kind"] == "walk" and trip["distance_m"] == 900 and trip["next_open_shop"]
+
+
+def test_tickets_endpoints():
+    body = {**TRIP, "option_id": "bus+metro:70:M-PURPLE:ANW", "confirmed": True}
+    o = c.post("/api/pay/order", json=body).json()
+    t = c.post("/api/pay/verify", json={"order_id": o["order_id"], "payment_id": "pay_mock_9", "signature": "mock"}).json()["ticket"]
+    assert c.get(f"/api/tickets/{t['ticket_id']}").json()["ticket"]["qr_data"] == t["qr_data"]
+    assert c.get("/api/tickets").json()["tickets"][0]["ticket_id"] == t["ticket_id"]
+    assert c.get("/api/tickets/nope").status_code == 404
+
+
+def test_places_near_named_area():
+    r = c.get("/api/places", params={"near": "Nungambakkam", "radius_m": 400, "time": "21:40"}).json()
+    assert r["places"] and all(p["near_stop"] == "NMB" for p in r["places"])
+    assert c.get("/api/places", params={"near": "Atlantis"}).status_code == 404

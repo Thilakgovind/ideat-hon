@@ -81,3 +81,20 @@ def test_sos_skips_confirmation_and_is_honest():
 def test_sms_user_id_is_pseudonymous():
     uid = circle.user_id_for_phone("+919876543210")
     assert uid.startswith("u_") and "9876" not in uid
+
+
+def test_message_contact_needs_confirmation_and_is_honest():
+    r = circle.message_contact("u_demo", "c2", "meet", "Main road")
+    assert r["needs_confirmation"] and "Main road" in r["preview"] and not sms.OUTBOX
+    r = circle.message_contact("u_demo", "c2", "meet", "Main road", confirmed=True)
+    assert r["status"] == "mock_logged" and r["delivery"]["sent"] == 0
+    assert circle.message_contact("u_demo", "c4", confirmed=True)["error"] == "not_in_circle"  # pending invite
+    assert circle.message_contact("u_demo", "c2", "free text", confirmed=True)["error"] == "unknown_message"
+
+
+def test_sos_nearest_help_uses_trip_area_without_gps():
+    opt, _ = route.find_option(None, None, "21:40", "walk:w-nmb-main")
+    circle.start_trip("u_demo", opt, "Nungambakkam", "Nungambakkam", confirmed=True, now=at("21:40"))
+    r = circle.sos("u_demo", now=at("21:45"))
+    assert r["nearest_help"] and all(h["distance_m"] <= 1500 for h in r["nearest_help"])
+    assert r["nearest_help"][0]["name"] in {"Nungambakkam 24h Pharmacy", "Lakshmi Tea Stall (SHG)", "ATM - High Road", "Petrol Bunk, High Road"}

@@ -14,6 +14,8 @@ AUTO_BASE_KM = 1.8
 AUTO_PER_KM_INR = 25
 AUTO_SPEED_KMPH = 22
 ROAD_FACTOR = 1.35
+WALK_KMPH = 4.5
+WALK_MAX_KM = 6
 BOOKING_LINKS = {
     "Namma Yatri": "https://nammayatri.in/",
     "Rapido": "https://www.rapido.bike/",
@@ -106,6 +108,38 @@ def _index(stops, place):
         if _belongs(s["name"], place):
             return i
     return None
+
+
+# ---------- directions ----------
+
+def _reversed_line(line, stops_key, extra_swap=()):
+    """Same line running the other way (sample timetables are symmetric)."""
+    stops = line[stops_key]
+    end = stops[-1]["min"]
+    rev = dict(line)
+    rev[stops_key] = [dict(s, min=end - s["min"]) for s in reversed(stops)]
+    for a, b in extra_swap:
+        rev[a], rev[b] = line.get(b), line.get(a)
+    rev["direction"] = "reverse"
+    return rev
+
+
+def _bus_dirs():
+    for r in data.routes():
+        yield r
+        yield _reversed_line(r, "stops", [("walk_start_min", "walk_end_min")])
+
+
+def _metro_dirs():
+    for line in data.metro()["lines"]:
+        yield line
+        yield _reversed_line(line, "stations")
+
+
+def _train_dirs():
+    for line in data.trains():
+        yield line
+        yield _reversed_line(line, "stations")
 
 
 # ---------- departures ----------
@@ -207,6 +241,7 @@ def _train_leg(line, i, j, at):
 
 
 def _option(kind, legs, at, extra=None):
+    legs = [l for l in legs if not (l["mode"] == "walk" and l["minutes"] == 0)]
     transit = [l for l in legs if l["mode"] in ("bus", "metro", "train")]
     total = sum(l["minutes"] for l in legs)
     # reach time: wait for the first transit departure, then ride the rest
@@ -215,6 +250,13 @@ def _option(kind, legs, at, extra=None):
         walk_before = sum(l["minutes"] for l in legs[: legs.index(transit[0])])
         wait = max(0, transit[0]["_next_min"][0] - (at + walk_before))
         reach = at + total + wait
+    clock = at
+    for l in legs:
+        if l["mode"] in ("bus", "metro", "train") and l.get("_next_min"):
+            clock = max(clock, l["_next_min"][0])
+        l["start"] = data.fmt_minutes(clock)
+        clock += l["minutes"]
+        l["end"] = data.fmt_minutes(clock)
     opt = {
         "id": ":".join([kind] + [l["route_id"] for l in transit] + [transit[0]["from_code"] if transit else ""]),
         "kind": kind,
@@ -247,7 +289,8 @@ def _auto_option(frm, to, at):
     fare = int(round(fare / 10.0) * 10)
     return {
         "id": "auto", "kind": "auto",
-        "legs": [{"mode": "auto", "label": "Auto", "from": frm, "to": to, "minutes": minutes, "fare_inr": fare, "is_free": False}],
+        "legs": [{"mode": "auto", "label": "Auto", "from": frm, "to": to, "minutes": minutes, "fare_inr": fare, "is_free": False,
+                  "start": data.fmt_minutes(at), "end": data.fmt_minutes(at + minutes)}],
         "total_min": minutes, "reach_by": data.fmt_minutes(at + minutes), "fare_inr": fare,
         "fare_is_estimate": True, "night_fare": night, "distance_km": round(km, 1),
         "is_free": False, "switches": 0, "board_at": None, "board_code": None, "alight_code": None, "next": [],
@@ -268,7 +311,7 @@ def plan(frm: str, to: str, time=None, with_child: bool = False, modes=None) -> 
         return {"error": "same_place", "from": f, "to": t, "options": []}
 
     options, not_running = [], []
-    for r in data.routes():
+    for r in _bus_dirs():
         i, j = _index(r["stops"], f), _index(r["stops"], t)
         if i is not None and j is not None and i < j:
             leg = _bus_leg(r, i, j, at + r["walk_start_min"])
@@ -278,11 +321,11 @@ def plan(frm: str, to: str, time=None, with_child: bool = False, modes=None) -> 
             options.append(_option("bus", [_walk(r["walk_start_min"]), leg, _walk(r["walk_end_min"])], at))
 
     for tr in data.transfers():
-        for r in data.routes():
+        for r in _bus_dirs():
             i, k = _index(r["stops"], f), _index(r["stops"], tr["at"])
             if i is None or k is None or i >= k:
                 continue
-            for line in data.metro()["lines"]:
+            for line in _metro_dirs():
                 m, n = _index(line["stations"], tr["at"]), _index(line["stations"], t)
                 if m is None or n is None or m >= n:
                     continue
@@ -297,14 +340,14 @@ def plan(frm: str, to: str, time=None, with_child: bool = False, modes=None) -> 
                 options.append(_option("bus+metro", legs, at, {"switch_info": {
                     "at": tr["at"], "walk_min": tr["walk_min"], "lit": tr["lit"], "note": tr["note"]}}))
 
-    for line in data.metro()["lines"]:
+    for line in _metro_dirs():
         i, j = _index(line["stations"], f), _index(line["stations"], t)
         if i is not None and j is not None and i < j:
             met = _metro_leg(line, i, j, at + 3)
             if met["_next_min"]:
                 options.append(_option("metro", [_walk(3), met, _walk(2)], at))
 
-    for line in data.trains():
+    for line in _train_dirs():
         i, j = _index(line["stations"], f), _index(line["stations"], t)
         if i is not None and j is not None and i < j:
             tl = _train_leg(line, i, j, at + 5)
@@ -314,6 +357,15 @@ def plan(frm: str, to: str, time=None, with_child: bool = False, modes=None) -> 
     auto = _auto_option(f, t, at)
     if auto:
         options.append(auto)
+        if auto["distance_km"] <= WALK_MAX_KM:
+            minutes = round(auto["distance_km"] / WALK_KMPH * 60)
+            options.append({
+                "id": "walk", "kind": "walk",
+                "legs": [{"mode": "walk", "label": "Walk", "from": f, "to": t, "minutes": minutes,
+                          "start": data.fmt_minutes(at), "end": data.fmt_minutes(at + minutes)}],
+                "total_min": minutes, "reach_by": data.fmt_minutes(at + minutes), "fare_inr": 0,
+                "distance_km": auto["distance_km"], "is_free": True, "switches": 0, "board_at": None,
+                "board_code": None, "alight_code": None, "next": [], "source": "sample"})
 
     if modes:
         options = [o for o in options if any(m in o["kind"] for m in modes)]
@@ -332,7 +384,7 @@ def arrivals(stop: str, time=None, free_only: bool = False) -> dict:
     if not place:
         return {"error": "no_match", "stop": stop, "arrivals": []}
     out = []
-    for r in data.routes():
+    for r in _bus_dirs():
         i = _index(r["stops"], place)
         if i is None or i == len(r["stops"]) - 1:
             continue
@@ -346,8 +398,25 @@ def arrivals(stop: str, time=None, free_only: bool = False) -> dict:
     return {"stop": place, "time": data.fmt_minutes(at), "arrivals": out, "source": "sample"}
 
 
+def walk_path_option(path_id, time=None):
+    """A walking path from walk_paths.json as a trip option (Walk main road)."""
+    at = data.parse_time(time)
+    for p in data.walk_paths():
+        if p["id"] == path_id:
+            return {
+                "id": f"walk:{path_id}", "kind": "walk", "path_id": path_id, "name": p["name"],
+                "legs": [{"mode": "walk", "label": "Walk", "from": "Bus stop", "to": "Home", "minutes": p["minutes"],
+                          "distance_m": p["distance_m"], "start": data.fmt_minutes(at), "end": data.fmt_minutes(at + p["minutes"])}],
+                "total_min": p["minutes"], "reach_by": data.fmt_minutes(at + p["minutes"]), "fare_inr": 0,
+                "distance_m": p["distance_m"], "is_free": True, "switches": 0, "board_at": None, "board_code": None,
+                "alight_code": p["stop"], "next": [], "source": p.get("source", "sample")}
+    return None
+
+
 def find_option(frm, to, time, option_id):
     """Re-plan on the server and return the option with this id (never trust client fares)."""
+    if option_id.startswith("walk:"):
+        return walk_path_option(option_id[5:], time), None
     result = plan(frm, to, time)
     for o in result.get("options", []):
         if o["id"] == option_id:

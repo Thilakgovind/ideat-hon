@@ -21,6 +21,11 @@ T = {
 }
 
 
+def _hm(hhmm):
+    """'08:05' -> '8:05' (how times are written in the app)."""
+    return hhmm.lstrip("0") if hhmm and hhmm[0] == "0" and hhmm[1] != ":" else hhmm
+
+
 def _t(key, ta):
     return T[key][1 if ta else 0]
 
@@ -115,17 +120,17 @@ def _plan_trip(ctx, intent_hint=None):
     transit = [l for l in best["legs"] if l["mode"] != "walk"]
     first = transit[0]
     free = " is free" if best["is_free"] else f" costs Rs {best['fare_inr']}"
-    nxt = f", next at {best['next'][0]}" if best["next"] else ""
+    nxt = f", next at {_hm(best['next'][0])}" if best["next"] else ""
     child = " Good with your child: no switches." if p.get("with_child") and best["switches"] == 0 else ""
-    text = f"Here's your safest way. {first['label']}{free}{nxt}. You'll reach by {best['reach_by']}.{child}"
+    text = f"Here's your safest way. {first['label']}{free}{nxt}. You'll reach by {_hm(best['reach_by'])}.{child}"
     if ta:
         wait = best["safe_wait"]["name_ta"] if best.get("safe_wait") else ""
         text = f"{first['label']} {'இலவசம்' if best['is_free'] else '₹' + str(best['fare_inr'])}" \
-               f"{' · ' + best['next'][0] if best['next'] else ''}" \
-               f"{' · ' + wait + '-ல் காத்திருங்கள்' if wait else ''} · {best['reach_by']}-க்குள் சேருவீர்கள்"
+               f"{' · ' + _hm(best['next'][0]) if best['next'] else ''}" \
+               f"{' · ' + wait + '-ல் காத்திருங்கள்' if wait else ''} · {_hm(best['reach_by'])}-க்குள் சேருவீர்கள்"
     sw = best.get("safe_wait")
     sms = f"{first['label'].upper() if first['mode'] != 'bus' else 'BUS ' + first['label']} ({'FREE' if best['is_free'] else 'Rs ' + str(best['fare_inr'])}) {best.get('board_at') or plan['from']}\n" \
-          f"Next ~{best['next'][0] if best['next'] else '-'}." + (f" Safe wait: {sw['name']}" if sw else "") + "\nReply START when you board"
+          f"Next ~{_hm(best['next'][0]) if best['next'] else '-'}." + (f" Safe wait: {sw['name']}" if sw else "") + "\nReply START when you board"
     alt = next((o for o in ranked[1:] if o["kind"] != best["kind"]), None)
     actions = [{"id": "start_trip", "label": "Start trip", "label_ta": "பயணம் தொடங்கு",
                 "payload": {"from": plan["from"], "to": plan["to"], "time": plan["time"], "option_id": best["id"]}}]
@@ -147,7 +152,7 @@ def _free_bus(ctx):
     if not arr.get("arrivals"):
         return {"text": "No free bus in the sample timetable right now.", "card": {"type": "arrivals", **arr}}
     a = arr["arrivals"][0]
-    text = f"Free bus {a['number']} to {a['towards']} in {a['in_min']} min ({a['time']})."
+    text = f"Free bus {a['number']} to {a['towards']} in {a['in_min']} min ({_hm(a['time'])})."
     if ctx["ta"]:
         text = f"இலவச பஸ் {a['number']} · {a['in_min']} நிமிடத்தில் ({a['time']})"
     return {"text": text, "card": {"type": "arrivals", "mode": "bus", **arr}}

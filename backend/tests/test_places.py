@@ -38,3 +38,8 @@ def test_find_by_name():
     assert places.find_by_name("is Lakshmi SHG kiosk open") == "p1"
     assert places.find_by_name("Rose Bakery") == "p13"
     assert places.find_by_name("random words") is None
+
+
+def test_near_stop_name():
+    assert places.details("p1")["near_stop_name"] == "Anna Nagar West"
+    assert places.details("p16")["near_stop_name"] == "Koyambedu"

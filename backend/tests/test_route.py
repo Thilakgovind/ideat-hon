@@ -52,8 +52,12 @@ def test_train_option_with_ladies_coach():
     assert leg["ladies_coaches"] and leg["last_train"] == "23:55"
 
 
-def test_wrong_direction_and_unknown():
-    assert all(o["kind"] == "auto" for o in route.plan("Nungambakkam", "Anna Nagar West", "08:00")["options"])
+def test_return_direction_and_unknown():
+    back = route.plan("Nungambakkam", "Anna Nagar West", "08:00")["options"]
+    bus = next(o for o in back if o["kind"] == "bus")
+    assert bus["legs"][1]["label"] == "21G" and bus["legs"][1]["stops"][0] == "Nungambakkam"
+    assert bus["legs"][1]["minutes"] == 30
+    assert any(o["kind"] == "bus" and any(l.get("label") == "70" for l in o["legs"]) for o in route.plan("Koyambedu", "Anna Nagar West", "21:40")["options"])
     assert route.plan("Fake Nagar", "Nungambakkam")["error"] == "no_match"
     assert route.plan("Kilpauk", "kilpauk")["error"] == "same_place"
 
@@ -77,3 +81,26 @@ def test_find_option_replans_on_server():
     opt, _ = route.find_option("Anna Nagar West", "Nungambakkam", "08:00", "bus:21G:ANW")
     assert opt and opt["fare_inr"] == 0
     assert route.find_option("Anna Nagar West", "Nungambakkam", "08:00", "bus:FAKE:ANW")[0] is None
+
+
+def test_leg_clock_times_follow_departures():
+    bus = next(o for o in route.plan("Anna Nagar West", "Nungambakkam", "08:00")["options"] if o["kind"] == "bus")
+    walk, ride, end = bus["legs"]
+    assert (walk["start"], walk["end"]) == ("08:00", "08:03")
+    assert (ride["start"], ride["end"]) == ("08:12", "08:42")
+    assert end["end"] == bus["reach_by"] == "08:44"
+
+
+def test_walk_option_and_walk_paths():
+    plan = route.plan("Kilpauk", "Nungambakkam", "12:00")
+    walk = next(o for o in plan["options"] if o["kind"] == "walk")
+    assert walk["fare_inr"] == 0 and walk["total_min"] > 0
+    assert all(o["kind"] != "walk" for o in route.plan("Anna Nagar West", "Tambaram", "12:00")["options"])
+    opt, _ = route.find_option(None, None, "21:40", "walk:w-nmb-main")
+    assert opt["distance_m"] == 900 and opt["total_min"] == 12 and opt["alight_code"] == "NMB"
+    assert route.find_option(None, None, None, "walk:nope")[0] is None
+
+
+def test_no_zero_minute_walks():
+    for o in route.plan("Koyambedu", "Anna Nagar West", "21:40")["options"]:
+        assert all(l["minutes"] > 0 for l in o["legs"] if l["mode"] == "walk")

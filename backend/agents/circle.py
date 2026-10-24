@@ -15,6 +15,7 @@ from ..guardrails import describe_delivery, filter_location, location_allowed, n
 from . import sms, safety
 
 ALERT_AFTER_ETA_MIN = 10
+HELP_RADIUS_M = 1500
 HELPLINES = [{"name": "Women helpline", "number": "181"}, {"name": "Police", "number": "100"}]
 
 
@@ -101,6 +102,27 @@ def remove_contact(user_id, contact_id) -> dict:
     return {"removed": before != len(u["contacts"])}
 
 
+MESSAGES = {
+    "meet": "{name} is walking home on {where}. Can you meet her on the way? (SafePath)",
+    "call_me": "{name} asked you to call her now. (SafePath)",
+}
+
+
+def message_contact(user_id, contact_id, kind="meet", where="the main road", confirmed=False) -> dict:
+    """Send one fixed, pre-written message to an accepted contact. Needs confirmation."""
+    u = STORE.user(user_id)
+    c = next((x for x in u["contacts"] if x["id"] == contact_id), None)
+    if not c or not c.get("accepted"):
+        return {"error": "not_in_circle"}
+    if kind not in MESSAGES:
+        return {"error": "unknown_message"}
+    body = MESSAGES[kind].format(name=u.get("display_name") or "Your contact", where=where)
+    if needs_confirmation("message", confirmed):
+        return {"needs_confirmation": True, "action": "message", "preview": body, "to": c["label"]}
+    r = sms.send(c.get("phone"), body, purpose=f"message_{kind}")
+    return {"to": c["label"], "status": r["status"], "delivery": describe_delivery([r])}
+
+
 def _watchers(user_id):
     return [c for c in STORE.user(user_id)["contacts"] if c.get("accepted")]
 
@@ -135,6 +157,8 @@ def start_trip(user_id, option: dict, frm: str, to: str, confirmed=False, notify
         "start": now, "eta": eta, "status": "active", "reminded": False, "alerted": False,
         "notified_circle": bool(notify_circle and watchers), "user_phone": user_phone,
         "last_location": None, "last_checkin": None, "events": [],
+        "kind": option.get("kind"), "path_id": option.get("path_id"), "distance_m": _distance_m(option, frm, to),
+        "eta_min": eta_min,
     }
     STORE.trips[trip_id] = trip
     results = _send_all(watchers, message, "trip_start") if trip["notified_circle"] else []
@@ -146,6 +170,15 @@ def start_trip(user_id, option: dict, frm: str, to: str, confirmed=False, notify
 def _trip_summary(option, frm, to):
     labels = [l["label"] for l in option.get("legs", []) if l["mode"] != "walk"]
     return f"{' + '.join(labels) or 'Trip'} {frm} -> {to}"
+
+
+def _distance_m(option, frm, to):
+    if option.get("distance_m"):
+        return option["distance_m"]
+    if option.get("distance_km"):
+        return int(option["distance_km"] * 1000)
+    a, b = data.area_coords(frm or ""), data.area_coords(to or "")
+    return int(data.haversine_m(*a, *b) * 1.35) if a and b else None
 
 
 def _eta_minutes(option, now):
@@ -252,6 +285,8 @@ def sos(user_id: str, lat=None, lng=None, trip_id=None, now=None) -> dict:
     body = f"SOS from {name}{where} at {now.strftime('%H:%M')}. Please call her now. Women helpline 181, Police 100."
     results = _send_all(_watchers(user_id), body, "sos")
     STORE.sos[user_id] = {"active": True, "since": now.isoformat(), "location": {"lat": point[0], "lng": point[1]} if point else None}
+    if point is None and trip:  # no live location: look for help around the trip's destination area
+        point = data.area_coords(trip["to"])
     _notify_n8n("sos", {"user": user_id, "at": now.isoformat()})
     return {"sos": STORE.sos[user_id], "circle_delivery": results, "delivery": describe_delivery(results),
             "helplines": HELPLINES, "nearest_help": nearest_help(point, now), "confirmation_skipped": True}
@@ -273,7 +308,8 @@ def nearest_help(point, now=None):
     minutes = now.hour * 60 + now.minute
     point = point or (13.0878, 80.2006)
     helpful = [p for p in data.places()
-               if p["type"] in ("police_booth", "hospital", "pharmacy", "shg_kiosk", "petrol_bunk") and safety.is_open(p, minutes)]
+               if p["type"] in ("police_booth", "hospital", "pharmacy", "shg_kiosk", "petrol_bunk") and safety.is_open(p, minutes)
+               and data.haversine_m(point[0], point[1], p["lat"], p["lng"]) <= HELP_RADIUS_M]
     helpful.sort(key=lambda p: data.haversine_m(point[0], point[1], p["lat"], p["lng"]))
     return [{"id": p["id"], "name": p["name"], "type": p["type"],
              "distance_m": int(data.haversine_m(point[0], point[1], p["lat"], p["lng"]))} for p in helpful[:3]]

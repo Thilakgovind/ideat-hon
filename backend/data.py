@@ -92,6 +92,16 @@ def area_coords(name: str):
     return None
 
 
+def stop_name(code: str):
+    """Stop / station name for a code, from the bus, metro and train data."""
+    lines = [r["stops"] for r in routes()] + [l["stations"] for l in metro()["lines"]] + [l["stations"] for l in trains()]
+    for stops in lines:
+        for s in stops:
+            if s["code"] == code:
+                return s["name"]
+    return None
+
+
 def area_ta(name: str) -> str:
     for a in areas():
         if a["name"] == name:

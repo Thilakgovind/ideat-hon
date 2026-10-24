@@ -1,0 +1,145 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Noto fonts (SIL OFL 1.1), bundled locally so the app works on slow 3G. */
+@import "@fontsource/noto-sans/400.css";
+@import "@fontsource/noto-sans/500.css";
+@import "@fontsource/noto-sans/600.css";
+@import "@fontsource/noto-sans/700.css";
+@import "@fontsource/noto-sans/800.css";
+@import "@fontsource/noto-sans/900.css";
+@import "@fontsource/noto-sans-tamil/400.css";
+@import "@fontsource/noto-sans-tamil/500.css";
+@import "@fontsource/noto-sans-tamil/700.css";
+@import "@fontsource/noto-serif-tamil/800.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ---------- SafePath design tokens (design/FRONTEND_SPEC.md) ---------- */
+@theme {
+  --font-sans: 'Noto Sans', 'Noto Sans Tamil', system-ui, sans-serif;
+  --font-tamil: 'Noto Sans Tamil', 'Noto Sans', sans-serif;
+  --font-serif-ta: 'Noto Serif Tamil', serif;
+
+  --color-plum: #5B1F96;
+  --color-plum-deep: #4A1D6E;
+  --color-plum-2: #8A2FC2;
+  --color-pink: #FF4F8B;
+  --color-pink-deep: #E0457B;
+  --color-pink-text: #DB3570;
+  --color-marigold: #FFB52E;
+  --color-teal: #0FA596;
+  --color-teal-dark: #0B7F74;
+  --color-teal-ink: #0E7C74;
+  --color-mint: #2EE6A8;
+  --color-cream: #FFF7EC;
+  --color-ink: #24132F;
+  --color-ink-2: #4A3A58;
+  --color-mute: #6A5878;
+  --color-line: #EADCF1;
+  --color-lilac: #F3E8FA;
+  --color-night: #120F19;
+  --color-night-2: #14111B;
+  --color-sos: #E3263F;
+  --color-metro: #1F5BDA;
+  --color-train: #2F7A55;
+  --color-safe-bg: #E2F7F3;
+}
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+/* shadcn variables mapped onto the SafePath palette */
+:root {
+  --background: #FFF7EC;
+  --foreground: #24132F;
+  --card: #FFFFFF;
+  --card-foreground: #24132F;
+  --popover: #FFFFFF;
+  --popover-foreground: #24132F;
+  --primary: #5B1F96;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F3E8FA;
+  --secondary-foreground: #5B1F96;
+  --muted: #F3E8FA;
+  --muted-foreground: #6A5878;
+  --accent: #FFE1EC;
+  --accent-foreground: #24132F;
+  --destructive: #E3263F;
+  --border: #EADCF1;
+  --input: #EADCF1;
+  --ring: #5B1F96;
+  --radius: 1rem;
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  html, body, #root { height: 100%; }
+  body {
+    margin: 0;
+    @apply bg-[#E9E1F0] text-ink font-sans antialiased;
+  }
+  button, input { font-family: inherit; }
+  :lang(ta) { font-family: var(--font-tamil); }
+}
+
+.tabular { font-variant-numeric: tabular-nums; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* ---------- AVAL animations (design/aval/aval_character_sheet.html) ---------- */
+.aval .bob { animation: bob 3.2s ease-in-out infinite; transform-origin: 100px 280px; }
+@keyframes bob { 50% { transform: translateY(-5px); } }
+.aval .eyes { animation: blink 4.6s infinite; transform-origin: 100px 114px; }
+@keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+.aval .braid { animation: sway 3.2s ease-in-out infinite; transform-origin: 150px 168px; }
+@keyframes sway { 50% { transform: rotate(3deg); } }
+.aval .wave .arm-r { animation: wave 1s ease-in-out infinite; transform-origin: 166px 170px; }
+@keyframes wave { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-20deg); } }
+.aval .talking .mouth-talk { animation: talk .28s ease-in-out infinite alternate; transform-origin: 100px 137px; }
+@keyframes talk { from { transform: scaleY(.3); } to { transform: scaleY(1); } }
+.aval .listening .ring { animation: ring 1.6s ease-out infinite; transform-origin: 100px 100px; }
+.aval .listening .ring.r2 { animation-delay: .8s; }
+@keyframes ring { from { opacity: .7; transform: scale(.9); } to { opacity: 0; transform: scale(1.35); } }
+.aval .alert .halo { animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .35; } }
+/* No playful motion on SOS / alert */
+.aval .alert .bob, .aval .alert .braid { animation: none; }
+
+.dots span { animation: dot 1.2s infinite both; }
+.dots span:nth-child(2) { animation-delay: .2s; }
+.dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes dot { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+
+.live-dot { box-shadow: 0 0 0 4px rgba(46, 230, 168, .25); }
+.sos-hold { transition: transform .1s; }
+.sos-hold:active { transform: scale(.97); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

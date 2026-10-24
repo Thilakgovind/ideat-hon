@@ -18,7 +18,8 @@ CHIPS = {
 def _summary(p, minutes, origin=None):
     out = {
         "id": p["id"], "name": p["name"], "name_ta": p.get("name_ta"), "type": p["type"], "category": p["category"],
-        "address": p["address"], "near_stop": p["near_stop"], "lat": p["lat"], "lng": p["lng"],
+        "address": p["address"], "near_stop": p["near_stop"], "near_stop_name": data.stop_name(p["near_stop"]),
+        "lat": p["lat"], "lng": p["lng"],
         "open_now": safety.is_open(p, minutes), "open_24h": p.get("open_24h", False),
         "open": p["open"], "close": p["close"],
         "women_run": p.get("women_run", False), "well_lit": p.get("well_lit", False),

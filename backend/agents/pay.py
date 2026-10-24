@@ -19,10 +19,10 @@ ORDERS: dict = {}
 TICKETS: dict = {}
 
 
-def create_order(option: dict, frm: str, to: str, confirmed: bool = False) -> dict:
+def create_order(option: dict, frm: str, to: str, confirmed: bool = False, time: str = None) -> dict:
     amount = int(option.get("fare_inr", 0))
     paid_legs = [l for l in option.get("legs", []) if l["mode"] in ("metro", "train") or (l["mode"] == "bus" and not l.get("is_free"))]
-    summary = {"from": frm, "to": to, "option_id": option.get("id"),
+    summary = {"from": frm, "to": to, "option_id": option.get("id"), "time": time,
                "lines": [{"label": l["label"], "mode": l["mode"], "fare_inr": l.get("fare_inr", 0),
                           "from": l.get("from"), "to": l.get("to")} for l in option.get("legs", []) if l["mode"] != "walk"],
                "amount_inr": amount}
@@ -90,6 +90,7 @@ def _ticket(payment_id, summary, option, mode):
     ticket = {
         "ticket_id": tid, "payment_id": payment_id, "payment_mode": mode,
         "from": summary["from"], "to": summary["to"], "lines": summary["lines"], "amount_inr": summary["amount_inr"],
+        "option_id": summary.get("option_id"), "trip_time": summary.get("time"),
         "issued_at": now.isoformat(), "valid_until": valid_until,
         "platform": (metro or train or {}).get("platform"),
         "women_coach": metro["women_coach"] if metro else (train["ladies_coaches"][0]["note"] if train else None),

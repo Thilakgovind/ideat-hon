@@ -68,6 +68,27 @@
           "lng": null,
           "source": "sample"
         }
+      ],
+      "start_area": "Anna Nagar West",
+      "saved_places": [
+        {
+          "id": "work",
+          "label": "Work",
+          "label_ta": "வேலை",
+          "to": "Nungambakkam"
+        },
+        {
+          "id": "school",
+          "label": "Daughter's school",
+          "label_ta": "மகள் பள்ளி",
+          "to": "Kilpauk"
+        },
+        {
+          "id": "clinic",
+          "label": "Clinic",
+          "label_ta": "மருத்துவமனை",
+          "to": "Koyambedu"
+        }
       ]
     }
   ]

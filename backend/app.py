@@ -81,7 +81,9 @@ class SosIn(BaseModel):
 
 
 class CircleIn(BaseModel):
-    action: str  # add | accept | remove
+    action: str  # add | accept | remove | message
+    kind: Optional[str] = "meet"
+    where: Optional[str] = None
     label: Optional[str] = None
     phone: Optional[str] = None
     relation: Optional[str] = "friend"
@@ -106,6 +108,14 @@ class PayVerifyIn(BaseModel):
 def health():
     return {"status": "ok", "version": "1.0.0", "demo_mode": config.demo_mode(),
             "services": config.services_status(), "data": "sample"}
+
+
+@app.get("/api/profile")
+def profile(user_id: str = DEMO_USER):
+    """Demo user profile: name, usual start, home and saved places. No phone numbers."""
+    u = circle.STORE.user(user_id)
+    return {"user_id": user_id, "display_name": u.get("display_name"), "home_area": u.get("home_area"),
+            "start_area": u.get("start_area"), "saved_places": u.get("saved_places", []), "source": "sample"}
 
 
 @app.post("/api/aval/chat")
@@ -162,7 +172,14 @@ def safe_route(from_: Optional[str] = Query(None, alias="from"), to: Optional[st
 @app.get("/api/places")
 def get_places(lat: Optional[float] = None, lng: Optional[float] = None, open_now: bool = False,
                type: Optional[str] = None, chip: Optional[str] = None, women_run: Optional[bool] = None,
-               well_lit: Optional[bool] = None, radius_m: int = 2000, time: Optional[str] = None):
+               well_lit: Optional[bool] = None, radius_m: int = 2000, time: Optional[str] = None,
+               near: Optional[str] = None):
+    if near and lat is None:
+        area = route.match_place(near)
+        coords = data.area_coords(area) if area else None
+        if not coords:
+            raise HTTPException(404, "place not found")
+        lat, lng = coords
     return places.search(lat, lng, radius_m, open_now, type, chip, women_run, well_lit, time=time)
 
 
@@ -236,13 +253,18 @@ def circle_post(body: CircleIn):
         return circle.accept_contact(uid, body.contact_id)
     if body.action == "remove":
         return circle.remove_contact(uid, body.contact_id)
-    raise HTTPException(400, "action must be add, accept or remove")
+    if body.action == "message":
+        res = circle.message_contact(uid, body.contact_id, body.kind, body.where or "the main road", body.confirmed)
+        if res.get("error"):
+            raise HTTPException(400, res["error"])
+        return res
+    raise HTTPException(400, "action must be add, accept, remove or message")
 
 
 @app.post("/api/pay/order")
 def pay_order(body: PayOrderIn):
     option = _option_or_404(body)
-    return pay.create_order(option, route.match_place(body.from_), route.match_place(body.to), body.confirmed)
+    return pay.create_order(option, route.match_place(body.from_), route.match_place(body.to), body.confirmed, body.time)
 
 
 @app.post("/api/pay/verify")
@@ -253,6 +275,20 @@ def pay_verify(body: PayVerifyIn):
     if res.get("error"):
         raise HTTPException(400, res["error"])
     return res
+
+
+@app.get("/api/tickets")
+def tickets_list():
+    """Tickets issued in this server session (newest first)."""
+    return {"tickets": list(reversed(list(pay.TICKETS.values()))), "source": "sample"}
+
+
+@app.get("/api/tickets/{ticket_id}")
+def ticket_get(ticket_id: str):
+    t = pay.TICKETS.get(ticket_id)
+    if not t:
+        raise HTTPException(404, "ticket not found")
+    return {"ticket": t}
 
 
 @app.post("/api/sms/webhook")

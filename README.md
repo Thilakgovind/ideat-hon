@@ -1,3 +1,61 @@
+# SafePath V1 · AVAL (அவள்)
+
+Women's travel companion for Chennai (SDG 5). Finds the safest way to travel
+(bus / metro / train / auto), safe places to wait, and keeps a trusted circle
+informed. **All data is sample data for the demo.**
+
+## Run it (Windows, from the repo root)
+
+**1. Backend (FastAPI, port 8000)**
+
+```bash
+python -m venv .venv
+.venv/Scripts/python -m pip install -r backend/requirements.txt
+.venv/Scripts/python -m uvicorn backend.app:app --port 8000
+```
+
+Check http://localhost:8000/health (shows which services are real vs mock) and http://localhost:8000/docs.
+
+**2. Frontend (React + Vite, port 5173)** — in a second terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open http://localhost:5173 (Vite proxies `/api` to the backend).
+
+**3. Tests**
+
+```bash
+.venv/Scripts/python -m pytest backend/tests -q
+```
+
+**Keys are optional.** Copy `.env.example` to `.env` and fill in what you have.
+Every service without a key runs as a mock (demo mode); see `backend/README.md`.
+
+## Demo paths
+- Login → Home → Safe way home → Walk main road → Live trip → SOS (hold 2 s)
+- AVAL chat ("Nungambakkam, 8am, with my daughter") → Metro instead → Choose ride → Payment → Ticket
+
+Screenshots: `docs/screenshots/`.
+
+## Layout
+```
+backend/   FastAPI agents (intake, route, safety, places, circle, pay, voice, sms), guardrails, tests
+frontend/  React + Vite + Tailwind + shadcn/ui, 17 screens
+data/      sample routes, metro, trains, places, walk paths, circle (all "source": "sample")
+design/    design handoff (screens, AVAL art, briefs)
+agents/    earlier prototype prompt + lookup script
+n8n/       workflow blueprint
+docs/      screenshots
+```
+
+---
+
+# Earlier planning notes (pre-V1)
+
 # SafePath: Women's Transport Intelligence System
 
 **Ideathon: SDG 5 (Gender Equality)**
