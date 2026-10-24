@@ -90,8 +90,8 @@ def test_llm_never_sees_phone_or_name():
     def spy(t):
         seen["text"] = t
         return json.dumps({"intent": "sos", "with_child": False})
-    intake.parse("I am Priya, call +91 98765 43210 now", names=["Priya"], llm=spy)
-    assert "98765" not in seen["text"] and "Priya" not in seen["text"]
+    intake.parse("I am Priya, call +91 50000 11111 now", names=["Priya"], llm=spy)
+    assert "50000" not in seen["text"] and "Priya" not in seen["text"]
     assert "[PHONE]" in seen["text"] and "[NAME]" in seen["text"]
 
 

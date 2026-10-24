@@ -73,7 +73,7 @@ export default function Login() {
                   id="phone"
                   inputMode="numeric"
                   autoComplete="tel-national"
-                  placeholder="98765 43210"
+                  placeholder="98xxx xxxxx"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value.replace(/[^\d ]/g, '').slice(0, 11))}
                   className="min-w-0 flex-1 bg-transparent text-[17px] font-semibold tracking-[0.04em] text-ink outline-none"

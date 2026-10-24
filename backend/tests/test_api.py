@@ -59,7 +59,7 @@ def test_sos_endpoint():
 def test_circle_endpoints():
     assert len(c.get("/api/circle").json()["contacts"]) == 4
     assert c.post("/api/circle", json={"action": "add", "label": "Meera"}).json()["needs_confirmation"]
-    added = c.post("/api/circle", json={"action": "add", "label": "Meera", "phone": "+919000000001", "confirmed": True}).json()
+    added = c.post("/api/circle", json={"action": "add", "label": "Meera", "phone": "+915000000001", "confirmed": True}).json()
     assert "phone" not in added["contact"]
     assert c.post("/api/circle", json={"action": "bogus"}).status_code == 400
 
@@ -76,12 +76,12 @@ def test_pay_flow_amount_from_server():
 
 
 def test_sms_webhook_twiml():
-    r = c.post("/api/sms/webhook", data={"From": "+15550002222", "Body": "nungambakkam bus 8am"})
+    r = c.post("/api/sms/webhook", data={"From": "+15005550007", "Body": "nungambakkam bus 8am"})
     assert r.headers["content-type"].startswith("application/xml")
     assert "<Message>" in r.text and "21G" in r.text
-    r = c.post("/api/sms/webhook", data={"From": "+15550002222", "Body": "START"})
+    r = c.post("/api/sms/webhook", data={"From": "+15005550007", "Body": "START"})
     assert "Journey Watch ON" in r.text
-    assert "2222" not in c.get("/api/demo/outbox").text
+    assert "0007" not in c.get("/api/demo/outbox").text
 
 
 def test_profile_has_no_phone():

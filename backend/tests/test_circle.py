@@ -9,7 +9,7 @@ def bus_option():
 
 
 def test_circle_never_returns_phone():
-    circle.add_contact("u_demo", "Meera", "+919000000099", confirmed=True)
+    circle.add_contact("u_demo", "Meera", "+915000000099", confirmed=True)
     for c in circle.list_circle("u_demo")["contacts"]:
         assert "phone" not in c
 
@@ -20,7 +20,7 @@ def test_max_five_contacts():
 
 
 def test_invite_needs_confirmation():
-    r = circle.add_contact("u_demo", "Meera", "+919000000099")
+    r = circle.add_contact("u_demo", "Meera", "+915000000099")
     assert r["needs_confirmation"] and r["action"] == "invite"
     assert not sms.OUTBOX
 
@@ -39,7 +39,7 @@ def test_start_trip_needs_confirmation_to_message_circle():
 
 def test_journey_watch_reminder_then_alert():
     r = circle.start_trip("u_demo", bus_option(), "Anna Nagar West", "Nungambakkam", confirmed=True,
-                          user_phone="+15550000001", now=at("08:00"))
+                          user_phone="+15005550008", now=at("08:00"))
     trip = r["trip"]
     assert r["delivery"]["demo_logged"] == 3 and r["delivery"]["sent"] == 0  # honest: not really sent
     assert trip["eta_hhmm"] == "08:44"
@@ -79,8 +79,8 @@ def test_sos_skips_confirmation_and_is_honest():
 
 
 def test_sms_user_id_is_pseudonymous():
-    uid = circle.user_id_for_phone("+919876543210")
-    assert uid.startswith("u_") and "9876" not in uid
+    uid = circle.user_id_for_phone("+915000011111")
+    assert uid.startswith("u_") and "50000" not in uid
 
 
 def test_message_contact_needs_confirmation_and_is_honest():

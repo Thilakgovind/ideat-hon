@@ -6,8 +6,8 @@ from backend.agents import circle
 
 # 1. strip phone numbers and names before the LLM
 def test_redact_phone_email_name():
-    out = guardrails.redact("I'm Priya, call 9876543210 or +91 98765-43210, mail p@x.com", names=["Priya"])
-    assert "9876" not in out and "p@x.com" not in out and "Priya" not in out
+    out = guardrails.redact("I'm Priya, call 5000011111 or +91 50000-11111, mail p@x.com", names=["Priya"])
+    assert "50000" not in out and "p@x.com" not in out and "Priya" not in out
     assert out.count("[PHONE]") == 2 and "[EMAIL]" in out
 
 
@@ -26,8 +26,8 @@ def test_orchestrator_redacts_before_llm():
     def spy(t):
         seen["t"] = t
         return json.dumps({"intent": "plan_trip", "to": "Nungambakkam", "with_child": False})
-    orchestrator.handle("Kavya and I go to Nungambakkam, my number 9876543210", llm=spy)
-    assert "Kavya" not in seen["t"] and "9876543210" not in seen["t"]
+    orchestrator.handle("Kavya and I go to Nungambakkam, my number 5000011111", llm=spy)
+    assert "Kavya" not in seen["t"] and "5000011111" not in seen["t"]
 
 
 # 2. LLM never invents buses / places / fares
@@ -83,15 +83,15 @@ def test_location_rules():
 # 5. anonymous logs
 def test_anonymous_log_whitelist():
     entry = guardrails.anonymous_log({"intent": "plan_trip", "to_area": "Nungambakkam", "from_area": "my house 5th street",
-                                      "phone": "+919876543210", "name": "Priya", "text": "secret", "hour": 8})
+                                      "phone": "+915000011111", "name": "Priya", "text": "secret", "hour": 8})
     assert entry == {"intent": "plan_trip", "to_area": "Nungambakkam", "from_area": "other", "hour": 8}
 
 
 def test_chat_log_has_no_text_or_phone():
     guardrails.REQUEST_LOG.clear()
-    orchestrator.handle("Priya here, 9876543210, Nungambakkam bus", channel="sms", user_phone="+919876543210")
+    orchestrator.handle("Priya here, 5000011111, Nungambakkam bus", channel="sms", user_phone="+915000011111")
     dumped = json.dumps(list(guardrails.REQUEST_LOG))
-    assert "9876" not in dumped and "Priya" not in dumped
+    assert "50000" not in dumped and "Priya" not in dumped
 
 
 # 6. never claim an alert was sent unless it was

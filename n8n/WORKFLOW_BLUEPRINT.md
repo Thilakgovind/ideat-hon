@@ -30,7 +30,7 @@ Send SMS Reply
 **Example payload from Twilio:**
 ```json
 {
-  "From": "+919876543210",
+  "From": "+91 98xxx xxxxx",
   "Body": "T Nagar to Nungambakkam 8 mani paapa",
   "MessageSid": "SM1234567890abcdef",
   "AccountSid": "...",

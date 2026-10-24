@@ -33,10 +33,10 @@ def test_sms_after_last_bus_offers_auto():
 
 
 def test_sms_start_and_reached_flow():
-    orchestrator.handle("nungambakkam bus 8am", channel="sms", user_id="u_sms", user_phone="+15550001")
-    r = orchestrator.handle("START", channel="sms", user_id="u_sms", user_phone="+15550001")
+    orchestrator.handle("nungambakkam bus 8am", channel="sms", user_id="u_sms", user_phone="+15005550009")
+    r = orchestrator.handle("START", channel="sms", user_id="u_sms", user_phone="+15005550009")
     assert r["sms_text"].startswith("Journey Watch ON")
-    r = orchestrator.handle("REACHED", channel="sms", user_id="u_sms", user_phone="+15550001")
+    r = orchestrator.handle("REACHED", channel="sms", user_id="u_sms", user_phone="+15005550009")
     assert r["aval_state"] == "cheer" and "reached safely" in r["reply"]["text"]
 
 

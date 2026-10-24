@@ -320,7 +320,7 @@ When user sends "START", system:
 ```json
 {
   "trip_id": "uuid",
-  "user_phone": "+919876543210",
+  "user_phone": "+91 98xxx xxxxx",
   "from_stop": "T. Nagar Depot",
   "to_stop": "Nungambakkam",
   "bus_number": "21G",
@@ -329,7 +329,7 @@ When user sends "START", system:
   "check_in_sent": false,
   "reached_confirmed": false,
   "escalated": false,
-  "escalation_contacts": ["+919876543211", "+919876543212"],
+  "escalation_contacts": ["+91 98xxx xxxxx", "+91 98xxx xxxxx"],
   "status": "in_transit|reached|no_response|escalated"
 }
 ```
@@ -374,7 +374,7 @@ When user sends "START", system:
 4. Send alert SMS to trusted contacts:
    "Priya has not confirmed arrival at Nungambakkam.
     Started from T. Nagar at 8:00 AM.
-    Contact her: +919876543210"
+    Contact her: +91 98xxx xxxxx"
 5. Log to dashboard: Trip escalated
 6. Update trip status = "escalated"
 ```
