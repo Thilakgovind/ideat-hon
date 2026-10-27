@@ -24,6 +24,7 @@ const Steps = lazy(() => import('@/screens/Steps'))
 const Ticket = lazy(() => import('@/screens/Ticket'))
 const Tickets = lazy(() => import('@/screens/Ticket').then((m) => ({ default: m.Tickets })))
 const Train = lazy(() => import('@/screens/Train'))
+const Demo = lazy(() => import('@/screens/Demo'))
 
 export default function App() {
   return (
@@ -52,6 +53,7 @@ export default function App() {
               <Route path="/place/:id" element={<Place />} />
               <Route path="/reach/:id" element={<Reach />} />
               <Route path="/steps" element={<Steps />} />
+              <Route path="/demo" element={<Demo />} />
               <Route path="*" element={<Navigate to="/home" replace />} />
             </Routes>
             </Suspense>

@@ -52,5 +52,7 @@ export const api = {
   payOrder: (b) => request('/api/pay/order', { method: 'POST', body: b }),
   payVerify: (b) => request('/api/pay/verify', { method: 'POST', body: b }),
   tickets: () => request('/api/tickets'),
+  demoChat: (text, lang) => request('/api/demo/chat', { method: 'POST', body: { text, lang } }),
+  outbox: () => request('/api/demo/outbox'),
   ticket: (id) => request(`/api/tickets/${encodeURIComponent(id)}`),
 }

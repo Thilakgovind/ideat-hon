@@ -68,8 +68,12 @@ def match_place(query: str):
     if contained:
         return keys[max(contained, key=len)]
     best, score = None, 0.0
+    q_first = q.split()[0]
     for k, name in keys.items():
         s = SequenceMatcher(None, q, k).ratio()
+        # shared generic words ("nagar", "road") must not carry a match: the first words must be close too
+        if SequenceMatcher(None, q_first, k.split()[0]).ratio() < 0.7:
+            s = min(s, 0.5)
         if len(q) >= 4 and any(w.startswith(q) for w in k.split()):
             s = max(s, 0.8)
         if s > score:
@@ -105,7 +109,7 @@ def _belongs(stop_name: str, place: str) -> bool:
 
 def _index(stops, place):
     for i, s in enumerate(stops):
-        if _belongs(s["name"], place):
+        if _belongs(s["name"], place) or (s.get("area") and norm(s["area"]) == norm(place)):
             return i
     return None
 
@@ -321,6 +325,8 @@ def plan(frm: str, to: str, time=None, with_child: bool = False, modes=None) -> 
             options.append(_option("bus", [_walk(r["walk_start_min"]), leg, _walk(r["walk_end_min"])], at))
 
     for tr in data.transfers():
+        if tr.get("from") != "bus" or tr.get("to") != "metro":
+            continue
         for r in _bus_dirs():
             i, k = _index(r["stops"], f), _index(r["stops"], tr["at"])
             if i is None or k is None or i >= k:

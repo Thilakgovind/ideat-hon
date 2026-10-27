@@ -1,37 +1,51 @@
-"""SafePath V1 API server (FastAPI).
+"""SafePath V1.1 API server (FastAPI).
 
 Run from the repo root:
     .venv/Scripts/python -m uvicorn backend.app:app --reload --port 8000
 """
 import asyncio
 import contextlib
+import hashlib
+from collections import deque
 from typing import Optional
+
+import httpx
 
 from fastapi import FastAPI, File, Form, HTTPException, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from pydantic import BaseModel, Field
 
-from . import config, data, orchestrator
-from .agents import circle, pay, places, route, safety, sms, voice
+from . import config, data, orchestrator, store
+from .agents import callback, circle, pay, places, route, safety, sms, voice
 
 DEMO_USER = "u_demo"
 TICK_SECONDS = 30
+REFRESH_SECONDS = 600
+SEEN_INBOUND: deque = deque(maxlen=300)  # de-duplicate provider retries
 
 
 @contextlib.asynccontextmanager
 async def lifespan(_app):
+    config.assert_safe_to_start()
+    await asyncio.to_thread(store.load_public)  # Supabase when reachable, else /data JSON
+
     async def ticker():
+        since_refresh = 0
         while True:
             await asyncio.sleep(TICK_SECONDS)
-            circle.tick()
+            await asyncio.to_thread(circle.tick)
+            since_refresh += TICK_SECONDS
+            if since_refresh >= REFRESH_SECONDS:
+                since_refresh = 0
+                await asyncio.to_thread(store.load_public)
 
     task = asyncio.create_task(ticker())
     yield
     task.cancel()
 
 
-app = FastAPI(title="SafePath V1 API", version="1.0.0", lifespan=lifespan)
+app = FastAPI(title="SafePath V1.1 API", version="1.1.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origin_regex=r"http://(localhost|127\.0\.0\.1)(:\d+)?",
@@ -106,8 +120,10 @@ class PayVerifyIn(BaseModel):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "version": "1.0.0", "demo_mode": config.demo_mode(),
-            "services": config.services_status(), "data": "sample"}
+    ok, why = callback.ready()
+    return {"status": "ok", "version": "1.1.0", "demo_mode": config.demo_mode(),
+            "services": config.services_status(), "storage": store.status(),
+            "call_back": "ready" if ok else f"off ({why})", "data": "sample"}
 
 
 @app.get("/api/profile")
@@ -291,16 +307,124 @@ def ticket_get(ticket_id: str):
     return {"ticket": t}
 
 
+def _public_url(request: Request) -> str:
+    q = request.url.query
+    return config.env("PUBLIC_BACKEND_URL").rstrip("/") + request.url.path + (f"?{q}" if q else "")
+
+
+async def _twilio_form(request: Request) -> dict:
+    form = {k: v for k, v in (await request.form()).items()}
+    if not sms.verify_twilio(_public_url(request), form, request.headers.get("X-Twilio-Signature", "")):
+        raise HTTPException(403, "bad Twilio signature")
+    return form
+
+
 @app.post("/api/sms/webhook")
 async def sms_webhook(request: Request):
-    form = dict(await request.form())
+    """Twilio inbound SMS -> orchestrator -> TwiML reply."""
+    form = await _twilio_form(request)
     msg = sms.parse_inbound(form)
     uid = circle.user_id_for_phone(msg["from"])
     result = orchestrator.handle(msg["body"], channel="sms", user_id=uid, user_phone=msg["from"] or None)
     return Response(content=sms.twiml(result["sms_text"]), media_type="application/xml")
 
 
+@app.post("/api/sms/textbee")
+async def sms_textbee(request: Request):
+    """textbee inbound SMS webhook -> orchestrator -> reply via the selected SMS provider.
+    Junk / non-SMS payloads are ignored (200, so textbee does not retry them)."""
+    raw = await request.body()
+    sig = request.headers.get("x-signature") or request.headers.get("x-textbee-signature") or ""
+    if not sms.verify_textbee(raw, sig):
+        raise HTTPException(403, "bad signature")
+    try:
+        payload = await request.json()
+    except ValueError:
+        return {"ok": True, "ignored": "not json"}
+    msg = sms.parse_textbee(payload)
+    if not msg:
+        return {"ok": True, "ignored": "not an inbound sms"}
+    key = hashlib.sha256(raw).hexdigest()
+    if key in SEEN_INBOUND:
+        return {"ok": True, "ignored": "duplicate"}
+    SEEN_INBOUND.append(key)
+    uid = circle.user_id_for_phone(msg["from"])
+    result = await asyncio.to_thread(orchestrator.handle, msg["body"], None, "sms", uid, msg["from"])
+    sent = await asyncio.to_thread(sms.send, msg["from"], result["sms_text"], "reply")
+    return {"ok": True, "intent": result["intake"]["intent"], "reply_status": sent["status"]}
+
+
+# ---------- voice call-back (Twilio + Sarvam) ----------
+
+def _xml(body: str) -> Response:
+    return Response(content=body, media_type="application/xml")
+
+
+@app.post("/api/voice/call/start")
+async def call_start(request: Request, lang: str = "ta"):
+    await _twilio_form(request)
+    return _xml(await asyncio.to_thread(callback.twiml_start, lang))
+
+
+@app.post("/api/voice/call/recorded")
+async def call_recorded(request: Request, lang: str = "ta"):
+    form = await _twilio_form(request)
+    return _xml(callback.twiml_recorded(form.get("RecordingUrl", ""), form.get("To") or form.get("Called") or "", lang))
+
+
+@app.post("/api/voice/call/answer")
+async def call_answer(request: Request, job: str = "", lang: str = "ta"):
+    await _twilio_form(request)
+    return _xml(callback.twiml_answer(job, lang))
+
+
+@app.get("/api/voice/audio/{clip_id}.wav")
+def call_audio(clip_id: str):
+    clip = callback.AUDIO.get(clip_id)
+    if not clip:
+        raise HTTPException(404, "audio expired")
+    return Response(content=clip, media_type="audio/wav")
+
+
+# ---------- demo page ----------
+
+class DemoIn(BaseModel):
+    text: str = Field(..., max_length=500)
+    lang: Optional[str] = "en"
+
+
+def _from_n8n(body: dict) -> dict:
+    """Normalise the n8n orchestrator reply to our chat shape."""
+    reply = body.get("reply")
+    if isinstance(reply, str):
+        reply = {"text": reply, "lang": "en"}
+    if not isinstance(reply, dict) or not body.get("sms_text"):
+        raise ValueError("unexpected n8n reply")
+    steps = body.get("agent_steps") or body.get("steps") or []
+    return {"reply": reply, "sms_text": body["sms_text"], "card": body.get("card"), "actions": body.get("actions") or [],
+            "aval_state": body.get("aval_state", "talking"), "steps": steps, "agent_steps": steps,
+            "fallback": bool(body.get("fallback")), "sample_data": True}
+
+
+@app.post("/api/demo/chat")
+async def demo_chat(body: DemoIn):
+    """Demo page (keypad phone). Routes through n8n when N8N_ORCHESTRATOR_URL is set; falls back to the backend."""
+    url = config.env("N8N_ORCHESTRATOR_URL")
+    why = None
+    if url:
+        try:
+            async with httpx.AsyncClient(timeout=15) as client:
+                r = await client.post(url, json={"text": body.text, "lang": body.lang, "channel": "sms"})
+            if r.status_code < 300:
+                return {**_from_n8n(r.json()), "via": "n8n"}
+            why = f"n8n HTTP {r.status_code}"
+        except (httpx.HTTPError, ValueError) as e:
+            why = f"n8n {type(e).__name__}"
+    result = await asyncio.to_thread(orchestrator.handle, body.text, body.lang, "sms", "u_demo_keypad", None)
+    return {**result, "via": "backend" if not why else f"backend ({why})"}
+
+
 @app.get("/api/demo/outbox")
 def demo_outbox():
     """What the SMS agent sent or logged (phones masked). For the judges' demo panel."""
-    return {"messages": list(sms.OUTBOX)[-50:], "provider": "twilio" if config.has("twilio") else "mock"}
+    return {"messages": list(sms.OUTBOX)[-50:], "provider": config.sms_provider()}

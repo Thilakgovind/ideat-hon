@@ -193,3 +193,14 @@ Fonts (all OFL, keep `OFL.txt` in `/public/fonts`):
 - Every external service has a MOCK fallback; a missing key = demo mode, never a crash.
 - Never print or commit key values.
 - Backend: FastAPI in `/backend`. Frontend: React + Vite + Tailwind + shadcn/ui in `/frontend`.
+
+## V1.1 plan — live services (overrides the sections above)
+- **SMS**: textbee (Android phone gateway) is the main SMS path (`SMS_PROVIDER=textbee`); Twilio / Fast2SMS are alternatives; mock outbox is the fallback. Status is only `sent` when the provider confirmed it.
+- **Call-back**: SMS `CALL` → Twilio voice calls her back, records her question, Sarvam STT → AVAL → Sarvam TTS (≤ ~20 s). Needs `PUBLIC_BACKEND_URL` (ngrok) and verified caller IDs on trial.
+- **Voice**: Sarvam STT + TTS (backend only).
+- **n8n**: `/api/demo/chat` goes through `N8N_ORCHESTRATOR_URL` when set, else the backend orchestrator. Circle/trip events post to `N8N_WEBHOOK_URL` in the background.
+- **Supabase**: `store.py` uses Supabase when reachable, otherwise in-memory + `/data` JSON. Schema in `supabase/migrations/001_init.sql` + `002_api_grants.sql`; `python -m backend.db_migrate` → `supabase_verify` → `seed_supabase` (sample rows, labelled `source: sample`).
+- **Maps**: MapLibre + MapTiler (public `VITE_MAPTILER_KEY` only); illustrated fallback when no key or the style fails to load.
+- **Secrets**: service key, Razorpay secret, Twilio token, textbee key, Gemini, Sarvam stay backend-only. Vite exposes only MapTiler key + Supabase URL/anon key. Razorpay refuses `rzp_live_` keys.
+- **Launch plan (after demo)**: DLT registration + MSG91 or Exotel for production SMS/voice in India.
+- Setup steps: `docs/LIVE_SETUP.md`.

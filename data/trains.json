@@ -8,28 +8,206 @@
       "fare_inr": 5,
       "fare_first_class_inr": 50,
       "ladies_coaches": [
-        {"position": "front", "coach_numbers": [1], "note": "Ladies coach right behind the engine"},
-        {"position": "middle", "coach_numbers": [5], "note": "Ladies coach in the middle, near the guard"}
+        {
+          "position": "front",
+          "coach_numbers": [
+            1
+          ],
+          "note": "Ladies coach right behind the engine"
+        },
+        {
+          "position": "middle",
+          "coach_numbers": [
+            5
+          ],
+          "note": "Ladies coach in the middle, near the guard"
+        }
       ],
       "total_coaches": 9,
-      "ladies_special": ["08:10", "17:50"],
+      "ladies_special": [
+        "08:10",
+        "17:50"
+      ],
       "first": "04:15",
       "last_train": "23:55",
       "frequency_minutes": 10,
-      "delays_sample": {"08:10": 3, "18:20": 5, "21:40": 8},
+      "delays_sample": {
+        "08:10": 3,
+        "18:20": 5,
+        "21:40": 8
+      },
       "stations": [
-        {"name": "Chennai Beach", "code": "MSB", "min": 0, "platform": "1"},
-        {"name": "Park", "code": "MPK", "min": 6, "platform": "2"},
-        {"name": "Egmore", "code": "MS", "min": 10, "platform": "10"},
-        {"name": "Chetpet", "code": "MSC", "min": 13, "platform": "2"},
-        {"name": "Nungambakkam", "code": "NBK", "min": 16, "platform": "2"},
-        {"name": "Kodambakkam", "code": "MKK", "min": 19, "platform": "2"},
-        {"name": "Mambalam", "code": "MBM", "min": 22, "platform": "3"},
-        {"name": "Saidapet", "code": "SP", "min": 26, "platform": "2"},
-        {"name": "Guindy", "code": "GDY", "min": 30, "platform": "2"},
-        {"name": "Tambaram", "code": "TBM", "min": 52, "platform": "4"}
+        {
+          "name": "Chennai Beach",
+          "code": "MSB",
+          "min": 0,
+          "platform": "1"
+        },
+        {
+          "name": "Park",
+          "code": "MPK",
+          "min": 6,
+          "platform": "2"
+        },
+        {
+          "name": "Egmore",
+          "code": "MS",
+          "min": 10,
+          "platform": "10"
+        },
+        {
+          "name": "Chetpet",
+          "code": "MSC",
+          "min": 13,
+          "platform": "2"
+        },
+        {
+          "name": "Nungambakkam",
+          "code": "NBK",
+          "min": 16,
+          "platform": "2"
+        },
+        {
+          "name": "Kodambakkam",
+          "code": "MKK",
+          "min": 19,
+          "platform": "2"
+        },
+        {
+          "name": "Mambalam",
+          "code": "MBM",
+          "min": 22,
+          "platform": "3"
+        },
+        {
+          "name": "Saidapet",
+          "code": "SP",
+          "min": 26,
+          "platform": "2"
+        },
+        {
+          "name": "Guindy",
+          "code": "GDY",
+          "min": 30,
+          "platform": "2"
+        },
+        {
+          "name": "Tambaram",
+          "code": "TBM",
+          "min": 52,
+          "platform": "4"
+        }
       ],
       "source": "sample"
+    },
+    {
+      "id": "T-MRTS",
+      "name": "Beach - Velachery MRTS (sample)",
+      "fare_inr": 5,
+      "fare_first_class_inr": 40,
+      "ladies_coaches": [
+        {
+          "position": "front",
+          "coach_numbers": [
+            1
+          ],
+          "note": "Ladies coach behind the engine"
+        }
+      ],
+      "total_coaches": 6,
+      "ladies_special": [],
+      "first": "04:30",
+      "last_train": "23:15",
+      "frequency_minutes": 15,
+      "delays_sample": {},
+      "stations": [
+        {
+          "name": "Park Town",
+          "code": "PTP",
+          "min": 0,
+          "area": "Egmore",
+          "platform": "1"
+        },
+        {
+          "name": "Chintadripet",
+          "code": "CC2",
+          "min": 4,
+          "area": "Egmore",
+          "platform": "1"
+        },
+        {
+          "name": "Light House",
+          "code": "LHL",
+          "min": 9,
+          "area": "Mylapore",
+          "platform": "1"
+        },
+        {
+          "name": "Thirumayilai",
+          "code": "TT3",
+          "min": 12,
+          "area": "Mylapore",
+          "platform": "1"
+        },
+        {
+          "name": "Mandaveli MRTS",
+          "code": "MMM",
+          "min": 14,
+          "area": "Mylapore",
+          "platform": "1"
+        },
+        {
+          "name": "Kotturpuram",
+          "code": "KKO",
+          "min": 17,
+          "area": "Adyar",
+          "platform": "1"
+        },
+        {
+          "name": "Kasturba Nagar MRTS",
+          "code": "KNM",
+          "min": 20,
+          "area": "Adyar",
+          "platform": "1"
+        },
+        {
+          "name": "Indira Nagar",
+          "code": "INI",
+          "min": 22,
+          "area": "Adyar",
+          "platform": "1"
+        },
+        {
+          "name": "Thiruvanmiyur MRTS",
+          "code": "TMT",
+          "min": 24,
+          "area": "Adyar",
+          "platform": "1"
+        },
+        {
+          "name": "Taramani MRTS",
+          "code": "TM2",
+          "min": 27,
+          "area": "Velachery",
+          "platform": "1"
+        },
+        {
+          "name": "Perungudi",
+          "code": "PPE",
+          "min": 30,
+          "area": "Velachery",
+          "platform": "1"
+        },
+        {
+          "name": "Velachery MRTS",
+          "code": "VMV",
+          "min": 33,
+          "area": "Velachery",
+          "platform": "1"
+        }
+      ],
+      "source": "sample",
+      "generated": true
     }
   ]
 }

@@ -4,3 +4,4 @@ httpx>=0.27
 python-dotenv>=1.0
 python-multipart>=0.0.9
 pytest>=8.0
+psycopg[binary]>=3.2  # optional: backend.db_migrate

@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { typeLabel } from '@/components/Cards'
 import { BottomNav, ErrorState, Icon, Loading } from '@/components/kit'
 import { PlaceThumb } from '@/components/PlaceArt'
+import SafeMap from '@/components/SafeMap'
 import { api } from '@/lib/api'
 import { clock, nowHHMM, useAsync } from '@/lib/hooks'
 import { useT } from '@/lib/i18n'
@@ -17,6 +19,7 @@ const AREAS = [['ANNA NAGAR', 13.0885, 80.2006], ['KILPAUK', 13.0829, 80.2417], 
 
 export default function Explore() {
   const t = useT()
+  const navigate = useNavigate()
   const [chip, setChip] = useState('open_night')
   const [q, setQ] = useState('')
   const res = useAsync(() => api.places({ ...CENTER, radius_m: 5000, chip, open_now: chip === 'open_night' ? undefined : true }), [chip])
@@ -34,6 +37,18 @@ export default function Explore() {
     return out
   }, [places])
 
+  // Live map pins: the same picture thumbnails, one per place (MapLibre clusters by zoom on its own).
+  const mapPins = useMemo(() => places.slice(0, 120).map((p) => {
+    const el = document.createElement('button')
+    el.type = 'button'
+    el.setAttribute('aria-label', `${p.name}${p.open_now ? ', open now' : ''}`)
+    el.style.cssText = 'position:relative;padding:0;border:3px solid #fff;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.18);background:#fff;cursor:pointer;line-height:0'
+    el.innerHTML = `<span style="display:block;overflow:hidden;border-radius:9px">${renderToStaticMarkup(<PlaceThumb type={p.type} size={36} />)}</span>` +
+      (p.open_now ? '<span style="position:absolute;top:-8px;right:-8px;background:#0FA596;color:#fff;font:800 8px Noto Sans,sans-serif;padding:1px 3px;border-radius:5px">OPEN</span>' : '')
+    return { id: p.id, lat: p.lat, lng: p.lng, element: el, onClick: () => navigate(`/place/${p.id}`) }
+  }), [places, navigate])
+  const fit = useMemo(() => places.slice(0, 120).map((p) => [p.lat, p.lng]), [places])
+
   const chips = [
     ['open_night', t('Open at night', 'இரவில் திறந்தவை')], ['women_run', t('Women-run', 'பெண்கள் நடத்துவது')],
     ['pharmacy', t('Pharmacy', 'மருந்தகம்')], ['food', t('Tea & food', 'டீ & உணவு')], ['transit', t('Bus & metro', 'பஸ் & மெட்ரோ')],
@@ -43,6 +58,8 @@ export default function Explore() {
   return (
     <div className="relative flex min-h-dvh flex-col bg-[#EDF0F4]">
       <div className="relative h-[560px] shrink-0 overflow-hidden">
+        <SafeMap theme="light" className="absolute inset-0 h-full w-full" pins={mapPins} fit={fit.length > 1 ? fit : undefined}
+          fallback={<>
         <svg viewBox="0 0 390 560" aria-hidden="true" className="absolute inset-0 h-full w-full">
           <rect width="390" height="560" fill="#EDF0F4" />
           <path d="M-20 400 C60 380 110 440 190 420 C270 400 300 350 410 370 L410 412 C300 392 280 440 190 464 C100 486 60 424 -20 444Z" fill="#9CCBF2" />
@@ -65,6 +82,7 @@ export default function Explore() {
             <span className="max-w-[120px] truncate rounded-md bg-white px-1.5 py-0.5 text-[11px] font-extrabold">{p.name.replace(/ \(.*\)$/, '')}</span>
           </Link>
         ))}
+          </>} />
 
         <div className="absolute top-4 right-4 left-4 flex gap-2.5">
           <label htmlFor="q" className="flex h-[50px] flex-1 items-center gap-2.5 rounded-2xl bg-white px-3.5 shadow-[0_4px_14px_rgba(36,19,47,0.1)]">
@@ -111,7 +129,7 @@ export default function Explore() {
             </div>
           </>
         )}
-        <span className="text-center text-[11px] text-mute">{t('Sample Chennai data for demo · map is illustrative', 'மாதிரி சென்னை தரவு · வரைபடம் விளக்கப்படம்')}</span>
+        <span className="text-center text-[11px] text-mute">{t('Sample Chennai data for demo', 'மாதிரி சென்னை தரவு')}</span>
       </div>
       <BottomNav />
     </div>

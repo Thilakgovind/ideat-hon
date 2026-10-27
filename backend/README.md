@@ -28,7 +28,7 @@ only when all its keys are set; otherwise it is a mock. `/health` shows which.
 
 | Service | Keys | Mock behaviour |
 |---|---|---|
-| Gemini (intake) | `GEMINI_API_KEY` (+ optional `GEMINI_MODEL`, default `gemini-2.5-flash`) | rule-based Tamil/English/Tanglish parser |
+| Gemini (intake) | `GEMINI_API_KEY` (+ optional `GEMINI_MODEL`, default `gemini-3.1-flash-lite`) | rule-based Tamil/English/Tanglish parser |
 | Sarvam (voice) | `SARVAM_API_KEY` | STT returns the `hint` / demo sentence; TTS returns no audio (use device speech) |
 | Twilio (SMS) | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE_NUMBER` | messages logged to `/api/demo/outbox`, marked "not sent" |
 | Razorpay | `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET` | `rzp_test_` keys only; live keys are refused; mock verify with `signature: "mock"` |

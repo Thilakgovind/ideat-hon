@@ -51,13 +51,15 @@ def test_sms_clamped_to_160():
 
 
 def test_twilio_real_send(monkeypatch):
-    for k, v in {"TWILIO_ACCOUNT_SID": "ACtest", "TWILIO_AUTH_TOKEN": "t", "TWILIO_PHONE_NUMBER": "+1555"}.items():
+    for k, v in {"TWILIO_ACCOUNT_SID": "ACtest", "TWILIO_AUTH_TOKEN": "t", "TWILIO_PHONE_NUMBER": "+1555", "SMS_PROVIDER": "twilio"}.items():
         monkeypatch.setenv(k, v)
     monkeypatch.setattr(sms.httpx, "post", lambda *a, **k: FakeResponse(201, {"sid": "SM1"}))
     assert sms.send("+15005550009", "hi")["status"] == "sent"
-    assert sms.send(None, "hi")["status"] == "no_phone"
+    r = sms.send(None, "hi")
+    assert (r["status"], r["reason"]) == ("not_sent", "no_phone")
     monkeypatch.setattr(sms.httpx, "post", lambda *a, **k: FakeResponse(401))
-    assert sms.send("+15005550009", "hi")["status"] == "failed"
+    r = sms.send("+15005550009", "hi")
+    assert (r["status"], r["reason"]) == ("not_sent", "twilio_http_401")
 
 
 def test_inbound_and_twiml():

@@ -2,7 +2,6 @@
 import json
 import math
 from datetime import datetime, timedelta, timezone
-from functools import lru_cache
 
 from .config import DATA_DIR
 
@@ -10,10 +9,28 @@ IST = timezone(timedelta(hours=5, minutes=30))
 CROWD_ORDER = ["empty", "quiet", "moderate", "busy"]
 
 
-@lru_cache(maxsize=None)
+_CACHE: dict = {}
+SOURCE: dict = {}  # name -> "json" | "supabase"
+
+
 def load(name: str) -> dict:
-    with open(DATA_DIR / f"{name}.json", encoding="utf-8") as f:
-        return json.load(f)
+    """Dataset by name. /data JSON by default; replaced by Supabase rows when the store loads them."""
+    if name not in _CACHE:
+        with open(DATA_DIR / f"{name}.json", encoding="utf-8") as f:
+            _CACHE[name] = json.load(f)
+        SOURCE[name] = "json"
+    return _CACHE[name]
+
+
+def override(name: str, obj: dict, source: str = "supabase"):
+    _CACHE[name] = obj
+    SOURCE[name] = source
+
+
+def reset():
+    """Back to the /data JSON files (tests, or when Supabase becomes unreachable)."""
+    _CACHE.clear()
+    SOURCE.clear()
 
 
 def routes():
@@ -86,9 +103,15 @@ def haversine_m(lat1, lng1, lat2, lng2) -> float:
 
 
 def area_coords(name: str):
+    """Area centre, or a stop's own coordinates when the name is a stop."""
+    n = (name or "").lower()
     for a in areas():
-        if a["name"].lower() == (name or "").lower():
+        if a["name"].lower() == n:
             return a["lat"], a["lng"]
+    for r in routes():
+        for s in r["stops"]:
+            if s["name"].lower() == n and "lat" in s:
+                return s["lat"], s["lng"]
     return None
 
 

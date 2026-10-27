@@ -124,6 +124,7 @@ export default function Home() {
           </div>
           <Icon.chevron stroke="#6A5878" />
         </Link>
+        <Link to="/demo" className="text-center text-xs font-bold text-plum no-underline">{t('Demo page for judges ›', 'நடுவர்களுக்கான டெமோ ›')}</Link>
       </div>
 
       <SosFab className="bottom-24 !fixed right-[max(16px,calc(50vw-199px))]" />

@@ -1,7 +1,223 @@
 {
   "source": "sample",
   "transfers": [
-    {"at": "Koyambedu", "code": "KBD", "from": "bus", "to": "metro", "walk_min": 4, "lit": true, "note": "Lit covered walkway from the bus bay to Metro Exit A", "source": "sample"},
-    {"at": "Kilpauk", "code": "KLP", "from": "bus", "to": "metro", "walk_min": 5, "lit": true, "note": "Cross at the signal, metro entry next to the hospital", "source": "sample"}
+    {
+      "at": "Koyambedu",
+      "code": "KBD",
+      "from": "bus",
+      "to": "metro",
+      "walk_min": 4,
+      "lit": true,
+      "note": "Lit covered walkway from the bus bay to Metro Exit A",
+      "source": "sample"
+    },
+    {
+      "at": "Kilpauk",
+      "code": "KLP",
+      "from": "bus",
+      "to": "metro",
+      "walk_min": 5,
+      "lit": true,
+      "note": "Cross at the signal, metro entry next to the hospital",
+      "source": "sample"
+    },
+    {
+      "at": "Guindy Industrial Estate",
+      "code": "GIE",
+      "from": "bus",
+      "to": "metro",
+      "walk_min": 6,
+      "lit": true,
+      "note": "Covered skywalk to Guindy Metro",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Saidapet",
+      "code": "SP",
+      "from": "bus",
+      "to": "metro",
+      "walk_min": 5,
+      "lit": true,
+      "note": "Main road crossing with signal",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Saidapet",
+      "code": "SP",
+      "from": "bus",
+      "to": "train",
+      "walk_min": 4,
+      "lit": true,
+      "note": "Steps to the suburban platform",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Pondy Bazaar",
+      "code": "PBP",
+      "from": "bus",
+      "to": "metro",
+      "walk_min": 7,
+      "lit": true,
+      "note": "Busy shopping street to AG-DMS",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Egmore Station",
+      "code": "ESE",
+      "from": "train",
+      "to": "metro",
+      "walk_min": 5,
+      "lit": true,
+      "note": "Inside the station complex",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Egmore Station",
+      "code": "ESE",
+      "from": "bus",
+      "to": "train",
+      "walk_min": 3,
+      "lit": true,
+      "note": "Bus bay at the station entrance",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Tambaram",
+      "code": "TBM",
+      "from": "bus",
+      "to": "train",
+      "walk_min": 3,
+      "lit": true,
+      "note": "Bus stand next to the station",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Chromepet",
+      "code": "CCH",
+      "from": "bus",
+      "to": "train",
+      "walk_min": 5,
+      "lit": false,
+      "note": "Subway can be dark late at night",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Pallavaram",
+      "code": "PPA",
+      "from": "bus",
+      "to": "train",
+      "walk_min": 6,
+      "lit": false,
+      "note": "Quiet lane after 10 pm",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Velachery Bus Terminus",
+      "code": "VBT",
+      "from": "bus",
+      "to": "train",
+      "walk_min": 6,
+      "lit": true,
+      "note": "Road to MRTS station is well lit",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Mylapore",
+      "code": "MMY",
+      "from": "bus",
+      "to": "train",
+      "walk_min": 8,
+      "lit": false,
+      "note": "Back street to Thirumayilai MRTS",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Thiruvanmiyur",
+      "code": "TTH",
+      "from": "bus",
+      "to": "train",
+      "walk_min": 5,
+      "lit": true,
+      "note": "Main road to MRTS",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Mambalam Station",
+      "code": "MSM",
+      "from": "bus",
+      "to": "train",
+      "walk_min": 4,
+      "lit": true,
+      "note": "Crowded foot overbridge",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Vadapalani Bus Depot",
+      "code": "VBD",
+      "from": "bus",
+      "to": "bus",
+      "walk_min": 2,
+      "lit": true,
+      "note": "Same depot, change bays",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Kathipara",
+      "code": "KKA",
+      "from": "bus",
+      "to": "bus",
+      "walk_min": 4,
+      "lit": false,
+      "note": "Wide junction, use the pedestrian subway",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "CMBT Bus Terminus",
+      "code": "CBT",
+      "from": "bus",
+      "to": "bus",
+      "walk_min": 5,
+      "lit": true,
+      "note": "Inside the terminus",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Taramani",
+      "code": "TTA",
+      "from": "bus",
+      "to": "train",
+      "walk_min": 7,
+      "lit": false,
+      "note": "Long walk past the IT park",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "at": "Park Town",
+      "code": "PTP",
+      "from": "train",
+      "to": "train",
+      "walk_min": 6,
+      "lit": true,
+      "note": "Foot overbridge to Central suburban",
+      "source": "sample",
+      "generated": true
+    }
   ]
 }

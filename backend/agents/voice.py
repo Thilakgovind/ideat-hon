@@ -39,13 +39,25 @@ def stt(audio: bytes, filename: str = "audio.wav", content_type: str = "audio/wa
             "fallback_reason": "no_key" if not config.has("sarvam") else "no_audio"}
 
 
+MAX_TTS_CHARS = 220  # about 20 seconds of speech
+
+
+def short_for_voice(text: str) -> str:
+    """Keep spoken replies to ~20 s: cut at a sentence end before MAX_TTS_CHARS."""
+    if len(text) <= MAX_TTS_CHARS:
+        return text
+    cut = text[:MAX_TTS_CHARS]
+    end = max(cut.rfind(". "), cut.rfind("। "), cut.rfind("? "), cut.rfind("! "), cut.rfind(" · "))
+    return cut[: end + 1].strip() if end > 60 else cut.rsplit(" ", 1)[0].strip()
+
+
 def tts(text: str, lang: str = "ta") -> dict:
+    text = short_for_voice(text or "")
     if config.has("sarvam") and text:
         try:
             r = httpx.post(
                 TTS_URL, headers=_headers(),
-                json={"text": text[:500], "target_language_code": LANG_CODES.get(lang, "ta-IN"),
-                      "speaker": "anushka", "model": "bulbul:v2"},
+                json={"text": text[:500], "target_language_code": LANG_CODES.get(lang, "ta-IN")},
                 timeout=30,
             )
             if r.status_code == 200:

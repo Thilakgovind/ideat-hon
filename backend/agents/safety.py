@@ -185,7 +185,7 @@ def compare_walk_paths(stop_code: str, minutes: int, contacts=()) -> dict:
             d = _distance_to_path(c["lat"], c["lng"], path["polyline"])
             if d <= NEAR_PATH_M:
                 people.append({"id": c["id"], "label": c["label"], "off_route_m": int(round(d / 10.0) * 10),
-                               "status": c.get("status")})
+                               "status": c.get("status"), "lat": c["lat"], "lng": c["lng"]})
         score = {"busy": 30, "moderate": 20, "quiet": 5, "empty": -10}[crowd]
         score += 8 * len(open_shops) + (15 if path["well_lit"] else -10) + 10 * len(people)
         results.append({
@@ -204,7 +204,7 @@ def compare_walk_paths(stop_code: str, minutes: int, contacts=()) -> dict:
     results.sort(key=lambda r: -r["score"])
     if results:
         results[0]["badge"] = "SAFEST"
-    at_home = [{"id": c["id"], "label": c["label"], "status": "at_home"} for c in contacts
-               if c.get("accepted") and c.get("status") == "at_home"]
+    at_home = [{"id": c["id"], "label": c["label"], "status": "at_home", "lat": c.get("lat"), "lng": c.get("lng")}
+               for c in contacts if c.get("accepted") and c.get("status") == "at_home"]
     return {"stop_code": stop_code, "time": data.fmt_minutes(minutes), "paths": results, "at_destination": at_home,
             "note": "Crowd shown as anonymous areas, never individuals", "source": "sample"}

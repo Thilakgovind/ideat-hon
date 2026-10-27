@@ -108,5 +108,6 @@ def test_tickets_endpoints():
 
 def test_places_near_named_area():
     r = c.get("/api/places", params={"near": "Nungambakkam", "radius_m": 400, "time": "21:40"}).json()
-    assert r["places"] and all(p["near_stop"] == "NMB" for p in r["places"])
+    assert r["places"] and all(p["distance_m"] <= 400 for p in r["places"])
+    assert {"p9", "p10"} <= {p["id"] for p in r["places"]}
     assert c.get("/api/places", params={"near": "Atlantis"}).status_code == 404

@@ -2,25 +2,188 @@
   "source": "sample",
   "note": "Approximate area centres used for distances and auto fare estimates.",
   "areas": [
-    {"name": "Anna Nagar West", "name_ta": "அண்ணா நகர் மேற்கு", "aliases": ["anna nagar w", "annanagar west", "anna nagar"], "lat": 13.0878, "lng": 80.2006},
-    {"name": "Anna Nagar Arch", "name_ta": "அண்ணா நகர் ஆர்ச்", "aliases": ["arch"], "lat": 13.0846, "lng": 80.2179},
-    {"name": "Anna Nagar Tower", "name_ta": "அண்ணா நகர் டவர்", "aliases": ["tower park"], "lat": 13.0850, "lng": 80.2101},
-    {"name": "Thirumangalam", "name_ta": "திருமங்கலம்", "aliases": [], "lat": 13.0850, "lng": 80.2018},
-    {"name": "Koyambedu", "name_ta": "கோயம்பேடு", "aliases": ["cmbt"], "lat": 13.0694, "lng": 80.1948},
-    {"name": "Kilpauk", "name_ta": "கீழ்ப்பாக்கம்", "aliases": ["kilpak"], "lat": 13.0829, "lng": 80.2417},
-    {"name": "Nungambakkam", "name_ta": "நுங்கம்பாக்கம்", "aliases": ["nungambakam", "nungam", "nunga"], "lat": 13.0604, "lng": 80.2422},
-    {"name": "Kodambakkam", "name_ta": "கோடம்பாக்கம்", "aliases": [], "lat": 13.0500, "lng": 80.2250},
-    {"name": "Vadapalani", "name_ta": "வடபழனி", "aliases": [], "lat": 13.0500, "lng": 80.2121},
-    {"name": "T. Nagar", "name_ta": "தி. நகர்", "aliases": ["t nagar", "tnagar", "thyagaraya nagar", "t. nagar depot"], "lat": 13.0418, "lng": 80.2341},
-    {"name": "Teynampet", "name_ta": "தேனாம்பேட்டை", "aliases": [], "lat": 13.0410, "lng": 80.2500},
-    {"name": "Ramnagar", "name_ta": "ராம்நகர்", "aliases": [], "lat": 13.0450, "lng": 80.2400},
-    {"name": "Central", "name_ta": "சென்ட்ரல்", "aliases": ["chennai central"], "lat": 13.0827, "lng": 80.2757},
-    {"name": "Egmore", "name_ta": "எழும்பூர்", "aliases": [], "lat": 13.0784, "lng": 80.2610},
-    {"name": "Chetpet", "name_ta": "சேத்துப்பட்டு", "aliases": [], "lat": 13.0714, "lng": 80.2417},
-    {"name": "Chennai Beach", "name_ta": "சென்னை கடற்கரை", "aliases": ["beach"], "lat": 13.0925, "lng": 80.2920},
-    {"name": "Mambalam", "name_ta": "மாம்பலம்", "aliases": [], "lat": 13.0390, "lng": 80.2290},
-    {"name": "Guindy", "name_ta": "கிண்டி", "aliases": [], "lat": 13.0067, "lng": 80.2206},
-    {"name": "Velachery", "name_ta": "வேளச்சேரி", "aliases": [], "lat": 12.9815, "lng": 80.2180},
-    {"name": "Tambaram", "name_ta": "தாம்பரம்", "aliases": [], "lat": 12.9249, "lng": 80.1000}
+    {
+      "name": "Anna Nagar West",
+      "name_ta": "அண்ணா நகர் மேற்கு",
+      "aliases": [
+        "anna nagar w",
+        "annanagar west",
+        "anna nagar"
+      ],
+      "lat": 13.0878,
+      "lng": 80.2006
+    },
+    {
+      "name": "Anna Nagar Arch",
+      "name_ta": "அண்ணா நகர் ஆர்ச்",
+      "aliases": [
+        "arch"
+      ],
+      "lat": 13.0846,
+      "lng": 80.2179
+    },
+    {
+      "name": "Anna Nagar Tower",
+      "name_ta": "அண்ணா நகர் டவர்",
+      "aliases": [
+        "tower park"
+      ],
+      "lat": 13.085,
+      "lng": 80.2101
+    },
+    {
+      "name": "Thirumangalam",
+      "name_ta": "திருமங்கலம்",
+      "aliases": [],
+      "lat": 13.085,
+      "lng": 80.2018
+    },
+    {
+      "name": "Koyambedu",
+      "name_ta": "கோயம்பேடு",
+      "aliases": [
+        "cmbt"
+      ],
+      "lat": 13.0694,
+      "lng": 80.1948
+    },
+    {
+      "name": "Kilpauk",
+      "name_ta": "கீழ்ப்பாக்கம்",
+      "aliases": [
+        "kilpak"
+      ],
+      "lat": 13.0829,
+      "lng": 80.2417
+    },
+    {
+      "name": "Nungambakkam",
+      "name_ta": "நுங்கம்பாக்கம்",
+      "aliases": [
+        "nungambakam",
+        "nungam",
+        "nunga"
+      ],
+      "lat": 13.0604,
+      "lng": 80.2422
+    },
+    {
+      "name": "Kodambakkam",
+      "name_ta": "கோடம்பாக்கம்",
+      "aliases": [],
+      "lat": 13.05,
+      "lng": 80.225
+    },
+    {
+      "name": "Vadapalani",
+      "name_ta": "வடபழனி",
+      "aliases": [],
+      "lat": 13.05,
+      "lng": 80.2121
+    },
+    {
+      "name": "T. Nagar",
+      "name_ta": "தி. நகர்",
+      "aliases": [
+        "t nagar",
+        "tnagar",
+        "thyagaraya nagar",
+        "t. nagar depot"
+      ],
+      "lat": 13.0418,
+      "lng": 80.2341
+    },
+    {
+      "name": "Teynampet",
+      "name_ta": "தேனாம்பேட்டை",
+      "aliases": [],
+      "lat": 13.041,
+      "lng": 80.25
+    },
+    {
+      "name": "Ramnagar",
+      "name_ta": "ராம்நகர்",
+      "aliases": [],
+      "lat": 13.045,
+      "lng": 80.24
+    },
+    {
+      "name": "Central",
+      "name_ta": "சென்ட்ரல்",
+      "aliases": [
+        "chennai central"
+      ],
+      "lat": 13.0827,
+      "lng": 80.2757
+    },
+    {
+      "name": "Egmore",
+      "name_ta": "எழும்பூர்",
+      "aliases": [],
+      "lat": 13.0784,
+      "lng": 80.261
+    },
+    {
+      "name": "Chetpet",
+      "name_ta": "சேத்துப்பட்டு",
+      "aliases": [],
+      "lat": 13.0714,
+      "lng": 80.2417
+    },
+    {
+      "name": "Chennai Beach",
+      "name_ta": "சென்னை கடற்கரை",
+      "aliases": [
+        "beach"
+      ],
+      "lat": 13.0925,
+      "lng": 80.292
+    },
+    {
+      "name": "Mambalam",
+      "name_ta": "மாம்பலம்",
+      "aliases": [],
+      "lat": 13.039,
+      "lng": 80.229
+    },
+    {
+      "name": "Guindy",
+      "name_ta": "கிண்டி",
+      "aliases": [],
+      "lat": 13.0067,
+      "lng": 80.2206
+    },
+    {
+      "name": "Velachery",
+      "name_ta": "வேளச்சேரி",
+      "aliases": [],
+      "lat": 12.9815,
+      "lng": 80.218
+    },
+    {
+      "name": "Tambaram",
+      "name_ta": "தாம்பரம்",
+      "aliases": [],
+      "lat": 12.9249,
+      "lng": 80.1
+    },
+    {
+      "name": "Mylapore",
+      "name_ta": "மயிலாப்பூர்",
+      "aliases": [
+        "mylapur"
+      ],
+      "lat": 13.0339,
+      "lng": 80.2619
+    },
+    {
+      "name": "Adyar",
+      "name_ta": "அடையாறு",
+      "aliases": [
+        "adayar"
+      ],
+      "lat": 13.0012,
+      "lng": 80.2565
+    }
   ]
 }

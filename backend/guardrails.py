@@ -105,6 +105,13 @@ def anonymous_log(entry: dict) -> dict:
         if clean.get(k) and not any(a["name"] == clean[k] for a in data.areas()):
             clean[k] = "other"  # only known areas, never free text
     REQUEST_LOG.append(clean)
+    from . import store  # late import: store imports data, which this module also uses
+    row = {**clean, "area": clean.get("to_area") or clean.get("from_area"), "source": "live"}
+    row = {k: v for k, v in row.items() if k in ("area", "hour", "mode", "lang", "channel", "intent", "route_found",
+                                                   "safe_place_found", "source")}
+    if row.get("channel") not in ("app", "sms", "voice", "call"):
+        row["channel"] = "app"
+    store.persist("request_log", row, method="insert")
     return clean
 
 

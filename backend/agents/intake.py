@@ -17,20 +17,21 @@ from .. import config
 from ..guardrails import redact
 from . import route as route_agent
 
-INTENTS = {"plan_trip", "safe_route_home", "places_open_now", "place_details", "free_bus_now", "book_ticket",
+INTENTS = {"call_me", "plan_trip", "safe_route_home", "places_open_now", "place_details", "free_bus_now", "book_ticket",
            "share_trip", "start_trip", "reached", "check_in", "stop", "sos", "help", "unknown"}
 LANGS = {"ta", "en", "tanglish"}
 PLACE_TYPES = {"pharmacy", "grocery", "tea_shop", "atm", "hospital", "police_booth", "shg_kiosk", "petrol_bunk",
                "bus_shelter", "bakery"}
-FALLBACK_REPLY = "Sorry, tell me the place name. Eg: Nungambakkam bus"
+FALLBACK_REPLY = "Sorry, send place name. Eg: Nungambakkam bus"
 FALLBACK_REPLY_TA = "மன்னிக்கவும், இடத்தின் பெயரைச் சொல்லுங்கள். உதா: நுங்கம்பாக்கம் பஸ்"
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+GEMINI_TIMEOUT = 6  # seconds; slower or busy (503) -> rule parser, so SMS replies stay fast
 
 # Adapted from agents/intake_agent_prompt.md for the V1 intents and schema.
 SYSTEM_PROMPT = """You are the Intake Agent of SafePath (AVAL), a travel helper for women in Chennai.
 Read one short message (Tamil, English or Tanglish) and return ONLY a JSON object:
 {"intent": one of [plan_trip, safe_route_home, places_open_now, place_details, free_bus_now, book_ticket,
-  share_trip, start_trip, reached, check_in, stop, sos, help, unknown],
+  share_trip, start_trip, reached, check_in, stop, sos, help, call_me, unknown],
  "from": place name or null, "to": place name or null,
  "time": "HH:MM" (24h) or "now" or null,
  "with_child": true/false, "lang": "ta" | "en" | "tanglish",
@@ -46,6 +47,7 @@ TANGLISH = {"mani", "paapa", "ponnu", "ponnoda", "kooda", "poganum", "poren", "e
             "iravu", "ippo", "akka", "amma", "kadai", "vanthuten", "vandhuten", "bayama", "saayangalam", "kaalai"}
 
 KEYWORDS = [
+    ("call_me", ["call me", "call back", "phone me", "என்னை அழை"]),
     ("sos", ["sos", "help me", "danger", "unsafe", "scared", "following me", "save me", "bayama", "காப்பாற்று",
              "காப்பாத்து", "உதவி", "பயமா", "ஆபத்து"]),
     ("reached", ["reached", "i'm home", "im home", "i am home", "vanthuten", "vandhuten", "வந்துட்டேன்", "வந்தடைந்தேன்"]),
@@ -67,7 +69,7 @@ TYPE_WORDS = {
 }
 CHILD_WORDS = ["child", "daughter", "son", "kid", "kids", "baby", "paapa", "ponnu", "ponnoda", "pullai", "kuzhandhai",
                "மகள்", "மகன்", "குழந்தை", "பாப்பா", "பொண்ணோட", "பொண்ணு", "பிள்ளை"]
-COMMANDS = {"start": "start_trip", "reached": "reached", "help": "sos", "sos": "sos", "stop": "stop",
+COMMANDS = {"start": "start_trip", "reached": "reached", "help": "sos", "sos": "sos", "stop": "stop", "call": "call_me",
             "check": "check_in", "ok": "check_in"}
 
 
@@ -195,14 +197,14 @@ def validate(obj) -> dict:
 
 
 def _gemini(text: str):
-    model = config.env("GEMINI_MODEL") or "gemini-2.5-flash"
+    model = config.env("GEMINI_MODEL") or config.DEFAULT_GEMINI_MODEL
     body = {
         "systemInstruction": {"parts": [{"text": SYSTEM_PROMPT}]},
         "contents": [{"role": "user", "parts": [{"text": text}]}],
         "generationConfig": {"responseMimeType": "application/json", "temperature": 0},
     }
     r = httpx.post(GEMINI_URL.format(model=model), json=body,
-                   headers={"x-goog-api-key": config.env("GEMINI_API_KEY")}, timeout=10)
+                   headers={"x-goog-api-key": config.env("GEMINI_API_KEY")}, timeout=GEMINI_TIMEOUT)
     r.raise_for_status()
     parts = r.json()["candidates"][0]["content"]["parts"]
     return "".join(p.get("text", "") for p in parts)
@@ -213,13 +215,16 @@ def parse(text: str, names=(), llm=None) -> dict:
     safe_text = redact(text or "", names)
     if not safe_text.strip():
         return {**rule_parse(""), "intent": "unknown", "fallback": True, "reason": "empty"}
+    fast = rule_parse(safe_text)
+    if fast["intent"] in COMMANDS.values() and len(safe_text.split()) == 1:
+        return {**fast, "source": "rules"}  # START / REACHED / HELP / CALL: instant, no LLM needed
     call = llm or (_gemini if config.has("gemini") else None)
     if call is None:
-        return rule_parse(safe_text)
+        return fast
     try:
         raw = call(safe_text)
     except (httpx.HTTPError, KeyError, IndexError, ValueError) as e:
-        return {**rule_parse(safe_text), "source": "rules", "llm_error": type(e).__name__}
+        return {**fast, "source": "rules", "llm_error": type(e).__name__}
     try:
         obj = json.loads(raw.strip().removeprefix("```json").removesuffix("```").strip())
     except (json.JSONDecodeError, AttributeError):

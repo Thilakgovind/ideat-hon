@@ -10,7 +10,7 @@ from datetime import timedelta
 
 import httpx
 
-from .. import config, data
+from .. import config, data, store
 from ..guardrails import describe_delivery, filter_location, location_allowed, needs_confirmation
 from . import sms, safety
 
@@ -48,14 +48,23 @@ def _public_contact(c):
     return {k: v for k, v in c.items() if k != "phone"}
 
 
+N8N_STATUS = {"sent": 0, "failed": 0}
+
+
+def _post_n8n(event, payload):
+    try:
+        r = httpx.post(config.env("N8N_WEBHOOK_URL"), json={"event": event, **payload}, timeout=8)
+        N8N_STATUS["sent" if r.status_code < 300 else "failed"] += 1
+    except httpx.HTTPError:
+        N8N_STATUS["failed"] += 1
+
+
 def _notify_n8n(event: str, payload: dict):
+    """Trip events to n8n (N8N_WEBHOOK_URL), in the background. Payloads never carry phones or names."""
     if not config.has("n8n"):
         return {"status": "mock_logged"}
-    try:
-        r = httpx.post(config.env("N8N_WEBHOOK_URL"), json={"event": event, **payload}, timeout=5)
-        return {"status": "sent" if r.status_code < 300 else "failed"}
-    except httpx.HTTPError:
-        return {"status": "failed"}
+    store._pool.submit(_post_n8n, event, payload)
+    return {"status": "queued"}
 
 
 # ---------- contacts ----------
@@ -83,6 +92,8 @@ def add_contact(user_id, label, phone=None, relation="friend", confirmed=False) 
          "phone_masked": sms.mask(phone), "accepted": False, "status": "invite_pending",
          "area": None, "lat": None, "lng": None, "source": "runtime"}
     u["contacts"].append(c)
+    _ensure_user(user_id)
+    store.persist("circle_contacts", _contact_row(user_id, c))
     delivery = sms.send(phone, preview, purpose="invite")
     return {"contact": _public_contact(c), "invite": {"status": delivery["status"]}}
 
@@ -91,6 +102,7 @@ def accept_contact(user_id, contact_id) -> dict:
     for c in STORE.user(user_id)["contacts"]:
         if c["id"] == contact_id:
             c["accepted"], c["status"] = True, "available"
+            store.persist("circle_contacts", _contact_row(user_id, c))
             return {"contact": _public_contact(c)}
     return {"error": "not_found"}
 
@@ -99,6 +111,7 @@ def remove_contact(user_id, contact_id) -> dict:
     u = STORE.user(user_id)
     before = len(u["contacts"])
     u["contacts"] = [c for c in u["contacts"] if c["id"] != contact_id]
+    store.delete("circle_contacts", contact_id)
     return {"removed": before != len(u["contacts"])}
 
 
@@ -121,6 +134,37 @@ def message_contact(user_id, contact_id, kind="meet", where="the main road", con
         return {"needs_confirmation": True, "action": "message", "preview": body, "to": c["label"]}
     r = sms.send(c.get("phone"), body, purpose=f"message_{kind}")
     return {"to": c["label"], "status": r["status"], "delivery": describe_delivery([r])}
+
+
+def _trip_row(t):
+    return {"id": t["trip_id"], "user_id": t["user_id"], "option_id": t.get("option_id"), "kind": t.get("kind"),
+            "summary": t.get("summary"), "from_area": t.get("from"), "to_area": t.get("to"), "alight_stop": t.get("alight_code"),
+            "start_at": t["start"].isoformat(), "eta_at": t["eta"].isoformat(), "status": t["status"],
+            "notified_circle": t.get("notified_circle", False), "reminded": t.get("reminded", False),
+            "distance_m": t.get("distance_m"), "last_lat": (t.get("last_location") or {}).get("lat"),
+            "last_lng": (t.get("last_location") or {}).get("lng"), "last_checkin_at": t.get("last_checkin"), "source": "live"}
+
+
+def _event(trip, ev):
+    """Record a trip event in memory and mirror trip + event to Supabase (no phone numbers)."""
+    trip["events"].append(ev)
+    store.persist("trips", _trip_row(trip))
+    detail = {k: v for k, v in ev.items() if k not in ("at", "event")}
+    store.persist("trip_events", {"trip_id": trip["trip_id"], "at": ev["at"], "event": ev["event"], "detail": detail,
+                                  "source": "live"}, method="insert")
+
+
+def _contact_row(user_id, c):
+    return {"id": c["id"], "user_id": user_id, "label": c["label"], "label_ta": c.get("label_ta"), "relation": c.get("relation"),
+            "phone": c.get("phone"), "accepted": c.get("accepted", False), "status": c.get("status"), "area": c.get("area"),
+            "lat": c.get("lat"), "lng": c.get("lng"), "source": c.get("source") if c.get("source") == "sample" else "live"}
+
+
+def _ensure_user(user_id):
+    u = STORE.user(user_id)
+    store.persist("users", {"id": user_id, "display_name": u.get("display_name") or None, "phone": None,
+                            "home_area": u.get("home_area"), "start_area": u.get("start_area"), "lang": "en",
+                            "source": "sample" if user_id == "u_demo" else "live"})
 
 
 def _watchers(user_id):
@@ -161,8 +205,9 @@ def start_trip(user_id, option: dict, frm: str, to: str, confirmed=False, notify
         "eta_min": eta_min,
     }
     STORE.trips[trip_id] = trip
+    _ensure_user(user_id)
     results = _send_all(watchers, message, "trip_start") if trip["notified_circle"] else []
-    trip["events"].append({"at": now.isoformat(), "event": "start", "delivery": describe_delivery(results)})
+    _event(trip, {"at": now.isoformat(), "event": "start", "delivery": describe_delivery(results)})
     _notify_n8n("trip_start", {"trip_id": trip_id, "eta": eta.isoformat()})
     return {"trip": public_trip(trip), "circle_delivery": results, "delivery": describe_delivery(results)}
 
@@ -218,7 +263,7 @@ def checkin(trip_id: str, ok: bool = True, lat=None, lng=None, now=None) -> dict
     if loc.get("lat") is not None:
         trip["last_location"] = {"lat": loc["lat"], "lng": loc["lng"], "at": now.isoformat()}
     trip["last_checkin"] = now.isoformat()
-    trip["events"].append({"at": now.isoformat(), "event": "checkin", "ok": ok})
+    _event(trip, {"at": now.isoformat(), "event": "checkin", "ok": ok})
     return {"trip": public_trip(trip), "location_stored": trip["last_location"] is not None and active}
 
 
@@ -233,7 +278,7 @@ def reached(trip_id: str, now=None) -> dict:
     if trip["notified_circle"]:
         name = STORE.user(trip["user_id"]).get("display_name") or "Your contact"
         results = _send_all(_watchers(trip["user_id"]), f"{name} reached {trip['to']} safely at {now.strftime('%H:%M')}.", "reached")
-    trip["events"].append({"at": now.isoformat(), "event": "reached", "delivery": describe_delivery(results)})
+    _event(trip, {"at": now.isoformat(), "event": "reached", "delivery": describe_delivery(results)})
     _notify_n8n("trip_reached", {"trip_id": trip_id})
     return {"trip": public_trip(trip), "circle_delivery": results, "delivery": describe_delivery(results)}
 
@@ -256,7 +301,7 @@ def tick(now=None) -> list:
             trip["reminded"] = True
             r = sms.send(trip.get("user_phone"), "SafePath: Have you reached? Reply REACHED. Reply HELP if you need help.", "reminder")
             actions.append({"trip_id": trip["trip_id"], "action": "reminder", "status": r["status"]})
-            trip["events"].append({"at": now.isoformat(), "event": "reminder", "status": r["status"]})
+            _event(trip, {"at": now.isoformat(), "event": "reminder", "status": r["status"]})
         if now >= trip["eta"] + timedelta(minutes=ALERT_AFTER_ETA_MIN):
             trip["status"], trip["alerted"] = "alerted", True
             name = STORE.user(trip["user_id"]).get("display_name") or "Your contact"
@@ -264,7 +309,7 @@ def tick(now=None) -> list:
             where = f"Last check-in {trip['last_checkin'][11:16]}" if trip["last_checkin"] else f"Started from {trip['from']} at {trip['start'].strftime('%H:%M')}"
             body = f"SafePath alert: {name} has not confirmed reaching {trip['to']}. {where}. Please call her."
             results = _send_all(_watchers(trip["user_id"]), body, "journey_alert")
-            trip["events"].append({"at": now.isoformat(), "event": "alert", "delivery": describe_delivery(results),
+            _event(trip, {"at": now.isoformat(), "event": "alert", "delivery": describe_delivery(results),
                                    "had_location": bool(last)})
             actions.append({"trip_id": trip["trip_id"], "action": "alert", "delivery": describe_delivery(results)})
             _notify_n8n("trip_alert", {"trip_id": trip["trip_id"]})
@@ -284,6 +329,8 @@ def sos(user_id: str, lat=None, lng=None, trip_id=None, now=None) -> dict:
     where = f" near {trip['to']}" if trip else ""
     body = f"SOS from {name}{where} at {now.strftime('%H:%M')}. Please call her now. Women helpline 181, Police 100."
     results = _send_all(_watchers(user_id), body, "sos")
+    if trip:
+        _event(trip, {"at": now.isoformat(), "event": "sos", "delivery": describe_delivery(results)})
     STORE.sos[user_id] = {"active": True, "since": now.isoformat(), "location": {"lat": point[0], "lng": point[1]} if point else None}
     if point is None and trip:  # no live location: look for help around the trip's destination area
         point = data.area_coords(trip["to"])

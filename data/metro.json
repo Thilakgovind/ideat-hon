@@ -1,7 +1,15 @@
 {
   "source": "sample",
   "note": "Sample Chennai Metro data for the demo. The Koyambedu-Nungambakkam link is illustrative.",
-  "fare_by_stations": {"1": 10, "2": 20, "3": 30, "4": 30, "5": 40, "6": 40, "7": 50},
+  "fare_by_stations": {
+    "1": 10,
+    "2": 20,
+    "3": 30,
+    "4": 30,
+    "5": 40,
+    "6": 40,
+    "7": 50
+  },
   "fare_max_inr": 50,
   "lines": [
     {
@@ -12,13 +20,40 @@
       "last": "23:00",
       "headway_peak_min": 6,
       "headway_offpeak_min": 10,
-      "peak_hours": ["07:00-10:30", "17:00-20:30"],
+      "peak_hours": [
+        "07:00-10:30",
+        "17:00-20:30"
+      ],
       "women_coach": "First coach (front of the train)",
       "stations": [
-        {"name": "Koyambedu", "code": "KBD", "min": 0, "platform": "2", "best_exit": "Exit A - bus terminus side, lit walkway"},
-        {"name": "Vadapalani", "code": "VDP", "min": 4, "platform": "2", "best_exit": "Exit B - main road"},
-        {"name": "Kodambakkam", "code": "KOD", "min": 7, "platform": "2", "best_exit": "Exit A - flyover side"},
-        {"name": "Nungambakkam", "code": "NMB", "min": 10, "platform": "1", "best_exit": "Exit C - High Road, near the bus stop"}
+        {
+          "name": "Koyambedu",
+          "code": "KBD",
+          "min": 0,
+          "platform": "2",
+          "best_exit": "Exit A - bus terminus side, lit walkway"
+        },
+        {
+          "name": "Vadapalani",
+          "code": "VDP",
+          "min": 4,
+          "platform": "2",
+          "best_exit": "Exit B - main road"
+        },
+        {
+          "name": "Kodambakkam",
+          "code": "KOD",
+          "min": 7,
+          "platform": "2",
+          "best_exit": "Exit A - flyover side"
+        },
+        {
+          "name": "Nungambakkam",
+          "code": "NMB",
+          "min": 10,
+          "platform": "1",
+          "best_exit": "Exit C - High Road, near the bus stop"
+        }
       ],
       "source": "sample"
     },
@@ -30,19 +65,184 @@
       "last": "23:00",
       "headway_peak_min": 6,
       "headway_offpeak_min": 10,
-      "peak_hours": ["07:00-10:30", "17:00-20:30"],
+      "peak_hours": [
+        "07:00-10:30",
+        "17:00-20:30"
+      ],
       "women_coach": "First coach (front of the train)",
       "stations": [
-        {"name": "Koyambedu", "code": "KBD", "min": 0, "platform": "1", "best_exit": "Exit A - bus terminus side"},
-        {"name": "Thirumangalam", "code": "TMG", "min": 3, "platform": "1", "best_exit": "Exit B - 2nd Avenue"},
-        {"name": "Anna Nagar Tower", "code": "ANT", "min": 5, "platform": "1", "best_exit": "Exit A - Tower Park"},
-        {"name": "Anna Nagar East", "code": "ANE", "min": 7, "platform": "1", "best_exit": "Exit B - main road"},
-        {"name": "Shenoy Nagar", "code": "SHN", "min": 9, "platform": "1", "best_exit": "Exit A"},
-        {"name": "Kilpauk", "code": "KLP", "min": 12, "platform": "1", "best_exit": "Exit B - hospital side"},
-        {"name": "Egmore", "code": "EGM", "min": 15, "platform": "1", "best_exit": "Exit A - railway station"},
-        {"name": "Central", "code": "CTL", "min": 18, "platform": "1", "best_exit": "Exit C - Central station"}
+        {
+          "name": "Koyambedu",
+          "code": "KBD",
+          "min": 0,
+          "platform": "1",
+          "best_exit": "Exit A - bus terminus side"
+        },
+        {
+          "name": "Thirumangalam",
+          "code": "TMG",
+          "min": 3,
+          "platform": "1",
+          "best_exit": "Exit B - 2nd Avenue"
+        },
+        {
+          "name": "Anna Nagar Tower",
+          "code": "ANT",
+          "min": 5,
+          "platform": "1",
+          "best_exit": "Exit A - Tower Park"
+        },
+        {
+          "name": "Anna Nagar East",
+          "code": "ANE",
+          "min": 7,
+          "platform": "1",
+          "best_exit": "Exit B - main road"
+        },
+        {
+          "name": "Shenoy Nagar",
+          "code": "SHN",
+          "min": 9,
+          "platform": "1",
+          "best_exit": "Exit A"
+        },
+        {
+          "name": "Kilpauk",
+          "code": "KLP",
+          "min": 12,
+          "platform": "1",
+          "best_exit": "Exit B - hospital side"
+        },
+        {
+          "name": "Egmore",
+          "code": "EGM",
+          "min": 15,
+          "platform": "1",
+          "best_exit": "Exit A - railway station"
+        },
+        {
+          "name": "Central",
+          "code": "CTL",
+          "min": 18,
+          "platform": "1",
+          "best_exit": "Exit C - Central station"
+        }
       ],
       "source": "sample"
+    },
+    {
+      "id": "M-BLUE",
+      "name": "Blue Line (sample)",
+      "color": "#1F5BDA",
+      "first": "05:00",
+      "last": "23:00",
+      "headway_peak_min": 5,
+      "headway_offpeak_min": 9,
+      "peak_hours": [
+        "07:30-10:30",
+        "17:00-20:30"
+      ],
+      "women_coach": "First coach (front of the train)",
+      "stations": [
+        {
+          "name": "Chennai Central Metro",
+          "code": "CCM",
+          "min": 0,
+          "area": "Egmore",
+          "platform": "1",
+          "best_exit": "Exit C - Station Road"
+        },
+        {
+          "name": "Government Estate",
+          "code": "GEG",
+          "min": 3,
+          "area": "Egmore",
+          "platform": "2",
+          "best_exit": "Exit D - Main Road"
+        },
+        {
+          "name": "LIC",
+          "code": "LLI",
+          "min": 5,
+          "area": "Nungambakkam",
+          "platform": "2",
+          "best_exit": "Exit A - High Road"
+        },
+        {
+          "name": "Thousand Lights",
+          "code": "TLT",
+          "min": 7,
+          "area": "Nungambakkam",
+          "platform": "2",
+          "best_exit": "Exit C - Gandhi Street"
+        },
+        {
+          "name": "AG-DMS",
+          "code": "AD2",
+          "min": 9,
+          "area": "T Nagar",
+          "platform": "1",
+          "best_exit": "Exit D - Temple Street"
+        },
+        {
+          "name": "Nandanam",
+          "code": "NNA",
+          "min": 11,
+          "area": "T Nagar",
+          "platform": "2",
+          "best_exit": "Exit A - Temple Street"
+        },
+        {
+          "name": "Saidapet Metro",
+          "code": "SMS",
+          "min": 13,
+          "area": "Guindy",
+          "platform": "2",
+          "best_exit": "Exit D - Station Road"
+        },
+        {
+          "name": "Little Mount",
+          "code": "LML",
+          "min": 15,
+          "area": "Guindy",
+          "platform": "2",
+          "best_exit": "Exit A - Station Road"
+        },
+        {
+          "name": "Guindy Metro",
+          "code": "GMG",
+          "min": 17,
+          "area": "Guindy",
+          "platform": "1",
+          "best_exit": "Exit C - Bazaar Road"
+        },
+        {
+          "name": "Alandur",
+          "code": "AAL",
+          "min": 19,
+          "area": "Guindy",
+          "platform": "2",
+          "best_exit": "Exit B - Main Road"
+        },
+        {
+          "name": "Meenambakkam",
+          "code": "MME",
+          "min": 23,
+          "area": "Tambaram",
+          "platform": "1",
+          "best_exit": "Exit A - Main Road"
+        },
+        {
+          "name": "Airport",
+          "code": "AAI",
+          "min": 26,
+          "area": "Tambaram",
+          "platform": "2",
+          "best_exit": "Exit A - Bazaar Road"
+        }
+      ],
+      "source": "sample",
+      "generated": true
     }
   ]
 }

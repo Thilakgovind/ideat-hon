@@ -13,10 +13,34 @@
       "fare_others_inr": 15,
       "operator": "MTC",
       "stops": [
-        {"name": "Anna Nagar West", "code": "ANW", "min": 0},
-        {"name": "Anna Nagar Arch", "code": "ANA", "min": 8},
-        {"name": "Kilpauk", "code": "KLP", "min": 18},
-        {"name": "Nungambakkam", "code": "NMB", "min": 30}
+        {
+          "name": "Anna Nagar West",
+          "code": "ANW",
+          "min": 0,
+          "lat": 13.0878,
+          "lng": 80.2006
+        },
+        {
+          "name": "Anna Nagar Arch",
+          "code": "ANA",
+          "min": 8,
+          "lat": 13.0846,
+          "lng": 80.2179
+        },
+        {
+          "name": "Kilpauk",
+          "code": "KLP",
+          "min": 18,
+          "lat": 13.0829,
+          "lng": 80.2417
+        },
+        {
+          "name": "Nungambakkam",
+          "code": "NMB",
+          "min": 30,
+          "lat": 13.0604,
+          "lng": 80.2422
+        }
       ],
       "first": "05:00",
       "last": "22:30",
@@ -38,9 +62,27 @@
       "fare_others_inr": 10,
       "operator": "MTC",
       "stops": [
-        {"name": "Anna Nagar West", "code": "ANW", "min": 0},
-        {"name": "Thirumangalam", "code": "TMG", "min": 5},
-        {"name": "Koyambedu", "code": "KBD", "min": 11}
+        {
+          "name": "Anna Nagar West",
+          "code": "ANW",
+          "min": 0,
+          "lat": 13.0878,
+          "lng": 80.2006
+        },
+        {
+          "name": "Thirumangalam",
+          "code": "TMG",
+          "min": 5,
+          "lat": 13.085,
+          "lng": 80.2018
+        },
+        {
+          "name": "Koyambedu",
+          "code": "KBD",
+          "min": 11,
+          "lat": 13.0694,
+          "lng": 80.1948
+        }
       ],
       "first": "05:15",
       "last": "23:00",
@@ -62,10 +104,34 @@
       "fare_others_inr": 12,
       "operator": "MTC",
       "stops": [
-        {"name": "T. Nagar Depot", "code": "TND", "min": 0},
-        {"name": "Ramnagar", "code": "RMN", "min": 6},
-        {"name": "Teynampet", "code": "TEN", "min": 14},
-        {"name": "Nungambakkam", "code": "NMB", "min": 24}
+        {
+          "name": "T. Nagar Depot",
+          "code": "TND",
+          "min": 0,
+          "lat": 13.0418,
+          "lng": 80.2341
+        },
+        {
+          "name": "Ramnagar",
+          "code": "RMN",
+          "min": 6,
+          "lat": 13.045,
+          "lng": 80.24
+        },
+        {
+          "name": "Teynampet",
+          "code": "TEN",
+          "min": 14,
+          "lat": 13.041,
+          "lng": 80.25
+        },
+        {
+          "name": "Nungambakkam",
+          "code": "NMB",
+          "min": 24,
+          "lat": 13.0604,
+          "lng": 80.2422
+        }
       ],
       "first": "05:30",
       "last": "22:00",
@@ -87,10 +153,34 @@
       "fare_others_inr": 15,
       "operator": "MTC",
       "stops": [
-        {"name": "Anna Nagar", "code": "ANN", "min": 0},
-        {"name": "Kodambakkam", "code": "KOD", "min": 14},
-        {"name": "Teynampet", "code": "TEN", "min": 26},
-        {"name": "Central", "code": "CTL", "min": 40}
+        {
+          "name": "Anna Nagar",
+          "code": "ANN",
+          "min": 0,
+          "lat": 13.085,
+          "lng": 80.2101
+        },
+        {
+          "name": "Kodambakkam",
+          "code": "KOD",
+          "min": 14,
+          "lat": 13.05,
+          "lng": 80.225
+        },
+        {
+          "name": "Teynampet",
+          "code": "TEN",
+          "min": 26,
+          "lat": 13.041,
+          "lng": 80.25
+        },
+        {
+          "name": "Central",
+          "code": "CTL",
+          "min": 40,
+          "lat": 13.0827,
+          "lng": 80.2757
+        }
       ],
       "first": "05:00",
       "last": "22:00",
@@ -112,9 +202,27 @@
       "fare_others_inr": 30,
       "operator": "MTC",
       "stops": [
-        {"name": "T. Nagar Depot", "code": "TND", "min": 0},
-        {"name": "Guindy", "code": "GUI", "min": 15},
-        {"name": "Velachery", "code": "VEL", "min": 28}
+        {
+          "name": "T. Nagar Depot",
+          "code": "TND",
+          "min": 0,
+          "lat": 13.0418,
+          "lng": 80.2341
+        },
+        {
+          "name": "Guindy",
+          "code": "GUI",
+          "min": 15,
+          "lat": 13.0067,
+          "lng": 80.2206
+        },
+        {
+          "name": "Velachery",
+          "code": "VEL",
+          "min": 28,
+          "lat": 12.9815,
+          "lng": 80.218
+        }
       ],
       "first": "06:30",
       "last": "22:00",
@@ -136,8 +244,20 @@
       "fare_others_inr": 8,
       "operator": "MTC",
       "stops": [
-        {"name": "Nungambakkam", "code": "NMB", "min": 0},
-        {"name": "Teynampet", "code": "TEN", "min": 10}
+        {
+          "name": "Nungambakkam",
+          "code": "NMB",
+          "min": 0,
+          "lat": 13.0604,
+          "lng": 80.2422
+        },
+        {
+          "name": "Teynampet",
+          "code": "TEN",
+          "min": 10,
+          "lat": 13.041,
+          "lng": 80.25
+        }
       ],
       "first": "06:00",
       "last": "22:00",
@@ -147,6 +267,1336 @@
       "stops_well_lit": true,
       "notes": "Free, very frequent",
       "source": "sample"
+    },
+    {
+      "id": "5D",
+      "number": "5D",
+      "mode": "bus",
+      "name": "T Nagar Bus Terminus - CMBT Bus Terminus",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 20,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "T Nagar Bus Terminus",
+          "code": "TNB",
+          "min": 0,
+          "lat": 13.041758,
+          "lng": 80.238634,
+          "area": "T Nagar"
+        },
+        {
+          "name": "Pondy Bazaar",
+          "code": "PBP",
+          "min": 6,
+          "lat": 13.044547,
+          "lng": 80.227604,
+          "area": "T Nagar"
+        },
+        {
+          "name": "Vadapalani Bus Depot",
+          "code": "VBD",
+          "min": 14,
+          "lat": 13.043115,
+          "lng": 80.213466,
+          "area": "Vadapalani"
+        },
+        {
+          "name": "Ashok Nagar",
+          "code": "AN2",
+          "min": 24,
+          "lat": 13.061893,
+          "lng": 80.211125,
+          "area": "Vadapalani"
+        },
+        {
+          "name": "Koyambedu Market",
+          "code": "KMK",
+          "min": 35,
+          "lat": 13.060778,
+          "lng": 80.189488,
+          "area": "Koyambedu"
+        },
+        {
+          "name": "CMBT Bus Terminus",
+          "code": "CBT",
+          "min": 39,
+          "lat": 13.065815,
+          "lng": 80.191611,
+          "area": "Koyambedu"
+        }
+      ],
+      "first": "04:45",
+      "last": "22:00",
+      "frequency_minutes": 10,
+      "walk_start_min": 2,
+      "walk_end_min": 2,
+      "stops_well_lit": false,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "27C",
+      "number": "27C",
+      "mode": "bus",
+      "name": "Pantheon Road - Koyambedu Market",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 15,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Pantheon Road",
+          "code": "PRP",
+          "min": 0,
+          "lat": 13.085147,
+          "lng": 80.264577,
+          "area": "Egmore"
+        },
+        {
+          "name": "Ega Theatre",
+          "code": "ETE",
+          "min": 7,
+          "lat": 13.072971,
+          "lng": 80.258911,
+          "area": "Egmore"
+        },
+        {
+          "name": "Kilpauk Garden",
+          "code": "KGK",
+          "min": 13,
+          "lat": 13.079631,
+          "lng": 80.250499,
+          "area": "Kilpauk"
+        },
+        {
+          "name": "Chetpet Lake",
+          "code": "CLC",
+          "min": 22,
+          "lat": 13.088317,
+          "lng": 80.236797,
+          "area": "Kilpauk"
+        },
+        {
+          "name": "Arumbakkam",
+          "code": "AAR",
+          "min": 46,
+          "lat": 13.07079,
+          "lng": 80.191622,
+          "area": "Koyambedu"
+        },
+        {
+          "name": "Koyambedu Market",
+          "code": "KMK",
+          "min": 52,
+          "lat": 13.060778,
+          "lng": 80.189488,
+          "area": "Koyambedu"
+        }
+      ],
+      "first": "05:15",
+      "last": "22:00",
+      "frequency_minutes": 8,
+      "walk_start_min": 3,
+      "walk_end_min": 3,
+      "stops_well_lit": true,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "23C",
+      "number": "23C",
+      "mode": "bus",
+      "name": "Egmore Station - Adyar Depot",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 20,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Egmore Station",
+          "code": "ESE",
+          "min": 0,
+          "lat": 13.089038,
+          "lng": 80.260977,
+          "area": "Egmore"
+        },
+        {
+          "name": "Pantheon Road",
+          "code": "PRP",
+          "min": 4,
+          "lat": 13.085147,
+          "lng": 80.264577,
+          "area": "Egmore"
+        },
+        {
+          "name": "Mylapore",
+          "code": "MMY",
+          "min": 32,
+          "lat": 13.028788,
+          "lng": 80.263327,
+          "area": "Mylapore"
+        },
+        {
+          "name": "Mandaveli",
+          "code": "MMA",
+          "min": 39,
+          "lat": 13.030655,
+          "lng": 80.250783,
+          "area": "Mylapore"
+        },
+        {
+          "name": "Adyar",
+          "code": "AAD",
+          "min": 57,
+          "lat": 12.995847,
+          "lng": 80.260528,
+          "area": "Adyar"
+        },
+        {
+          "name": "Adyar Depot",
+          "code": "ADA",
+          "min": 60,
+          "lat": 12.992845,
+          "lng": 80.256583,
+          "area": "Adyar"
+        }
+      ],
+      "first": "05:00",
+      "last": "22:00",
+      "frequency_minutes": 15,
+      "walk_start_min": 4,
+      "walk_end_min": 2,
+      "stops_well_lit": false,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "29C",
+      "number": "29C",
+      "mode": "bus",
+      "name": "Panagal Park - Thiruvanmiyur",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 10,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Panagal Park",
+          "code": "PPP",
+          "min": 0,
+          "lat": 13.037769,
+          "lng": 80.225456,
+          "area": "T Nagar"
+        },
+        {
+          "name": "Mambalam Station",
+          "code": "MSM",
+          "min": 8,
+          "lat": 13.053048,
+          "lng": 80.228645,
+          "area": "T Nagar"
+        },
+        {
+          "name": "Luz Corner",
+          "code": "LC2",
+          "min": 26,
+          "lat": 13.042069,
+          "lng": 80.263205,
+          "area": "Mylapore"
+        },
+        {
+          "name": "Santhome",
+          "code": "SSA",
+          "min": 35,
+          "lat": 13.02758,
+          "lng": 80.269343,
+          "area": "Mylapore"
+        },
+        {
+          "name": "Kasturba Nagar",
+          "code": "KNK",
+          "min": 52,
+          "lat": 12.99773,
+          "lng": 80.256359,
+          "area": "Adyar"
+        },
+        {
+          "name": "Thiruvanmiyur",
+          "code": "TTH",
+          "min": 57,
+          "lat": 12.993063,
+          "lng": 80.250462,
+          "area": "Adyar"
+        }
+      ],
+      "first": "05:15",
+      "last": "23:00",
+      "frequency_minutes": 10,
+      "walk_start_min": 2,
+      "walk_end_min": 3,
+      "stops_well_lit": true,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "47A",
+      "number": "47A",
+      "mode": "bus",
+      "name": "Guindy Industrial Estate - Adyar Depot",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 12,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Guindy Industrial Estate",
+          "code": "GIE",
+          "min": 0,
+          "lat": 13.014253,
+          "lng": 80.221838,
+          "area": "Guindy"
+        },
+        {
+          "name": "Kathipara",
+          "code": "KKA",
+          "min": 3,
+          "lat": 13.009868,
+          "lng": 80.223995,
+          "area": "Guindy"
+        },
+        {
+          "name": "Velachery Bus Terminus",
+          "code": "VBT",
+          "min": 15,
+          "lat": 12.987885,
+          "lng": 80.214248,
+          "area": "Velachery"
+        },
+        {
+          "name": "Vijaya Nagar",
+          "code": "VNV",
+          "min": 22,
+          "lat": 12.977161,
+          "lng": 80.220432,
+          "area": "Velachery"
+        },
+        {
+          "name": "Adyar",
+          "code": "AAD",
+          "min": 44,
+          "lat": 12.995847,
+          "lng": 80.260528,
+          "area": "Adyar"
+        },
+        {
+          "name": "Adyar Depot",
+          "code": "ADA",
+          "min": 47,
+          "lat": 12.992845,
+          "lng": 80.256583,
+          "area": "Adyar"
+        }
+      ],
+      "first": "05:30",
+      "last": "22:00",
+      "frequency_minutes": 15,
+      "walk_start_min": 2,
+      "walk_end_min": 2,
+      "stops_well_lit": true,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "12B",
+      "number": "12B",
+      "mode": "bus",
+      "name": "Purasawalkam - Mandaveli",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 10,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Purasawalkam",
+          "code": "PPU",
+          "min": 0,
+          "lat": 13.072318,
+          "lng": 80.241571,
+          "area": "Kilpauk"
+        },
+        {
+          "name": "Kilpauk Garden",
+          "code": "KGK",
+          "min": 6,
+          "lat": 13.079631,
+          "lng": 80.250499,
+          "area": "Kilpauk"
+        },
+        {
+          "name": "Ega Theatre",
+          "code": "ETE",
+          "min": 12,
+          "lat": 13.072971,
+          "lng": 80.258911,
+          "area": "Egmore"
+        },
+        {
+          "name": "Egmore Station",
+          "code": "ESE",
+          "min": 21,
+          "lat": 13.089038,
+          "lng": 80.260977,
+          "area": "Egmore"
+        },
+        {
+          "name": "Mylapore",
+          "code": "MMY",
+          "min": 51,
+          "lat": 13.028788,
+          "lng": 80.263327,
+          "area": "Mylapore"
+        },
+        {
+          "name": "Mandaveli",
+          "code": "MMA",
+          "min": 58,
+          "lat": 13.030655,
+          "lng": 80.250783,
+          "area": "Mylapore"
+        }
+      ],
+      "first": "04:45",
+      "last": "22:30",
+      "frequency_minutes": 12,
+      "walk_start_min": 2,
+      "walk_end_min": 2,
+      "stops_well_lit": true,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "18A",
+      "number": "18A",
+      "mode": "bus",
+      "name": "Chromepet - Pondy Bazaar",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 15,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Chromepet",
+          "code": "CCH",
+          "min": 0,
+          "lat": 12.925861,
+          "lng": 80.107349,
+          "area": "Tambaram"
+        },
+        {
+          "name": "Tambaram",
+          "code": "TT2",
+          "min": 5,
+          "lat": 12.934083,
+          "lng": 80.107032,
+          "area": "Tambaram"
+        },
+        {
+          "name": "Saidapet",
+          "code": "SS2",
+          "min": 68,
+          "lat": 13.005921,
+          "lng": 80.217891,
+          "area": "Guindy"
+        },
+        {
+          "name": "Guindy Industrial Estate",
+          "code": "GIE",
+          "min": 73,
+          "lat": 13.014253,
+          "lng": 80.221838,
+          "area": "Guindy"
+        },
+        {
+          "name": "T Nagar Bus Terminus",
+          "code": "TNB",
+          "min": 89,
+          "lat": 13.041758,
+          "lng": 80.238634,
+          "area": "T Nagar"
+        },
+        {
+          "name": "Pondy Bazaar",
+          "code": "PBP",
+          "min": 95,
+          "lat": 13.044547,
+          "lng": 80.227604,
+          "area": "T Nagar"
+        }
+      ],
+      "first": "05:15",
+      "last": "23:00",
+      "frequency_minutes": 12,
+      "walk_start_min": 2,
+      "walk_end_min": 3,
+      "stops_well_lit": false,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "21L",
+      "number": "21L",
+      "mode": "bus",
+      "name": "Kathipara - Ega Theatre",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 12,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Kathipara",
+          "code": "KKA",
+          "min": 0,
+          "lat": 13.009868,
+          "lng": 80.223995,
+          "area": "Guindy"
+        },
+        {
+          "name": "Saidapet",
+          "code": "SS2",
+          "min": 4,
+          "lat": 13.005921,
+          "lng": 80.217891,
+          "area": "Guindy"
+        },
+        {
+          "name": "Panagal Park",
+          "code": "PPP",
+          "min": 21,
+          "lat": 13.037769,
+          "lng": 80.225456,
+          "area": "T Nagar"
+        },
+        {
+          "name": "Mambalam Station",
+          "code": "MSM",
+          "min": 29,
+          "lat": 13.053048,
+          "lng": 80.228645,
+          "area": "T Nagar"
+        },
+        {
+          "name": "Pantheon Road",
+          "code": "PRP",
+          "min": 53,
+          "lat": 13.085147,
+          "lng": 80.264577,
+          "area": "Egmore"
+        },
+        {
+          "name": "Ega Theatre",
+          "code": "ETE",
+          "min": 60,
+          "lat": 13.072971,
+          "lng": 80.258911,
+          "area": "Egmore"
+        }
+      ],
+      "first": "05:00",
+      "last": "22:00",
+      "frequency_minutes": 15,
+      "walk_start_min": 4,
+      "walk_end_min": 3,
+      "stops_well_lit": true,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "45B",
+      "number": "45B",
+      "mode": "bus",
+      "name": "Taramani - Vadapalani Bus Depot",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 10,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Taramani",
+          "code": "TTA",
+          "min": 0,
+          "lat": 12.969704,
+          "lng": 80.219581,
+          "area": "Velachery"
+        },
+        {
+          "name": "Velachery Bus Terminus",
+          "code": "VBT",
+          "min": 10,
+          "lat": 12.987885,
+          "lng": 80.214248,
+          "area": "Velachery"
+        },
+        {
+          "name": "Guindy Industrial Estate",
+          "code": "GIE",
+          "min": 24,
+          "lat": 13.014253,
+          "lng": 80.221838,
+          "area": "Guindy"
+        },
+        {
+          "name": "Kathipara",
+          "code": "KKA",
+          "min": 27,
+          "lat": 13.009868,
+          "lng": 80.223995,
+          "area": "Guindy"
+        },
+        {
+          "name": "KK Nagar",
+          "code": "KN2",
+          "min": 45,
+          "lat": 13.042616,
+          "lng": 80.209131,
+          "area": "Vadapalani"
+        },
+        {
+          "name": "Vadapalani Bus Depot",
+          "code": "VBD",
+          "min": 48,
+          "lat": 13.043115,
+          "lng": 80.213466,
+          "area": "Vadapalani"
+        }
+      ],
+      "first": "05:00",
+      "last": "23:00",
+      "frequency_minutes": 8,
+      "walk_start_min": 2,
+      "walk_end_min": 2,
+      "stops_well_lit": true,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "51P",
+      "number": "51P",
+      "mode": "bus",
+      "name": "Pallavaram - Thiruvanmiyur",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 18,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Pallavaram",
+          "code": "PPA",
+          "min": 0,
+          "lat": 12.916869,
+          "lng": 80.091645,
+          "area": "Tambaram"
+        },
+        {
+          "name": "Tambaram Sanatorium",
+          "code": "TST",
+          "min": 6,
+          "lat": 12.916319,
+          "lng": 80.101665,
+          "area": "Tambaram"
+        },
+        {
+          "name": "Vijaya Nagar",
+          "code": "VNV",
+          "min": 70,
+          "lat": 12.977161,
+          "lng": 80.220432,
+          "area": "Velachery"
+        },
+        {
+          "name": "Taramani",
+          "code": "TTA",
+          "min": 75,
+          "lat": 12.969704,
+          "lng": 80.219581,
+          "area": "Velachery"
+        },
+        {
+          "name": "Kasturba Nagar",
+          "code": "KNK",
+          "min": 98,
+          "lat": 12.99773,
+          "lng": 80.256359,
+          "area": "Adyar"
+        },
+        {
+          "name": "Thiruvanmiyur",
+          "code": "TTH",
+          "min": 103,
+          "lat": 12.993063,
+          "lng": 80.250462,
+          "area": "Adyar"
+        }
+      ],
+      "first": "04:45",
+      "last": "22:00",
+      "frequency_minutes": 15,
+      "walk_start_min": 4,
+      "walk_end_min": 2,
+      "stops_well_lit": true,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "54",
+      "number": "54",
+      "mode": "bus",
+      "name": "CMBT Bus Terminus - Guindy Industrial Estate",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 20,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "CMBT Bus Terminus",
+          "code": "CBT",
+          "min": 0,
+          "lat": 13.065815,
+          "lng": 80.191611,
+          "area": "Koyambedu"
+        },
+        {
+          "name": "Arumbakkam",
+          "code": "AAR",
+          "min": 3,
+          "lat": 13.07079,
+          "lng": 80.191622,
+          "area": "Koyambedu"
+        },
+        {
+          "name": "Ashok Nagar",
+          "code": "AN2",
+          "min": 14,
+          "lat": 13.061893,
+          "lng": 80.211125,
+          "area": "Vadapalani"
+        },
+        {
+          "name": "KK Nagar",
+          "code": "KN2",
+          "min": 24,
+          "lat": 13.042616,
+          "lng": 80.209131,
+          "area": "Vadapalani"
+        },
+        {
+          "name": "Saidapet",
+          "code": "SS2",
+          "min": 43,
+          "lat": 13.005921,
+          "lng": 80.217891,
+          "area": "Guindy"
+        },
+        {
+          "name": "Guindy Industrial Estate",
+          "code": "GIE",
+          "min": 48,
+          "lat": 13.014253,
+          "lng": 80.221838,
+          "area": "Guindy"
+        }
+      ],
+      "first": "05:00",
+      "last": "22:00",
+      "frequency_minutes": 10,
+      "walk_start_min": 4,
+      "walk_end_min": 2,
+      "stops_well_lit": true,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "99",
+      "number": "99",
+      "mode": "bus",
+      "name": "Adyar - Pantheon Road",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 20,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Adyar",
+          "code": "AAD",
+          "min": 0,
+          "lat": 12.995847,
+          "lng": 80.260528,
+          "area": "Adyar"
+        },
+        {
+          "name": "Adyar Depot",
+          "code": "ADA",
+          "min": 3,
+          "lat": 12.992845,
+          "lng": 80.256583,
+          "area": "Adyar"
+        },
+        {
+          "name": "Luz Corner",
+          "code": "LC2",
+          "min": 28,
+          "lat": 13.042069,
+          "lng": 80.263205,
+          "area": "Mylapore"
+        },
+        {
+          "name": "Santhome",
+          "code": "SSA",
+          "min": 37,
+          "lat": 13.02758,
+          "lng": 80.269343,
+          "area": "Mylapore"
+        },
+        {
+          "name": "Egmore Station",
+          "code": "ESE",
+          "min": 68,
+          "lat": 13.089038,
+          "lng": 80.260977,
+          "area": "Egmore"
+        },
+        {
+          "name": "Pantheon Road",
+          "code": "PRP",
+          "min": 72,
+          "lat": 13.085147,
+          "lng": 80.264577,
+          "area": "Egmore"
+        }
+      ],
+      "first": "05:30",
+      "last": "23:00",
+      "frequency_minutes": 8,
+      "walk_start_min": 3,
+      "walk_end_min": 3,
+      "stops_well_lit": true,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "119",
+      "number": "119",
+      "mode": "bus",
+      "name": "Velachery Bus Terminus - Pondy Bazaar",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 15,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Velachery Bus Terminus",
+          "code": "VBT",
+          "min": 0,
+          "lat": 12.987885,
+          "lng": 80.214248,
+          "area": "Velachery"
+        },
+        {
+          "name": "Vijaya Nagar",
+          "code": "VNV",
+          "min": 7,
+          "lat": 12.977161,
+          "lng": 80.220432,
+          "area": "Velachery"
+        },
+        {
+          "name": "Kathipara",
+          "code": "KKA",
+          "min": 24,
+          "lat": 13.009868,
+          "lng": 80.223995,
+          "area": "Guindy"
+        },
+        {
+          "name": "Saidapet",
+          "code": "SS2",
+          "min": 28,
+          "lat": 13.005921,
+          "lng": 80.217891,
+          "area": "Guindy"
+        },
+        {
+          "name": "T Nagar Bus Terminus",
+          "code": "TNB",
+          "min": 49,
+          "lat": 13.041758,
+          "lng": 80.238634,
+          "area": "T Nagar"
+        },
+        {
+          "name": "Pondy Bazaar",
+          "code": "PBP",
+          "min": 55,
+          "lat": 13.044547,
+          "lng": 80.227604,
+          "area": "T Nagar"
+        }
+      ],
+      "first": "05:00",
+      "last": "23:00",
+      "frequency_minutes": 15,
+      "walk_start_min": 3,
+      "walk_end_min": 3,
+      "stops_well_lit": true,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "570",
+      "number": "570",
+      "mode": "bus",
+      "name": "Koyambedu Market - Tambaram",
+      "is_free": false,
+      "free_for_women": false,
+      "fare_inr": 40,
+      "fare_others_inr": 18,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Koyambedu Market",
+          "code": "KMK",
+          "min": 0,
+          "lat": 13.060778,
+          "lng": 80.189488,
+          "area": "Koyambedu"
+        },
+        {
+          "name": "CMBT Bus Terminus",
+          "code": "CBT",
+          "min": 4,
+          "lat": 13.065815,
+          "lng": 80.191611,
+          "area": "Koyambedu"
+        },
+        {
+          "name": "Guindy Industrial Estate",
+          "code": "GIE",
+          "min": 33,
+          "lat": 13.014253,
+          "lng": 80.221838,
+          "area": "Guindy"
+        },
+        {
+          "name": "Kathipara",
+          "code": "KKA",
+          "min": 36,
+          "lat": 13.009868,
+          "lng": 80.223995,
+          "area": "Guindy"
+        },
+        {
+          "name": "Chromepet",
+          "code": "CCH",
+          "min": 105,
+          "lat": 12.925861,
+          "lng": 80.107349,
+          "area": "Tambaram"
+        },
+        {
+          "name": "Tambaram",
+          "code": "TT2",
+          "min": 110,
+          "lat": 12.934083,
+          "lng": 80.107032,
+          "area": "Tambaram"
+        }
+      ],
+      "first": "05:15",
+      "last": "23:00",
+      "frequency_minutes": 8,
+      "walk_start_min": 4,
+      "walk_end_min": 3,
+      "stops_well_lit": false,
+      "notes": "AC deluxe, paid",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "M70",
+      "number": "M70",
+      "mode": "bus",
+      "name": "Arumbakkam - Mambalam Station",
+      "is_free": false,
+      "free_for_women": false,
+      "fare_inr": 25,
+      "fare_others_inr": 10,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Arumbakkam",
+          "code": "AAR",
+          "min": 0,
+          "lat": 13.07079,
+          "lng": 80.191622,
+          "area": "Koyambedu"
+        },
+        {
+          "name": "Koyambedu Market",
+          "code": "KMK",
+          "min": 6,
+          "lat": 13.060778,
+          "lng": 80.189488,
+          "area": "Koyambedu"
+        },
+        {
+          "name": "Vadapalani Bus Depot",
+          "code": "VBD",
+          "min": 21,
+          "lat": 13.043115,
+          "lng": 80.213466,
+          "area": "Vadapalani"
+        },
+        {
+          "name": "Ashok Nagar",
+          "code": "AN2",
+          "min": 31,
+          "lat": 13.061893,
+          "lng": 80.211125,
+          "area": "Vadapalani"
+        },
+        {
+          "name": "Panagal Park",
+          "code": "PPP",
+          "min": 45,
+          "lat": 13.037769,
+          "lng": 80.225456,
+          "area": "T Nagar"
+        },
+        {
+          "name": "Mambalam Station",
+          "code": "MSM",
+          "min": 53,
+          "lat": 13.053048,
+          "lng": 80.228645,
+          "area": "T Nagar"
+        }
+      ],
+      "first": "05:00",
+      "last": "21:30",
+      "frequency_minutes": 15,
+      "walk_start_min": 4,
+      "walk_end_min": 3,
+      "stops_well_lit": true,
+      "notes": "AC deluxe, paid",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "147",
+      "number": "147",
+      "mode": "bus",
+      "name": "Anna Nagar Roundtana - Egmore Station",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 10,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Anna Nagar Roundtana",
+          "code": "ANR",
+          "min": 0,
+          "lat": 13.089836,
+          "lng": 80.204141,
+          "area": "Anna Nagar"
+        },
+        {
+          "name": "Shanthi Colony",
+          "code": "SCS",
+          "min": 6,
+          "lat": 13.0815,
+          "lng": 80.210044,
+          "area": "Anna Nagar"
+        },
+        {
+          "name": "Chetpet Lake",
+          "code": "CLC",
+          "min": 20,
+          "lat": 13.088317,
+          "lng": 80.236797,
+          "area": "Kilpauk"
+        },
+        {
+          "name": "Purasawalkam",
+          "code": "PPU",
+          "min": 29,
+          "lat": 13.072318,
+          "lng": 80.241571,
+          "area": "Kilpauk"
+        },
+        {
+          "name": "Ega Theatre",
+          "code": "ETE",
+          "min": 38,
+          "lat": 13.072971,
+          "lng": 80.258911,
+          "area": "Egmore"
+        },
+        {
+          "name": "Egmore Station",
+          "code": "ESE",
+          "min": 47,
+          "lat": 13.089038,
+          "lng": 80.260977,
+          "area": "Egmore"
+        }
+      ],
+      "first": "05:00",
+      "last": "22:30",
+      "frequency_minutes": 10,
+      "walk_start_min": 3,
+      "walk_end_min": 2,
+      "stops_well_lit": true,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "7M",
+      "number": "7M",
+      "mode": "bus",
+      "name": "Mylapore - Vadapalani Bus Depot",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 20,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Mylapore",
+          "code": "MMY",
+          "min": 0,
+          "lat": 13.028788,
+          "lng": 80.263327,
+          "area": "Mylapore"
+        },
+        {
+          "name": "Mandaveli",
+          "code": "MMA",
+          "min": 7,
+          "lat": 13.030655,
+          "lng": 80.250783,
+          "area": "Mylapore"
+        },
+        {
+          "name": "T Nagar Bus Terminus",
+          "code": "TNB",
+          "min": 16,
+          "lat": 13.041758,
+          "lng": 80.238634,
+          "area": "T Nagar"
+        },
+        {
+          "name": "Pondy Bazaar",
+          "code": "PBP",
+          "min": 22,
+          "lat": 13.044547,
+          "lng": 80.227604,
+          "area": "T Nagar"
+        },
+        {
+          "name": "KK Nagar",
+          "code": "KN2",
+          "min": 32,
+          "lat": 13.042616,
+          "lng": 80.209131,
+          "area": "Vadapalani"
+        },
+        {
+          "name": "Vadapalani Bus Depot",
+          "code": "VBD",
+          "min": 35,
+          "lat": 13.043115,
+          "lng": 80.213466,
+          "area": "Vadapalani"
+        }
+      ],
+      "first": "05:15",
+      "last": "22:00",
+      "frequency_minutes": 20,
+      "walk_start_min": 3,
+      "walk_end_min": 3,
+      "stops_well_lit": true,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "41D",
+      "number": "41D",
+      "mode": "bus",
+      "name": "Kilpauk Garden - KK Nagar",
+      "is_free": true,
+      "free_for_women": true,
+      "fare_inr": 0,
+      "fare_others_inr": 10,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Kilpauk Garden",
+          "code": "KGK",
+          "min": 0,
+          "lat": 13.079631,
+          "lng": 80.250499,
+          "area": "Kilpauk"
+        },
+        {
+          "name": "Chetpet Lake",
+          "code": "CLC",
+          "min": 9,
+          "lat": 13.088317,
+          "lng": 80.236797,
+          "area": "Kilpauk"
+        },
+        {
+          "name": "CMBT Bus Terminus",
+          "code": "CBT",
+          "min": 34,
+          "lat": 13.065815,
+          "lng": 80.191611,
+          "area": "Koyambedu"
+        },
+        {
+          "name": "Arumbakkam",
+          "code": "AAR",
+          "min": 37,
+          "lat": 13.07079,
+          "lng": 80.191622,
+          "area": "Koyambedu"
+        },
+        {
+          "name": "Ashok Nagar",
+          "code": "AN2",
+          "min": 48,
+          "lat": 13.061893,
+          "lng": 80.211125,
+          "area": "Vadapalani"
+        },
+        {
+          "name": "KK Nagar",
+          "code": "KN2",
+          "min": 58,
+          "lat": 13.042616,
+          "lng": 80.209131,
+          "area": "Vadapalani"
+        }
+      ],
+      "first": "05:00",
+      "last": "22:30",
+      "frequency_minutes": 8,
+      "walk_start_min": 3,
+      "walk_end_min": 2,
+      "stops_well_lit": true,
+      "notes": "Ordinary bus, free for women",
+      "source": "sample",
+      "generated": true
+    },
+    {
+      "id": "A1",
+      "number": "A1",
+      "mode": "bus",
+      "name": "Pallavaram - Thiruvanmiyur",
+      "is_free": false,
+      "free_for_women": false,
+      "fare_inr": 30,
+      "fare_others_inr": 12,
+      "operator": "MTC",
+      "stops": [
+        {
+          "name": "Pallavaram",
+          "code": "PPA",
+          "min": 0,
+          "lat": 12.916869,
+          "lng": 80.091645,
+          "area": "Tambaram"
+        },
+        {
+          "name": "Tambaram Sanatorium",
+          "code": "TST",
+          "min": 6,
+          "lat": 12.916319,
+          "lng": 80.101665,
+          "area": "Tambaram"
+        },
+        {
+          "name": "Saidapet",
+          "code": "SS2",
+          "min": 76,
+          "lat": 13.005921,
+          "lng": 80.217891,
+          "area": "Guindy"
+        },
+        {
+          "name": "Guindy Industrial Estate",
+          "code": "GIE",
+          "min": 81,
+          "lat": 13.014253,
+          "lng": 80.221838,
+          "area": "Guindy"
+        },
+        {
+          "name": "Kasturba Nagar",
+          "code": "KNK",
+          "min": 100,
+          "lat": 12.99773,
+          "lng": 80.256359,
+          "area": "Adyar"
+        },
+        {
+          "name": "Thiruvanmiyur",
+          "code": "TTH",
+          "min": 105,
+          "lat": 12.993063,
+          "lng": 80.250462,
+          "area": "Adyar"
+        }
+      ],
+      "first": "04:45",
+      "last": "21:30",
+      "frequency_minutes": 20,
+      "walk_start_min": 3,
+      "walk_end_min": 3,
+      "stops_well_lit": true,
+      "notes": "AC deluxe, paid",
+      "source": "sample",
+      "generated": true
     }
   ]
 }

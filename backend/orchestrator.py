@@ -74,6 +74,8 @@ def handle(text: str, lang: str = None, channel: str = "app", user_id: str = "u_
         "card": result.get("card"),
         "actions": result.get("actions", []),
         "steps": steps,
+        "agent_steps": steps,  # same list, the name the n8n workflow reads
+        "fallback": (result.get("card") or {}).get("type") == "fallback",
         "aval_state": result.get("aval_state", "talking"),
         "sms_text": guardrails.clamp_sms(result.get("sms") or result["text"], tamil=False),
         "intake": public_intake,
@@ -311,6 +313,20 @@ def _sos(ctx):
             "card": {"type": "sos", **res}}
 
 
+def _call_me(ctx):
+    """CALL: AVAL phones her back (Twilio) and talks in Tamil. Falls back to SMS honestly."""
+    from .agents import callback
+    if ctx["channel"] != "sms" or not ctx["user_phone"]:
+        return {"text": "Tap the mic to talk to AVAL here. CALL works from SMS.", "aval_state": "idle"}
+    res = callback.start(ctx["user_phone"], lang="ta" if ctx["ta"] or ctx["parsed"].get("lang") != "en" else "en")
+    if res["status"] == "calling":
+        ctx["steps"].append(_step("Calling you back now"))
+        return {"text": "Calling you now from SafePath. Answer to talk to AVAL.", "card": {"type": "call", **res}}
+    ctx["steps"].append(_step("Call-back not available right now", "warn"))
+    return {"text": "Call-back is not available right now. Send your trip by SMS. Eg: Nungambakkam bus",
+            "card": {"type": "call", **res}}
+
+
 def _help(ctx):
     return {"text": _t("help", ctx["ta"]), "aval_state": "idle"}
 
@@ -324,5 +340,5 @@ HANDLERS = {
     "plan_trip": _plan_trip, "free_bus_now": _free_bus, "safe_route_home": _safe_route_home,
     "places_open_now": _places_open, "place_details": _place_details, "book_ticket": _book_ticket,
     "share_trip": _share_trip, "start_trip": _start_trip, "reached": _reached, "check_in": _check_in,
-    "stop": _stop, "sos": _sos, "help": _help, "unknown": _unknown,
+    "stop": _stop, "sos": _sos, "help": _help, "call_me": _call_me, "unknown": _unknown,
 }

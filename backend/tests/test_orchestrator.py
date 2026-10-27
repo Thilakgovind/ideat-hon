@@ -69,5 +69,5 @@ def test_free_bus_now():
 
 def test_unknown_gets_fallback():
     r = orchestrator.handle("blah blah")
-    assert r["reply"]["text"] == "Sorry, tell me the place name. Eg: Nungambakkam bus"
-    assert r["sms_text"] == "Sorry, tell me the place name. Eg: Nungambakkam bus"
+    assert r["reply"]["text"] == "Sorry, send place name. Eg: Nungambakkam bus"
+    assert r["sms_text"] == "Sorry, send place name. Eg: Nungambakkam bus"

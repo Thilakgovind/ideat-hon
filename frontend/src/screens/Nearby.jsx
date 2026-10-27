@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
 
 import Confirm from '@/components/Confirm'
+import SafeMap from '@/components/SafeMap'
 import { BackButton, ErrorState, Loading } from '@/components/kit'
 import { useStartTrip } from '@/components/StartTrip'
 import { api } from '@/lib/api'
@@ -40,6 +41,39 @@ export default function Nearby() {
   const near = safe?.your_people?.[0]
   const atHome = walk?.at_destination?.[0]
 
+  // Live MapLibre layers from the API: green safest path, dashed quiet path, open / closed shops,
+  // anonymous crowd glow along each path, and your accepted circle (sample positions).
+  const mapRoutes = useMemo(() => [
+    quiet && { id: 'quiet', coords: quiet.polyline, color: '#8E86A0', width: 4, dashed: true },
+    safe && { id: 'safe', coords: safe.polyline, color: '#2EE6A8', width: 5, glow: true },
+  ].filter(Boolean), [safe, quiet])
+  const mapGlows = useMemo(() => [safe, quiet].filter(Boolean).flatMap((p) => {
+    const pts = []
+    for (let i = 0; i < p.polyline.length - 1; i++) {
+      const [a, b] = [p.polyline[i], p.polyline[i + 1]]
+      for (const f of [0.15, 0.5, 0.85]) pts.push({ lat: a[0] + (b[0] - a[0]) * f, lng: a[1] + (b[1] - a[1]) * f, level: p.people_around })
+    }
+    return pts
+  }), [safe, quiet])
+  const mapPins = useMemo(() => {
+    const chip = (text, color, fg = '#24132F') => {
+      const el = document.createElement('div')
+      el.style.cssText = `display:flex;align-items:center;gap:6px;background:rgba(18,15,25,.9);border:1.5px solid ${color};border-radius:999px;padding:3px 9px 3px 3px;color:#F4EEF8;font:700 11px Noto Sans,sans-serif;white-space:nowrap`
+      el.innerHTML = `<span style="width:22px;height:22px;border-radius:11px;background:${color};color:${fg};display:flex;align-items:center;justify-content:center;font-weight:800">${text[0]}</span>${text}`
+      return el
+    }
+    const pins = []
+    if (safe?.polyline?.length) {
+      const start = safe.polyline[0]
+      pins.push({ id: 'you', lat: start[0], lng: start[1], color: '#FF4F8B', size: 20, label: 'You · bus stop' })
+    }
+    for (const s of safe?.open_shops || []) pins.push({ id: s.id, lat: s.lat, lng: s.lng, color: '#2EE6A8', label: `${s.name} (open)` })
+    for (const s of [...(quiet?.closed_shops || []), ...(safe?.closed_shops || [])]) pins.push({ id: s.id, lat: s.lat, lng: s.lng, color: '#3A3448', size: 14, label: `${s.name} (closed)` })
+    if (near?.lat) pins.push({ id: near.id, lat: near.lat, lng: near.lng, element: chip(`${near.label} · ${near.off_route_m} m`, '#FFB52E') })
+    if (atHome?.lat) pins.push({ id: atHome.id, lat: atHome.lat, lng: atHome.lng, element: chip(`${atHome.label} · home`, '#FF4F8B', '#fff') })
+    return pins
+  }, [safe, quiet, near, atHome])
+
   async function sendAsk(confirmed) {
     setBusy(true)
     try {
@@ -56,6 +90,8 @@ export default function Nearby() {
 
   return (
     <div className="relative min-h-dvh overflow-hidden bg-night text-[#F4EEF8]">
+      <SafeMap theme="dark" className="absolute inset-x-0 top-0 h-[540px] w-full" routes={mapRoutes} pins={mapPins} glows={mapGlows}
+        fallback={<>
       <svg viewBox="0 0 390 560" aria-hidden="true" className="absolute inset-x-0 top-0 w-full">
         <defs>
           <radialGradient id="crowd"><stop offset="0" stopColor="#FFB52E" stopOpacity=".55" /><stop offset="1" stopColor="#FFB52E" stopOpacity="0" /></radialGradient>
@@ -104,6 +140,7 @@ export default function Nearby() {
           {t(`${quiet.people_label} · ${quiet.shops_open ? `${quiet.shops_open} shops open` : 'shops closed'}`, `${quiet.people_label_ta} · கடைகள் மூடல்`)}
         </span>
       )}
+      </>} />
 
       <div className="absolute top-4 right-4 left-4 flex items-center gap-2.5">
         <BackButton className="bg-[rgba(36,30,48,0.92)] [&_svg]:stroke-[#F4EEF8]" />
