@@ -44,7 +44,11 @@ def create_order(option: dict, frm: str, to: str, confirmed: bool = False, time:
                            auth=(config.env("RAZORPAY_KEY_ID"), config.env("RAZORPAY_KEY_SECRET")), timeout=10)
             if r.status_code in (200, 201):
                 order = {"order_id": r.json()["id"], "mode": "test"}
+                config.RUNTIME["razorpay_error"] = None
+            else:
+                config.RUNTIME["razorpay_error"] = f"HTTP {r.status_code}"
         except httpx.HTTPError:
+            config.RUNTIME["razorpay_error"] = "network error"
             order = None
     if order is None:
         order = {"order_id": "order_mock_" + uuid.uuid4().hex[:10], "mode": "mock",

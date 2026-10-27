@@ -9,6 +9,9 @@ external service has a mock, and all data in `/data` is labelled `"source": "sam
 python -m venv .venv
 .venv/Scripts/python -m pip install -r backend/requirements.txt
 .venv/Scripts/python -m uvicorn backend.app:app --reload --port 8000
+
+If Windows blocks port 8000 (WinError 10013), use 8001 and point the frontend at it before `npm run dev`:
+`$env:SAFEPATH_API="http://localhost:8001"`. Always start from the project folder, not the home folder.
 ```
 
 Open http://localhost:8000/health and http://localhost:8000/docs (interactive API).

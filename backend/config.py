@@ -43,6 +43,10 @@ def demo_mode() -> bool:
     return env("DEMO_MODE").lower() not in ("false", "0", "no")
 
 
+# Last runtime failure per service (set by agents, shown in /health). Never holds key values.
+RUNTIME = {"razorpay_error": None}
+
+
 def razorpay_mode() -> str:
     """'test' only with rzp_test_ keys. Live keys are refused (mock instead)."""
     if not has("razorpay"):
@@ -69,6 +73,8 @@ def services_status() -> dict:
     status = {name: "real" if has(name) else "mock" for name in SERVICE_KEYS}
     rp = razorpay_mode()
     status["razorpay"] = {"test": "real (test mode)", "mock": "mock", "refused_live": "mock (live key refused)"}[rp]
+    if rp == "test" and RUNTIME["razorpay_error"]:
+        status["razorpay"] = f"FAILED ({RUNTIME['razorpay_error']}): check the test secret"
     status["maptiler"] += " (frontend map)"
     status["sms_provider"] = sms_provider()
     status["public_backend_url"] = "set" if env("PUBLIC_BACKEND_URL") else "missing"
