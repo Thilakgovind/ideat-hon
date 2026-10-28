@@ -101,7 +101,7 @@ def _ticket(payment_id, summary, option, mode):
         "best_exit": metro.get("best_exit") if metro else None,
         "qr_data": f"SAFEPATH|{tid}|{lines}|{summary['from']}>{summary['to']}|INR{summary['amount_inr']}|{valid_until}|{mode.upper()}",
         "is_test": True,  # V1 never takes real money
-        "label": "Free ride - no ticket needed" if mode == "free" else "Test ticket - not valid for travel",
+        "label": "No ticket on ordinary buses: free for women on ordinary (white-board) buses" if mode == "free" else "Test ticket - not valid for travel",
         "source": "sample",
     }
     TICKETS[tid] = ticket

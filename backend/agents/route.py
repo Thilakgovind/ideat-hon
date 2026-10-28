@@ -16,6 +16,8 @@ AUTO_SPEED_KMPH = 22
 ROAD_FACTOR = 1.35
 WALK_KMPH = 4.5
 WALK_MAX_KM = 6
+MAX_WAIT_MIN = 60  # a bus more than an hour away is "not running now", not an option
+MAX_BUS_OPTIONS = 6  # real data has many buses on one road: keep the ones that arrive first
 BOOKING_LINKS = {
     "Namma Yatri": "https://nammayatri.in/",
     "Rapido": "https://www.rapido.bike/",
@@ -131,7 +133,8 @@ def _reversed_line(line, stops_key, extra_swap=()):
 def _bus_dirs():
     for r in data.routes():
         yield r
-        yield _reversed_line(r, "stops", [("walk_start_min", "walk_end_min")])
+        if not r.get("one_way"):  # real GTFS rows: each direction is its own row with its own timetable
+            yield _reversed_line(r, "stops", [("walk_start_min", "walk_end_min")])
 
 
 def _metro_dirs():
@@ -149,6 +152,9 @@ def _train_dirs():
 # ---------- departures ----------
 
 def _bus_times(route, offset, after, count=3):
+    if route.get("departures"):  # real timetable: exact departures from the first stop
+        times = sorted(data.to_minutes(d) + offset for d in route["departures"])
+        return [t for t in times if t >= after][:count]
     first, last, freq = data.to_minutes(route["first"]), data.to_minutes(route["last"]), route["frequency_minutes"]
     out, d = [], first
     while d <= last and len(out) < count:
@@ -212,6 +218,7 @@ def _bus_leg(route, i, j, at):
         "stops_well_lit": route.get("stops_well_lit", False),
         "stops": [s["name"] for s in stops[i:j + 1]],
         "source": route.get("source", "sample"),
+        **({"free_note": route["free_note"]} if route.get("free_note") else {}),
     }
 
 
@@ -274,7 +281,10 @@ def _option(kind, legs, at, extra=None):
         "board_code": transit[0].get("from_code") if transit else None,
         "alight_code": transit[-1].get("to_code") if transit else None,
         "next": transit[0]["next"] if transit else [],
-        "source": "sample",
+        "wait_min": reach - at - total,
+        # real only when every ride in it is real (ChennaiGTFS); anything mixed is labelled sample
+        "source": transit[0]["source"] if transit and all(l.get("source", "sample") != "sample" for l in transit)
+        and len({l["source"] for l in transit}) == 1 else "sample",
     }
     opt.update(extra or {})
     return opt
@@ -319,8 +329,9 @@ def plan(frm: str, to: str, time=None, with_child: bool = False, modes=None) -> 
         i, j = _index(r["stops"], f), _index(r["stops"], t)
         if i is not None and j is not None and i < j:
             leg = _bus_leg(r, i, j, at + r["walk_start_min"])
-            if not leg["_next_min"]:
-                not_running.append(r["number"])
+            if not leg["_next_min"] or leg["_next_min"][0] - at > MAX_WAIT_MIN:
+                if r["number"] not in not_running:
+                    not_running.append(r["number"])
                 continue
             options.append(_option("bus", [_walk(r["walk_start_min"]), leg, _walk(r["walk_end_min"])], at))
 
@@ -336,7 +347,7 @@ def plan(frm: str, to: str, time=None, with_child: bool = False, modes=None) -> 
                 if m is None or n is None or m >= n:
                     continue
                 bus = _bus_leg(r, i, k, at + r["walk_start_min"])
-                if not bus["_next_min"]:
+                if not bus["_next_min"] or bus["_next_min"][0] - at > MAX_WAIT_MIN:
                     continue
                 metro_ready = bus["_next_min"][0] + bus["minutes"] + tr["walk_min"]
                 met = _metro_leg(line, m, n, metro_ready)
@@ -373,6 +384,9 @@ def plan(frm: str, to: str, time=None, with_child: bool = False, modes=None) -> 
                 "distance_km": auto["distance_km"], "is_free": True, "switches": 0, "board_at": None,
                 "board_code": None, "alight_code": None, "next": [], "source": "sample"})
 
+    buses = sorted((o for o in options if o["kind"] == "bus"), key=lambda o: o["total_min"] + o["wait_min"])
+    drop = {id(o) for o in buses[MAX_BUS_OPTIONS:]}
+    options = [o for o in options if id(o) not in drop]
     if modes:
         options = [o for o in options if any(m in o["kind"] for m in modes)]
     options = verify_options(options)
@@ -399,7 +413,7 @@ def arrivals(stop: str, time=None, free_only: bool = False) -> dict:
         for t in _bus_times(r, r["stops"][i]["min"], at):
             out.append({"route_id": r["id"], "number": r["number"], "towards": r["stops"][-1]["name"],
                         "time": data.fmt_minutes(t), "in_min": t - at, "is_free": r["free_for_women"],
-                        "fare_inr": 0 if r["free_for_women"] else r["fare_inr"]})
+                        "fare_inr": 0 if r["free_for_women"] else r["fare_inr"], "source": r.get("source", "sample")})
     out.sort(key=lambda x: x["in_min"])
     return {"stop": place, "time": data.fmt_minutes(at), "arrivals": out, "source": "sample"}
 

@@ -44,7 +44,7 @@ textbee webhook and n8n boxes below.
    - Event: **SMS received** (`MESSAGE_RECEIVED`)
    - Save, then copy the **signing secret** and store it:
      `.venv\Scripts\python -m backend.set_env TEXTBEE_WEBHOOK_SECRET`
-4. Test: from another phone, text the textbee phone `nungambakkam bus`. You get the 21G reply.
+4. Test: from another phone, text the textbee phone `nungambakkam bus`. You get a real-bus reply (eg 40H or 147B, from ChennaiGTFS).
    Commands: `START`, `REACHED`, `HELP`, `CALL`.
 5. `http://localhost:8000/api/demo/outbox` shows every send with provider + status (phones masked).
 

@@ -1,5 +1,6 @@
 from backend import orchestrator
 from backend.tests.conftest import at
+from backend.tests.helpers import REAL_BUSES, sms_bus
 
 
 def test_demo_chat_route_card_and_steps():
@@ -24,7 +25,7 @@ def test_tamil_reply_for_tamil_request():
 
 def test_sms_reply_fits_and_has_start():
     r = orchestrator.handle("nungambakkam bus 8am", channel="sms", user_id="u_sms")
-    assert len(r["sms_text"]) <= 160 and "21G" in r["sms_text"] and "START" in r["sms_text"]
+    assert len(r["sms_text"]) <= 160 and sms_bus(r["sms_text"]) in REAL_BUSES and "START" in r["sms_text"]
 
 
 def test_sms_after_last_bus_offers_auto():

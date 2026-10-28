@@ -3,55 +3,6 @@
   "note": "Sample Chennai MTC bus data for the demo. Not live timetables.",
   "routes": [
     {
-      "id": "21G",
-      "number": "21G",
-      "mode": "bus",
-      "name": "Anna Nagar West - Nungambakkam",
-      "is_free": true,
-      "free_for_women": true,
-      "fare_inr": 0,
-      "fare_others_inr": 15,
-      "operator": "MTC",
-      "stops": [
-        {
-          "name": "Anna Nagar West",
-          "code": "ANW",
-          "min": 0,
-          "lat": 13.0878,
-          "lng": 80.2006
-        },
-        {
-          "name": "Anna Nagar Arch",
-          "code": "ANA",
-          "min": 8,
-          "lat": 13.0846,
-          "lng": 80.2179
-        },
-        {
-          "name": "Kilpauk",
-          "code": "KLP",
-          "min": 18,
-          "lat": 13.0829,
-          "lng": 80.2417
-        },
-        {
-          "name": "Nungambakkam",
-          "code": "NMB",
-          "min": 30,
-          "lat": 13.0604,
-          "lng": 80.2422
-        }
-      ],
-      "first": "05:00",
-      "last": "22:30",
-      "frequency_minutes": 12,
-      "walk_start_min": 3,
-      "walk_end_min": 2,
-      "stops_well_lit": true,
-      "notes": "Free ordinary bus for women. Busy, well-lit stops. Passes the school on 2nd Avenue.",
-      "source": "sample"
-    },
-    {
       "id": "70",
       "number": "70",
       "mode": "bus",

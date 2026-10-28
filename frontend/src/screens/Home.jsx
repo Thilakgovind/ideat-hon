@@ -11,12 +11,13 @@ import { useApp } from '@/lib/store'
 export default function Home() {
   const t = useT()
   const navigate = useNavigate()
-  const { profile, tripId } = useApp()
+  const { profile, me, tripId } = useApp()
   const now = useNowIST()
   const [q, setQ] = useState('')
   const start = profile?.start_area || 'Anna Nagar West'
   const home = profile?.home_area || 'Nungambakkam'
   const [en, ta] = greeting(now.hour)
+  const name = me?.display_name || profile?.display_name
 
   const bus = useAsync(() => api.routes({ from: start, free_only: true }), [start, Math.floor(now.minutes / 5)])
   const circle = useAsync(() => api.circle(), [])
@@ -28,32 +29,38 @@ export default function Home() {
   return (
     <div className="relative flex min-h-dvh flex-col bg-cream">
       <div className="flex flex-1 flex-col gap-3 px-[18px] pt-[18px] pb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-0.5">
-            <span className="text-sm text-mute">{en} · <span className="font-tamil">{ta}</span></span>
-            <span className="text-[26px] font-extrabold">{profile?.display_name || '…'}</span>
+        <section className="sp-aurora relative overflow-hidden rounded-[28px] px-4 pt-4 pb-4 text-white shadow-[0_14px_30px_rgba(74,29,110,0.28)]">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex min-w-0 flex-col gap-0.5 pr-24">
+              <span className="text-sm text-white/80">{en} · <span className="font-tamil">{ta}</span></span>
+              <span className="truncate text-[28px] leading-tight font-extrabold">{name || '…'}</span>
+              <span className="mt-1 w-fit rounded-2xl rounded-tl-sm bg-white/18 px-3 py-1.5 text-[13px] font-semibold backdrop-blur-sm">
+                {t('Where are we going today?', 'இன்று எங்கே போகலாம்?')}
+              </span>
+            </div>
+            <Link to="/aval" aria-label={t('Ask AVAL', 'அவளிடம் கேள்')} className="absolute -right-1 bottom-[62px] block">
+              <img src={img.poseWave} alt="" className="sp-float h-[132px] w-[104px] object-contain drop-shadow-[0_8px_14px_rgba(36,19,47,0.35)]" />
+            </Link>
           </div>
-          <Link to="/aval" aria-label="Ask AVAL" className="flex size-[52px] items-center justify-center rounded-full bg-lilac shadow-[0_0_0_3px_#FFFFFF,0_0_0_5px_#FF4F8B]">
-            <img src={img.avalFaceSmile} alt="" className="size-[46px]" />
-          </Link>
-        </div>
 
-        {tripId && (
-          <Link to={`/trip/${tripId}`} className="flex items-center gap-2 rounded-2xl bg-mint px-3.5 py-2.5 text-sm font-extrabold text-night-2 no-underline">
-            <span className="size-2 rounded-full bg-night-2" /> {t('Trip in progress — open live view', 'பயணம் நடக்கிறது — நேரலை')}
-          </Link>
-        )}
+          {tripId && (
+            <Link to={`/trip/${tripId}`} className="mt-3 flex items-center gap-2 rounded-2xl bg-mint px-3.5 py-2.5 text-sm font-extrabold text-night-2 no-underline">
+              <span className="live-dot size-2 rounded-full bg-night-2" /> {t('Trip in progress — open live view', 'பயணம் நடக்கிறது — நேரலை')}
+            </Link>
+          )}
 
-        <form className="flex items-center gap-2.5" onSubmit={(e) => { e.preventDefault(); if (q.trim()) navigate(`/aval?q=${encodeURIComponent(q.trim())}`) }}>
-          <label htmlFor="where" className="flex h-14 min-w-0 flex-1 items-center gap-2.5 rounded-[18px] border-2 border-line bg-white px-4">
-            <Icon.search stroke="#6A5878" size={20} />
-            <input id="where" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Where to? · எங்கே?"
-              className="min-w-0 flex-1 bg-transparent text-base text-ink outline-none" />
-          </label>
-          <Link to="/aval?mic=1" aria-label="Speak to AVAL" className="flex size-14 items-center justify-center rounded-[18px] bg-plum">
-            <Icon.mic stroke="#FFFFFF" size={24} />
-          </Link>
-        </form>
+          <form className="mt-3 flex items-center gap-2" onSubmit={(e) => { e.preventDefault(); if (q.trim()) navigate(`/aval?q=${encodeURIComponent(q.trim())}`) }}>
+            <label htmlFor="where" className="flex h-14 min-w-0 flex-1 items-center gap-2.5 rounded-[18px] bg-white px-4 text-ink shadow-[0_6px_16px_rgba(36,19,47,0.18)]">
+              <Icon.search stroke="#6A5878" size={20} />
+              <input id="where" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Where to? · எங்கே?"
+                className="min-w-0 flex-1 bg-transparent text-base text-ink outline-none" />
+            </label>
+            <Link to="/aval?mic=1" aria-label={t('Speak to AVAL', 'அவளிடம் பேசு')}
+              className="flex size-14 shrink-0 items-center justify-center rounded-[18px] bg-marigold shadow-[0_6px_16px_rgba(246,166,35,0.45)]">
+              <Icon.mic stroke="#24132F" size={24} />
+            </Link>
+          </form>
+        </section>
 
         <div className="no-scrollbar flex gap-2 overflow-x-auto">
           {(profile?.saved_places || []).map((p) => (
@@ -70,14 +77,14 @@ export default function Home() {
             {bus.loading ? <span className="text-[15px] font-bold">{t('Checking free buses…', 'இலவச பஸ் பார்க்கிறது…')}</span>
               : bus.error ? <span className="text-[15px] font-bold">{t('Bus times unavailable', 'பஸ் நேரம் இல்லை')}</span>
               : next ? <>
-                <span className="text-[15px] font-bold">{t(`Free bus ${next.number} in ${next.in_min} min`, `இலவச பஸ் ${next.number} · ${next.in_min} நிமிடம்`)}</span>
+                <span className="text-[15px] font-bold">{t(`Bus ${next.number} in ${next.in_min} min`, `பஸ் ${next.number} · ${next.in_min} நிமிடம்`)}</span>
                 <span className="text-xs opacity-75">{start}{then ? ` · then ${clock(then.time)}` : ''}</span>
               </> : <>
-                <span className="text-[15px] font-bold">{t('No free bus right now', 'இப்போது இலவச பஸ் இல்லை')}</span>
+                <span className="text-[15px] font-bold">{t('No bus right now', 'இப்போது பஸ் இல்லை')}</span>
                 <span className="text-xs opacity-75">{t('Buses have stopped for tonight · try auto', 'இன்றிரவு பஸ் இல்லை')}</span>
               </>}
           </div>
-          {next && <span className="rounded-full bg-pink px-2 py-1 text-[11px] font-extrabold">FREE</span>}
+          {next && <span className="max-w-[118px] rounded-xl bg-pink px-2 py-1 text-center text-[10px] leading-tight font-extrabold">{t('Free for women on ordinary (white-board) buses', 'சாதாரண (வெள்ளை பலகை) பஸ்ஸில் பெண்களுக்கு இலவசம்')}</span>}
         </Link>
 
         <div className="flex items-baseline justify-between">

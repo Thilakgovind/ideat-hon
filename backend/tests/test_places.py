@@ -22,8 +22,9 @@ def test_type_and_chip_filters():
 
 def test_along_route():
     opt = next(o for o in route.plan("Anna Nagar West", "Nungambakkam", "08:00")["options"] if o["kind"] == "bus")
-    stops = {p["near_stop"] for p in places.along_route(opt, time="08:00")["places"]}
-    assert stops <= {"ANW", "NMB"} and stops
+    found = places.along_route(opt, time="08:00")["places"]
+    assert found  # real GTFS stops: places within 900 m of the board / alight stop
+    assert all(p["source"] == "sample" for p in found)
 
 
 def test_details_with_reviews_and_night_safety():

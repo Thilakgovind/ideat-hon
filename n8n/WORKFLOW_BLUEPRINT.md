@@ -324,7 +324,7 @@ Body:
    - Send: `"T Nagar to Nungambakkam 8 mani"`
    - Expect back within 5 seconds:
      ```
-     21G bus (FREE)
+     40H bus (free for women on ordinary / white-board buses)
      T. Nagar → Nungambakkam
      Every 15 min
      Wait at: Lakshmi Tea Stall (6:00-20:00)

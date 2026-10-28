@@ -34,7 +34,15 @@ def reset():
 
 
 def routes():
-    return load("routes")["routes"]
+    """Sample / Supabase bus routes + real MTC routes from ChennaiGTFS (data/gtfs_bus.json)."""
+    return load("routes")["routes"] + gtfs_buses()
+
+
+def gtfs_buses():
+    try:
+        return load("gtfs_bus")["routes"]
+    except FileNotFoundError:
+        return []
 
 
 def metro():
@@ -122,6 +130,15 @@ def stop_name(code: str):
         for s in stops:
             if s["code"] == code:
                 return s["name"]
+    return None
+
+
+def stop_coords(code: str):
+    """(lat, lng) of a bus stop by code, or None."""
+    for r in routes():
+        for s in r["stops"]:
+            if s["code"] == code and s.get("lat") is not None:
+                return s["lat"], s["lng"]
     return None
 
 

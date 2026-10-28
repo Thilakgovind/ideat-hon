@@ -11,6 +11,7 @@ from backend import config, data, store
 from backend.agents import callback, sms
 from backend.app import app
 from backend.tests.conftest import FakeResponse
+from backend.tests.helpers import REAL_BUSES, sms_bus
 
 c = TestClient(app)
 REAL = "+919876500001"  # never dialled: every provider call is faked below
@@ -87,7 +88,7 @@ def test_textbee_inbound_replies_via_provider(monkeypatch):
     payload = {"event": "MESSAGE_RECEIVED", "data": {"sender": REAL, "message": "nungambakkam bus 8am", "receivedAt": "t1"}}
     r = c.post("/api/sms/textbee", json=payload).json()
     assert r["ok"] and r["intent"] == "plan_trip" and r["reply_status"] == "sent"
-    assert "21G" in sent[0]["message"] and len(sent[0]["message"]) <= 160
+    assert sms_bus(sent[0]["message"]) in REAL_BUSES and len(sent[0]["message"]) <= 160
     assert c.post("/api/sms/textbee", json=payload).json()["ignored"] == "duplicate"
 
 
@@ -217,7 +218,7 @@ def test_supabase_unreachable_stays_memory(monkeypatch):
 
 def test_demo_chat_direct_and_n8n_fallback(monkeypatch):
     r = c.post("/api/demo/chat", json={"text": "nungambakkam bus 8am"}).json()
-    assert r["via"] == "backend" and "21G" in r["sms_text"] and r["agent_steps"]
+    assert r["via"] == "backend" and sms_bus(r["sms_text"]) in REAL_BUSES and r["agent_steps"]
     monkeypatch.setenv("N8N_ORCHESTRATOR_URL", "https://n8n.invalid/webhook/safepath-aval")
 
     class Down:
@@ -227,7 +228,7 @@ def test_demo_chat_direct_and_n8n_fallback(monkeypatch):
         async def post(self, *a, **k): raise httpx.ConnectError("down")
     monkeypatch.setattr(httpx, "AsyncClient", Down)
     r = c.post("/api/demo/chat", json={"text": "nungambakkam bus 8am"}).json()
-    assert r["via"].startswith("backend (n8n") and "21G" in r["sms_text"]
+    assert r["via"].startswith("backend (n8n") and sms_bus(r["sms_text"]) in REAL_BUSES
 
 
 def test_health_reports_storage_and_call_back():

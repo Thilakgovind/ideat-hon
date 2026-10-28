@@ -39,9 +39,13 @@ def search(lat=None, lng=None, radius_m=2000, open_now=False, type=None, chip=No
     rules = dict(CHIPS.get(chip, {}))
     types = set(type.split(",")) if type else rules.get("types")
     out = []
+    # real (GTFS) stops have no tagged places: use places within safety.NEAR_STOP_M of the stop instead
+    tagged = {p["near_stop"] for p in data.places()}
+    real_pts = [pt for pt in (data.stop_coords(c) for c in (route_stops or ()) if c not in tagged) if pt]
     for p in data.places():
         if route_stops is not None:
-            if p["near_stop"] not in route_stops:
+            near_real = any(data.haversine_m(a, b, p["lat"], p["lng"]) <= safety.NEAR_STOP_M for a, b in real_pts)
+            if p["near_stop"] not in route_stops and not near_real:
                 continue
         elif data.haversine_m(origin[0], origin[1], p["lat"], p["lng"]) > radius_m:
             continue

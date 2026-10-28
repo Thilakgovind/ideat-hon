@@ -68,7 +68,8 @@ def test_crowd_profiles_realistic():
 def test_demo_route_unchanged():
     from backend.agents import route
     ids = [o["id"] for o in route.plan("Anna Nagar West", "Nungambakkam", "08:00")["options"]]
-    assert ids == ["bus:21G:ANW", "bus+metro:70:M-PURPLE:ANW", "auto"]
+    assert {"bus:MTC-18683:MTC9835", "bus+metro:70:M-PURPLE:ANW", "auto"} <= set(ids)
+    assert not any(":21G:" in i for i in ids)  # the old sample 21G is gone; real buses come from ChennaiGTFS
 
 
 def test_new_areas_reachable():

@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { renderToStaticMarkup } from 'react-dom/server'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { typeLabel } from '@/components/Cards'
@@ -15,6 +14,8 @@ import { cn } from '@/lib/utils'
 const BOX = { n: 13.094, s: 13.054, w: 80.188, e: 80.252 }
 const CENTER = { lat: 13.074, lng: 80.221 }
 const project = (lat, lng) => [20 + ((lng - BOX.w) / (BOX.e - BOX.w)) * 340, 130 + ((BOX.n - lat) / (BOX.n - BOX.s)) * 400]
+const HOME_AREA = [13.0878, 80.2006] // Anna Nagar West (demo start area)
+const LEGEND = [['#0E7C74', 'Pharmacy', 'மருந்தகம்'], ['#E8960F', 'Tea & food', 'டீ & உணவு'], ['#1F4FB8', 'Police', 'காவல்'], ['#E0457B', 'Women-run', 'பெண்கள்']]
 const AREAS = [['ANNA NAGAR', 13.0885, 80.2006], ['KILPAUK', 13.0829, 80.2417], ['KOYAMBEDU', 13.0694, 80.1948], ['NUNGAMBAKKAM', 13.0604, 80.2422]]
 
 export default function Explore() {
@@ -37,17 +38,24 @@ export default function Explore() {
     return out
   }, [places])
 
-  // Live map pins: the same picture thumbnails, one per place (MapLibre clusters by zoom on its own).
-  const mapPins = useMemo(() => places.slice(0, 120).map((p) => {
-    const el = document.createElement('button')
-    el.type = 'button'
-    el.setAttribute('aria-label', `${p.name}${p.open_now ? ', open now' : ''}`)
-    el.style.cssText = 'position:relative;padding:0;border:3px solid #fff;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.18);background:#fff;cursor:pointer;line-height:0'
-    el.innerHTML = `<span style="display:block;overflow:hidden;border-radius:9px">${renderToStaticMarkup(<PlaceThumb type={p.type} size={36} />)}</span>` +
-      (p.open_now ? '<span style="position:absolute;top:-8px;right:-8px;background:#0FA596;color:#fff;font:800 8px Noto Sans,sans-serif;padding:1px 3px;border-radius:5px">OPEN</span>' : '')
-    return { id: p.id, lat: p.lat, lng: p.lng, element: el, onClick: () => navigate(`/place/${p.id}`) }
-  }), [places, navigate])
-  const fit = useMemo(() => places.slice(0, 120).map((p) => [p.lat, p.lng]), [places])
+  // Her area first (profile start area); "near me" swaps in her live position, on this screen only.
+  const [me, setMe] = useState(null)
+  const [locating, setLocating] = useState(false)
+  const focus = me || HOME_AREA
+  const locate = () => {
+    if (!navigator.geolocation) return
+    setLocating(true)
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const here = [pos.coords.latitude, pos.coords.longitude]
+        // Outside the demo city: stay on the sample area instead of an empty map.
+        setMe(Math.abs(here[0] - CENTER.lat) < 0.3 && Math.abs(here[1] - CENTER.lng) < 0.3 ? here : HOME_AREA)
+        setLocating(false)
+      },
+      () => setLocating(false),
+      { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 },
+    )
+  }
 
   const chips = [
     ['open_night', t('Open at night', 'இரவில் திறந்தவை')], ['women_run', t('Women-run', 'பெண்கள் நடத்துவது')],
@@ -58,7 +66,8 @@ export default function Explore() {
   return (
     <div className="relative flex min-h-dvh flex-col bg-[#EDF0F4]">
       <div className="relative h-[560px] shrink-0 overflow-hidden">
-        <SafeMap theme="light" className="absolute inset-0 h-full w-full" pins={mapPins} fit={fit.length > 1 ? fit : undefined}
+        <SafeMap theme="light" className="absolute inset-0 h-full w-full" center={focus} zoom={me ? 15.5 : 14.2} me={me}
+          places={places} onPlace={(id) => navigate(`/place/${id}`)}
           fallback={<>
         <svg viewBox="0 0 390 560" aria-hidden="true" className="absolute inset-0 h-full w-full">
           <rect width="390" height="560" fill="#EDF0F4" />
@@ -89,12 +98,20 @@ export default function Explore() {
             <Icon.search stroke="#6A5878" size={20} />
             <input id="q" value={q} onChange={(e) => setQ(e.target.value)} placeholder={t('Search places in Chennai', 'சென்னையில் இடங்களைத் தேடு')} className="min-w-0 flex-1 bg-transparent text-[15px] text-ink outline-none" />
           </label>
-          <Link to="/nearby" aria-label={t('Safe way home', 'வீட்டுக்கு வழி')} className="flex size-[50px] items-center justify-center rounded-2xl bg-white shadow-[0_4px_14px_rgba(36,19,47,0.1)]">
-            <Icon.nav stroke="#1F5BDA" />
-          </Link>
+          <button type="button" onClick={locate} aria-label={t('Places near me', 'என் அருகில்')}
+            className="flex size-[50px] items-center justify-center rounded-2xl bg-plum text-white shadow-[0_6px_16px_rgba(74,29,110,0.35)] transition active:scale-95">
+            <Icon.nav stroke="#FFFFFF" className={locating ? 'animate-pulse' : ''} />
+          </button>
         </div>
         <div className="absolute top-[76px] left-4 flex items-center gap-1.5 rounded-full bg-ink px-3 py-1.5 text-xs font-bold text-white">
           <span className="size-2 rounded-full bg-mint" />{clock(res.data?.time || nowHHMM(), true)} · {chip === 'open_night' ? t('showing places open at night', 'இரவில் திறந்த இடங்கள்') : t('showing places open now', 'இப்போது திறந்த இடங்கள்')}
+        </div>
+        <div className="absolute bottom-9 left-4 flex flex-wrap gap-1.5" aria-label={t('Map colours', 'வரைபட நிறங்கள்')}>
+          {LEGEND.map(([color, en, ta]) => (
+            <span key={en} className="flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-[11px] font-bold text-ink shadow-sm">
+              <span className="size-2.5 rounded-full" style={{ background: color }} />{t(en, ta)}
+            </span>
+          ))}
         </div>
       </div>
 

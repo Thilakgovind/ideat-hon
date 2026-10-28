@@ -139,7 +139,7 @@ n8n:    [Parse SMS]
           time="8:00", has_child=true
         ↓
         [Route Lookup: Python logic]
-        → 21G FREE bus, 15-min frequency
+        → 40H (real MTC timetable, ChennaiGTFS), next 8:20
         ↓
         [Sakhi Lookup: Find safe point at stop]
         → Lakshmi Tea Stall (SHG) opposite main stop
@@ -148,7 +148,8 @@ n8n:    [Parse SMS]
         ↓
         [Send SMS via Twilio]
         
-User:   "BUS 21G [FREE]
+User:   "BUS 40H at Anna Nagar West Depot
+         Next ~8:20. Free for women on white-board buses.
          T. Nagar → Nungambakkam
          Every 15 min
          Wait at: Lakshmi Tea Stall (SHG)
@@ -261,6 +262,18 @@ A: Yes. After the ideathon, replace JSON with Supabase, add Sarvam voice, add re
 4. `agents/intake_agent_prompt.md` (10 min) — what Claude does
 5. `data/routes.json` + `data/safe_points.json` (skim, understand structure)
 6. `agents/route_and_sakhi_lookup.py` (understand the logic, but don't modify unless needed)
+
+---
+
+## Data credits
+
+- **Bus routes and timetables**: [ChennaiGTFS](https://github.com/ungalsoththu/ChennaiGTFS) by UngalSoththu,
+  licensed ODbL / PDDL (MTC timetables from the MTC app, collected 2026-04). Imported into `data/gtfs_bus.json`
+  with `python -m backend.seed.import_gtfs <ChennaiGTFS>/data/mtc`. Scheduled times, not live tracking.
+- **Free travel**: Vidiyal Payanam makes ordinary (white-board) MTC buses free for women. The feed does not say
+  which trips use ordinary buses, so the app never says a specific bus is free.
+- **Safe places, metro, train, circle**: sample data, labelled "sample" in the app.
+- **Maps**: MapLibre + MapTiler, © OpenStreetMap contributors.
 
 ---
 

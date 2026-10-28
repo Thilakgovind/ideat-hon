@@ -16,7 +16,9 @@ from . import sms, safety
 
 ALERT_AFTER_ETA_MIN = 10
 HELP_RADIUS_M = 1500
-HELPLINES = [{"name": "Women helpline", "number": "181"}, {"name": "Police", "number": "100"}]
+# Same list as frontend/src/lib/helplines.js (EMERGENCY).
+HELPLINES = [{"name": "Emergency", "number": "112"}, {"name": "Women helpline", "number": "181"},
+             {"name": "Women police", "number": "1091"}, {"name": "Police", "number": "100"}]
 
 
 class Store:

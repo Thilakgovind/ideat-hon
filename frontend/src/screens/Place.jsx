@@ -67,7 +67,7 @@ export default function Place() {
             </div>
 
             <div className="grid grid-cols-3 gap-2">
-              <Link to={`/reach/${p.id}`} className="flex h-12 items-center justify-center rounded-[14px] bg-plum text-sm font-extrabold text-white no-underline">{t('How to reach', 'எப்படிப் போவது')}</Link>
+              <Link to={`/reach/${p.id}`} className="sp-btn-primary min-h-12 text-[15px] no-underline">{t('How to reach', 'எப்படிப் போவது')}</Link>
               <button type="button" disabled title={t('No phone listed in sample data', 'எண் இல்லை')} className="h-12 rounded-[14px] border-[1.5px] border-line bg-white text-sm font-bold text-ink disabled:opacity-50">{t('Call', 'அழை')}</button>
               <button type="button" onClick={share} className="h-12 rounded-[14px] border-[1.5px] border-line bg-white text-sm font-bold text-ink">{t('Share', 'பகிர்')}</button>
             </div>

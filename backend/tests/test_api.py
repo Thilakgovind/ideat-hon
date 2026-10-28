@@ -3,6 +3,7 @@ import io
 from fastapi.testclient import TestClient
 
 from backend.app import app
+from backend.tests.helpers import REAL_BUSES, sms_bus
 
 c = TestClient(app)
 TRIP = {"from": "Anna Nagar West", "to": "Nungambakkam", "time": "08:00"}
@@ -40,7 +41,7 @@ def test_places_endpoints():
 
 
 def test_trip_flow():
-    body = {**TRIP, "option_id": "bus:21G:ANW"}
+    body = {**TRIP, "option_id": "bus:MTC-18683:MTC9835"}
     assert c.post("/api/trip/start", json=body).json()["needs_confirmation"]
     trip = c.post("/api/trip/start", json={**body, "confirmed": True}).json()["trip"]
     assert c.get(f"/api/trip/{trip['trip_id']}").json()["trip"]["status"] == "active"
@@ -78,7 +79,7 @@ def test_pay_flow_amount_from_server():
 def test_sms_webhook_twiml():
     r = c.post("/api/sms/webhook", data={"From": "+15005550007", "Body": "nungambakkam bus 8am"})
     assert r.headers["content-type"].startswith("application/xml")
-    assert "<Message>" in r.text and "21G" in r.text
+    assert "<Message>" in r.text and sms_bus(r.text) in REAL_BUSES
     r = c.post("/api/sms/webhook", data={"From": "+15005550007", "Body": "START"})
     assert "Journey Watch ON" in r.text
     assert "0007" not in c.get("/api/demo/outbox").text

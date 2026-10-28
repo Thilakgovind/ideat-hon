@@ -88,7 +88,7 @@ export default function Payment() {
         {quote.loading ? <Loading rows={2} />
           : quote.error ? <ErrorState error={quote.error} onRetry={quote.reload} />
           : quote.data?.free ? (
-            <ErrorState error={{ message: t('This trip is free. No payment needed.', 'இந்தப் பயணம் இலவசம்.') }} />
+            <ErrorState error={{ message: t('No payment needed. Free for women on ordinary (white-board) buses.', 'கட்டணம் தேவையில்லை. சாதாரண (வெள்ளை பலகை) பஸ்ஸில் பெண்களுக்கு இலவசம்.') }} />
           ) : s && (
             <>
               <div className="relative flex items-center gap-2 overflow-hidden rounded-3xl bg-[linear-gradient(140deg,#5B1F96,#8A2FC2)] p-[18px] text-white">
@@ -102,7 +102,7 @@ export default function Payment() {
                     {s.lines.map((l, i) => (
                       <div key={i} className="flex justify-between gap-2">
                         <span>{l.mode === 'bus' ? `${t('Bus', 'பஸ்')} ${l.label}` : `${l.label} · ${l.from} → ${l.to}`}</span>
-                        <span className={cn('font-bold', l.fare_inr === 0 && 'font-extrabold text-[#9DF5DC]')}>{l.fare_inr === 0 ? 'FREE' : `₹${l.fare_inr}`}</span>
+                        <span className={cn('font-bold', l.fare_inr === 0 && 'font-extrabold text-[#9DF5DC]')}>{l.fare_inr === 0 ? t('Free on ordinary buses', 'சாதாரண பஸ்ஸில் இலவசம்') : `₹${l.fare_inr}`}</span>
                       </div>
                     ))}
                   </div>
@@ -145,7 +145,7 @@ export default function Payment() {
 
       <div className="flex flex-col items-center gap-2.5 px-4 pt-3 pb-[22px]">
         <button type="button" disabled={!s || busy} onClick={() => setAsking(true)}
-          className="h-[58px] w-full rounded-2xl bg-pink text-lg font-extrabold text-white shadow-[0_8px_20px_rgba(255,79,139,0.3)] disabled:opacity-50">
+          className="sp-btn-primary min-h-[58px] w-full text-lg">
           {s ? t(`Pay ₹${s.amount_inr} with ${methodName}`, `₹${s.amount_inr} ${methodName} மூலம் செலுத்து`) : t('Pay', 'செலுத்து')}
         </button>
         <span className="flex items-center gap-1.5 text-xs text-mute">

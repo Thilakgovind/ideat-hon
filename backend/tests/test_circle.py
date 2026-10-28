@@ -5,7 +5,7 @@ from backend.tests.conftest import at
 
 
 def bus_option():
-    return next(o for o in route.plan("Anna Nagar West", "Nungambakkam", "08:00")["options"] if o["kind"] == "bus")
+    return next(o for o in route.plan("Anna Nagar West", "Nungambakkam", "08:00")["options"] if o["id"] == "bus:MTC-18683:MTC9835")  # real 40H
 
 
 def test_circle_never_returns_phone():
@@ -42,11 +42,11 @@ def test_journey_watch_reminder_then_alert():
                           user_phone="+15005550008", now=at("08:00"))
     trip = r["trip"]
     assert r["delivery"]["demo_logged"] == 3 and r["delivery"]["sent"] == 0  # honest: not really sent
-    assert trip["eta_hhmm"] == "08:44"
+    assert trip["eta_hhmm"] == "08:39"  # 40H leaves Anna Nagar West Depot 08:20, 17 min ride + walks
     assert circle.tick(at("08:30")) == []
-    acts = circle.tick(at("08:44"))
+    acts = circle.tick(at("08:39"))
     assert acts[0]["action"] == "reminder"
-    acts = circle.tick(at("08:54"))
+    acts = circle.tick(at("08:49"))
     assert acts[0]["action"] == "alert"
     assert circle.STORE.trips[trip["trip_id"]]["status"] == "alerted"
     assert circle.tick(at("09:30")) == []  # alert only once
@@ -72,7 +72,7 @@ def test_sos_skips_confirmation_and_is_honest():
     r = circle.sos("u_demo", 13.0604, 80.2422, now=at("21:40"))
     assert r["confirmation_skipped"] and r["sos"]["active"]
     assert r["delivery"]["sent"] == 0 and r["delivery"]["demo_logged"] == 3
-    assert {h["number"] for h in r["helplines"]} == {"181", "100"}
+    assert {h["number"] for h in r["helplines"]} == {"112", "181", "1091", "100"}
     assert r["nearest_help"]
     stop = circle.sos_stop("u_demo", now=at("21:50"))
     assert stop["sos"]["active"] is False and stop["sos"]["location"] is None

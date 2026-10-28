@@ -177,6 +177,17 @@ def delete(table: str, row_id: str):
         _pool.submit(_write, "delete", table, None, {"id": f"eq.{row_id}"})
 
 
+def load_user(user_id: str):
+    """One private profile row (service key). None in memory mode or on error. Phone is not returned."""
+    if not available():
+        return None
+    try:
+        rows = _get("users", {"id": f"eq.{user_id}", "select": "display_name,home_area,start_area,lang"})
+    except httpx.HTTPError:
+        return None
+    return rows[0] if rows else None
+
+
 def status() -> dict:
     s = {k: v for k, v in STATUS.items() if k != "checked_at"}
     s["datasets"] = dict(data.SOURCE)

@@ -263,7 +263,7 @@ function busScene(){
     <rect x="96" y="104" width="78" height="170" rx="6" fill="#2C2A35"/><rect x="104" y="112" width="28" height="154" rx="4" fill="#8FD6E0" opacity=".55"/><rect x="140" y="112" width="28" height="154" rx="4" fill="#8FD6E0" opacity=".55"/>
     <rect x="70" y="204" width="520" height="34" fill="#35C6C9"/>
     <path d="M70 238 H590 V290 H70Z" fill="${C.plum}"/>
-    <rect x="180" y="86" width="150" height="16" rx="3" fill="#1A1820"/><text x="255" y="99" text-anchor="middle" font-size="11" font-weight="800" fill="#FFB52E" font-family="Noto Sans,sans-serif">21G  NUNGAMBAKKAM</text>
+    <rect x="180" y="86" width="150" height="16" rx="3" fill="#1A1820"/><text x="255" y="99" text-anchor="middle" font-size="11" font-weight="800" fill="#FFB52E" font-family="Noto Sans,sans-serif">40H  NUNGAMBAKKAM</text>
     <rect x="400" y="212" width="132" height="22" rx="11" fill="${C.pink}"/><text x="466" y="227" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="Noto Sans,sans-serif">FREE · இலவசம்</text>
     </g>${wheel(180,292,32,14)}${wheel(480,292,32,14)}<g>
     <rect x="574" y="230" width="16" height="12" rx="3" fill="#FFE27A"/>

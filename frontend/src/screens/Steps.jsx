@@ -56,7 +56,7 @@ export default function Steps() {
     if (l.mode === 'auto') return [t('Auto, door to door', 'ஆட்டோ'), t(`~₹${l.fare_inr} · estimate`, `~₹${l.fare_inr}`)]
     const stops = l.stops ? l.stops.length - 1 : l.stations ? l.stations.length - 1 : null
     const name = l.mode === 'bus' ? `${t('Bus', 'பஸ்')} ${l.label}` : l.label
-    return [`${name} · ${l.is_free ? 'FREE' : `₹${l.fare_inr}`}`,
+    return [`${name} · ${l.is_free ? t('Free for women on ordinary (white-board) buses', 'சாதாரண (வெள்ளை பலகை) பஸ்ஸில் பெண்களுக்கு இலவசம்') : `₹${l.fare_inr}`}`,
       [t(`Arrives ${clock(l.start)}`, `${clock(l.start)} வருகை`), stops ? t(`${stops} stops`, `${stops} நிறுத்தங்கள்`) : null,
         l.mode === 'bus' ? t('sit near the driver', 'ஓட்டுநர் அருகே அமருங்கள்') : l.women_coach ? t(`women: ${l.women_coach.toLowerCase()}`, 'பெண்கள் பெட்டி') : null,
         t(`get off at ${l.to}`, `${l.to}-ல் இறங்கவும்`)].filter(Boolean).join(' · ')]

@@ -5,6 +5,7 @@ Run from the repo root:
 """
 import asyncio
 import contextlib
+import contextvars
 import hashlib
 from collections import deque
 from typing import Optional
@@ -13,13 +14,14 @@ import httpx
 
 from fastapi import FastAPI, File, Form, HTTPException, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response
+from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel, Field
 
-from . import config, data, orchestrator, store
+from . import auth, config, data, orchestrator, store
 from .agents import callback, circle, pay, places, route, safety, sms, voice
 
 DEMO_USER = "u_demo"
+CURRENT = contextvars.ContextVar("current_user", default=None)  # set per request from the Supabase token
 TICK_SECONDS = 30
 REFRESH_SECONDS = 600
 SEEN_INBOUND: deque = deque(maxlen=300)  # de-duplicate provider retries
@@ -52,6 +54,26 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def supabase_user(request: Request, call_next):
+    """Signed-in requests act as her own user; no token = the demo user. A bad token is refused."""
+    try:
+        who = await asyncio.to_thread(auth.from_header, request.headers.get("authorization"))
+    except auth.AuthError as e:
+        return JSONResponse({"detail": "please sign in again", "reason": str(e)}, status_code=401)
+    token = CURRENT.set(who)
+    try:
+        return await call_next(request)
+    finally:
+        CURRENT.reset(token)
+
+
+def _uid(_claimed=None) -> str:
+    """The acting user: from the verified token, else the demo user. Client-sent ids are ignored."""
+    who = CURRENT.get()
+    return who["user_id"] if who else DEMO_USER
 
 
 # ---------- models ----------
@@ -127,16 +149,69 @@ def health():
 
 
 @app.get("/api/profile")
-def profile(user_id: str = DEMO_USER):
-    """Demo user profile: name, usual start, home and saved places. No phone numbers."""
+def profile():
+    """Profile: name, usual start, home and saved places. No phone numbers."""
+    user_id = _uid()
     u = circle.STORE.user(user_id)
     return {"user_id": user_id, "display_name": u.get("display_name"), "home_area": u.get("home_area"),
             "start_area": u.get("start_area"), "saved_places": u.get("saved_places", []), "source": "sample"}
 
 
+class MeIn(BaseModel):
+    display_name: Optional[str] = Field(None, max_length=40)
+    home_area: Optional[str] = Field(None, max_length=60)
+    start_area: Optional[str] = Field(None, max_length=60)
+    lang: Optional[str] = Field(None, pattern="^(en|ta)$")
+
+
+def _me_payload(user_id: str, who) -> dict:
+    u = circle.STORE.user(user_id)
+    return {"user_id": user_id, "signed_in": bool(who), "auth": "supabase" if who else "demo",
+            "phone_masked": auth.mask_phone(who.get("phone")) if who else None,
+            "display_name": u.get("display_name") or None, "home_area": u.get("home_area"),
+            "start_area": u.get("start_area"), "lang": u.get("lang") or "en",
+            "needs_setup": bool(who) and not u.get("display_name")}
+
+
+@app.get("/api/auth/config")
+def auth_config():
+    """What the login screen can offer. No keys here: the browser gets the anon key from Vite."""
+    return {"supabase": auth.enabled(), "demo_login": True}
+
+
+@app.get("/api/me")
+def me():
+    who = CURRENT.get()
+    uid = _uid()
+    if who:
+        saved = store.load_user(uid)
+        if saved:
+            u = circle.STORE.user(uid)
+            for k in ("display_name", "home_area", "start_area", "lang"):
+                if saved.get(k) and not u.get(k):
+                    u[k] = saved[k]
+    return _me_payload(uid, who)
+
+
+@app.put("/api/me")
+def me_update(body: MeIn):
+    who = CURRENT.get()
+    if not who:
+        raise HTTPException(401, "sign in to save your profile")
+    uid = _uid()
+    u = circle.STORE.user(uid)
+    for k, v in body.model_dump(exclude_none=True).items():
+        u[k] = v.strip() if isinstance(v, str) else v
+    # Phone lives only in users.phone (private, service key). Never logged or returned in full.
+    store.persist("users", {"id": uid, "display_name": u.get("display_name"), "phone": who.get("phone"),
+                            "home_area": u.get("home_area"), "start_area": u.get("start_area"),
+                            "lang": u.get("lang") or "en", "source": "live"})
+    return _me_payload(uid, who)
+
+
 @app.post("/api/aval/chat")
 def aval_chat(body: ChatIn):
-    return orchestrator.handle(body.text, lang=body.lang, channel="app", user_id=body.user_id or DEMO_USER)
+    return orchestrator.handle(body.text, lang=body.lang, channel="app", user_id=_uid())
 
 
 @app.post("/api/aval/voice")
@@ -145,7 +220,7 @@ async def aval_voice(audio: UploadFile = File(None), lang: str = Form("ta"), hin
     raw = await audio.read() if audio else b""
     heard = voice.stt(raw, audio.filename if audio else "audio.wav",
                       audio.content_type if audio else "audio/wav", lang=lang, hint=hint)
-    result = orchestrator.handle(heard["text"], lang=lang, channel="voice", user_id=user_id)
+    result = orchestrator.handle(heard["text"], lang=lang, channel="voice", user_id=_uid())
     spoken = voice.tts(result["reply"]["text"], lang=result["reply"]["lang"])
     return {**result, "transcript": heard["text"], "stt_provider": heard["provider"],
             "tts_provider": spoken["provider"], "audio_base64": spoken.get("audio_base64"),
@@ -169,10 +244,9 @@ def get_routes(from_: Optional[str] = Query(None, alias="from"), to: Optional[st
 
 
 @app.get("/api/safe-route")
-def safe_route(from_: Optional[str] = Query(None, alias="from"), to: Optional[str] = None, time: Optional[str] = None,
-               user_id: str = DEMO_USER):
+def safe_route(from_: Optional[str] = Query(None, alias="from"), to: Optional[str] = None, time: Optional[str] = None):
     minutes = data.parse_time(time)
-    user = circle.STORE.user(user_id)
+    user = circle.STORE.user(_uid())
     out = {"time": data.fmt_minutes(minutes), "source": "sample"}
     if from_ and to:
         plan = route.plan(from_, to, time)
@@ -217,7 +291,7 @@ def _option_or_404(ref: TripRef):
 @app.post("/api/trip/start")
 def trip_start(body: TripStartIn):
     option = _option_or_404(body)
-    return circle.start_trip(body.user_id or DEMO_USER, option, route.match_place(body.from_), route.match_place(body.to),
+    return circle.start_trip(_uid(), option, route.match_place(body.from_), route.match_place(body.to),
                              confirmed=body.confirmed, notify_circle=body.notify_circle)
 
 
@@ -247,20 +321,20 @@ def trip_reached(body: ReachedIn):
 
 @app.post("/api/sos")
 def sos(body: SosIn):
-    uid = body.user_id or DEMO_USER
+    uid = _uid()
     if body.action == "stop":
         return circle.sos_stop(uid)
     return circle.sos(uid, body.lat, body.lng, body.trip_id)
 
 
 @app.get("/api/circle")
-def circle_get(user_id: str = DEMO_USER):
-    return circle.list_circle(user_id)
+def circle_get():
+    return circle.list_circle(_uid())
 
 
 @app.post("/api/circle")
 def circle_post(body: CircleIn):
-    uid = body.user_id or DEMO_USER
+    uid = _uid()
     if body.action == "add":
         if not body.label:
             raise HTTPException(400, "label is required")

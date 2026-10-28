@@ -12,6 +12,8 @@ python -m venv .venv
 
 If Windows blocks port 8000 (WinError 10013), use 8001 and point the frontend at it before `npm run dev`:
 `$env:SAFEPATH_API="http://localhost:8001"`. Always start from the project folder, not the home folder.
+The default port is **8000** and ngrok must match it: `ngrok http 8000`, then `PUBLIC_BACKEND_URL` = that https URL.
+If you fall back to 8001, run `ngrok http 8001` instead and update `PUBLIC_BACKEND_URL`.
 ```
 
 Open http://localhost:8000/health and http://localhost:8000/docs (interactive API).

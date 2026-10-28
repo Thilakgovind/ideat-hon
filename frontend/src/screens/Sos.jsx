@@ -6,6 +6,7 @@ import Aval from '@/components/Aval'
 import { BackButton } from '@/components/kit'
 import { typeLabel } from '@/components/Cards'
 import { api } from '@/lib/api'
+import { EMERGENCY, TRAVEL } from '@/lib/helplines'
 import { useAsync } from '@/lib/hooks'
 import { useT } from '@/lib/i18n'
 
@@ -133,7 +134,7 @@ export default function Sos() {
               {result.sos.location ? t('Sharing your location until you stop it', 'நிறுத்தும் வரை இருப்பிடம் பகிரப்படும்') : t('Location not available — your last trip stop is shared', 'இருப்பிடம் கிடைக்கவில்லை')}
             </div>
             {d && !d.any_real_alert && (
-              <span className="text-xs font-bold text-[#B3122A]">{t('No real SMS went out (demo mode). Call 181 or 100 now.', 'உண்மையான SMS அனுப்பப்படவில்லை. 181 அல்லது 100 அழைக்கவும்.')}</span>
+              <span className="text-xs font-bold text-[#B3122A]">{t('No real SMS went out (demo mode). Call 112 or 181 now.', 'உண்மையான SMS அனுப்பப்படவில்லை. 112 அல்லது 181 அழைக்கவும்.')}</span>
             )}
           </div>
         ) : (
@@ -149,10 +150,22 @@ export default function Sos() {
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-2.5">
-          {[['181', t('Women helpline', 'பெண்கள் உதவி எண்')], ['100', t('Police', 'காவல்')]].map(([n, label]) => (
-            <a key={n} href={`tel:${n}`} className="flex flex-col gap-0.5 rounded-[18px] border-[1.5px] border-[#F5D3D8] bg-white p-3 text-ink no-underline">
-              <span className="text-xs text-mute">{label}</span><span className="text-[28px] font-black text-[#B3122A]">{n}</span>
+        <a href="tel:112" className="flex items-center justify-between rounded-[18px] bg-[#B3122A] px-4 py-3 text-white no-underline shadow-[0_8px_20px_rgba(179,18,42,.3)]">
+          <span className="flex flex-col"><span className="text-xs font-bold opacity-90">{t('Emergency: police, ambulance, fire', 'அவசர உதவி: காவல், ஆம்புலன்ஸ், தீ')}</span>
+            <span className="text-[13px] opacity-80">{t('Tap to call', 'அழைக்க தொடவும்')}</span></span>
+          <span className="text-[34px] font-black">112</span>
+        </a>
+        <div className="grid grid-cols-3 gap-2">
+          {EMERGENCY.filter((h) => h.number !== '112').map((h) => (
+            <a key={h.number} href={`tel:${h.number}`} className="flex min-h-[72px] flex-col justify-center gap-0.5 rounded-[18px] border-[1.5px] border-[#F5D3D8] bg-white p-2.5 text-ink no-underline">
+              <span className="text-xs leading-tight text-mute">{t(h.name, h.name_ta)}</span><span className="text-[24px] font-black text-[#B3122A]">{h.number}</span>
+            </a>
+          ))}
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          {TRAVEL.map((h) => (
+            <a key={h.number} href={`tel:${h.number}`} className="flex min-h-[56px] flex-col justify-center rounded-[16px] bg-lilac px-3 py-2 text-ink no-underline">
+              <span className="text-xs text-mute">{t(h.name, h.name_ta)}</span><span className="text-base font-extrabold text-plum-deep">{h.display || h.number}</span>
             </a>
           ))}
         </div>

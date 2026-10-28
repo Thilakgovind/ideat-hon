@@ -195,7 +195,7 @@ export default function Nearby() {
                   {near ? t(`Ask ${near.label} to meet`, `${near.label}-ஐ சந்திக்கக் கேள்`) : t('No one nearby', 'யாரும் அருகில் இல்லை')}
                 </button>
                 <button type="button" onClick={() => startTrip({ from: res.data.to, to: res.data.to, time: res.data.time, option_id: `walk:${safe.id}` })}
-                  className="h-[54px] rounded-2xl bg-teal text-[15px] font-extrabold text-white">
+                  className="sp-btn-safe min-h-[54px] text-[15px]">
                   {t(`Walk ${safe.name.toLowerCase()}`, `${safe.name_ta} வழியாக நட`)}
                 </button>
               </div>

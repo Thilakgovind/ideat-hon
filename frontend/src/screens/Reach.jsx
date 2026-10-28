@@ -64,7 +64,7 @@ export default function Reach() {
                 <div className="flex gap-1.5">
                   {o.badges?.includes('SAFEST') && <Pill className="bg-safe-bg text-teal-dark">SAFEST</Pill>}
                   {o.badges?.includes('FASTEST') && <Pill className="bg-[#FFF1D6] text-[#9A5B00]">FASTEST</Pill>}
-                  {o.is_free && transitLegs(o).length > 0 && <Pill className="bg-[#FFE6EF] text-[#B32A5B]">FREE</Pill>}
+                  {o.is_free && transitLegs(o).length > 0 && <Pill className="bg-[#FFE6EF] text-[#B32A5B]">{t('Free for women on ordinary (white-board) buses', 'சாதாரண (வெள்ளை பலகை) பஸ்ஸில் பெண்களுக்கு இலவசம்')}</Pill>}
                 </div>
                 <div className="flex items-baseline justify-between">
                   <span className="text-lg font-extrabold">{o.total_min} min <span className="text-[13px] font-medium text-mute">{clock(legs[0].start)} – {clock(o.reach_by)}</span></span>

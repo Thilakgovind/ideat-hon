@@ -2,7 +2,8 @@
 
     python -m backend.seed.generate_sample          # rewrite /data JSON + print counts
 
-- Keeps the hand-made demo rows in /data (21G, Lakshmi kiosk, walk paths, Priya's circle)
+- Keeps the hand-made demo rows in /data (Lakshmi kiosk, walk paths, Priya's circle).
+  Real MTC buses for the demo pair live in data/gtfs_bus.json (backend/seed/import_gtfs.py), not here.
   and adds generated rows marked "generated": true. Re-running replaces only those.
 - Every row is "source": "sample". Business names are generic / fictional.
 - Places never carry phone numbers. Circle phones are FAKE (+91 00000 0xxxx).

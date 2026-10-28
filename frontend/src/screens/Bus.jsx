@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { img, travel } from '@/assets'
+import { isReal, useDataNote } from '@/components/Cards'
 import { BackButton, EmptyState, ErrorState, Icon, Loading, SampleLabel } from '@/components/kit'
 import { api } from '@/lib/api'
 import { clock, useAsync, useNowIST } from '@/lib/hooks'
@@ -13,6 +14,7 @@ const STOPS = ['Anna Nagar West', 'Nungambakkam', 'Koyambedu', 'Kilpauk', 'T. Na
 
 export default function Bus() {
   const t = useT()
+  const dataNote = useDataNote()
   const now = useNowIST()
   const { profile } = useApp()
   const [stop, setStop] = useState(null)
@@ -67,7 +69,7 @@ export default function Bus() {
         <div className="flex gap-2">
           <button type="button" aria-pressed={freeOnly} onClick={() => setFreeOnly(true)}
             className={cn('h-9 rounded-full px-3.5 text-[13px]', freeOnly ? 'bg-pink font-extrabold text-white' : 'border-[1.5px] border-line bg-white font-semibold')}>
-            {t('Free only', 'இலவசம் மட்டும்')}
+            {t('Ordinary buses', 'சாதாரண பஸ்')}
           </button>
           <button type="button" aria-pressed={!freeOnly} onClick={() => setFreeOnly(false)}
             className={cn('h-9 rounded-full px-3.5 text-[13px]', !freeOnly ? 'bg-pink font-extrabold text-white' : 'border-[1.5px] border-line bg-white font-semibold')}>
@@ -81,7 +83,7 @@ export default function Bus() {
         </div>
 
         {arr.loading ? <Loading rows={3} /> : arr.error ? <ErrorState error={arr.error} onRetry={arr.reload} />
-          : rows.length === 0 ? <EmptyState title={t('No buses due right now', 'இப்போது பஸ் இல்லை')} hint={t('Buses in the sample timetable stop around 10:30 pm', 'மாதிரி அட்டவணை இரவு 10:30-க்கு முடிகிறது')} />
+          : rows.length === 0 ? <EmptyState title={t('No buses due right now', 'இப்போது பஸ் இல்லை')} hint={t('No more buses in the timetable now. Try an auto or call someone you trust.', 'அட்டவணையில் இப்போது பஸ் இல்லை. ஆட்டோ அல்லது நம்பிக்கையானவரை அழைக்கவும்.')} />
           : (
             <div className="flex flex-col gap-2">
               {rows.slice(0, 4).map((a, i) => {
@@ -93,7 +95,7 @@ export default function Bus() {
                     <span className={cn('flex h-11 w-[54px] items-center justify-center rounded-xl text-[17px] font-extrabold text-white', a.is_free ? 'bg-pink' : 'bg-plum')}>{a.number}</span>
                     <div className="flex flex-1 flex-col">
                       <span className="text-[15px] font-bold">{t(`to ${a.towards}`, `${a.towards} வரை`)}</span>
-                      <span className="text-xs text-mute">{clock(a.time)}{later ? ` · ${t('then', 'பின்')} ${clock(later.time)}` : ''} · {a.is_free ? 'FREE' : `₹${a.fare_inr}`}</span>
+                      <span className="text-xs text-mute">{clock(a.time)}{later ? ` · ${t('then', 'பின்')} ${clock(later.time)}` : ''} · {a.is_free ? t('Free for women on ordinary (white-board) buses', 'சாதாரண (வெள்ளை பலகை) பஸ்ஸில் பெண்களுக்கு இலவசம்') : `₹${a.fare_inr}`}</span>
                     </div>
                     <div className="flex flex-col items-end">
                       <span className={cn('text-[22px] font-extrabold', i === 0 && 'text-pink-text')}>{a.in_min}</span>
@@ -117,7 +119,7 @@ export default function Bus() {
             <Link to={`/place/${safe.id}`} className="px-1 py-2.5 text-[13px] font-extrabold text-[#0B5F59] no-underline">{t('Details', 'விவரம்')}</Link>
           </div>
         )}
-        <SampleLabel />
+        <SampleLabel>{dataNote(rows.some(isReal))}</SampleLabel>
       </div>
     </div>
   )

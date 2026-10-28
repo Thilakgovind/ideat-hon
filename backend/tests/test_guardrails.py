@@ -2,6 +2,7 @@ import json
 
 from backend import guardrails, orchestrator
 from backend.agents import circle
+from backend.tests.helpers import REAL_BUSES, sms_bus
 
 
 # 1. strip phone numbers and names before the LLM
@@ -41,12 +42,12 @@ def test_reply_facts_come_from_data_not_llm():
     llm = lambda t: json.dumps({"intent": "plan_trip", "to": "Nungambakkam", "time": "08:00", "with_child": False,
                                 "bus": "99Z", "fare": 5})  # extra invented fields are ignored
     r = orchestrator.handle("x", llm=llm)
-    assert "99Z" not in r["reply"]["text"] and r["card"]["option"]["legs"][1]["label"] == "21G"
+    assert "99Z" not in r["reply"]["text"] and r["card"]["option"]["legs"][1]["label"] in REAL_BUSES
 
 
 def test_verify_options_drops_unknown_routes():
     fake = {"legs": [{"mode": "bus", "route_id": "99Z"}]}
-    real = {"legs": [{"mode": "bus", "route_id": "21G"}, {"mode": "walk"}]}
+    real = {"legs": [{"mode": "bus", "route_id": "MTC-18683"}, {"mode": "walk"}]}
     assert guardrails.verify_options([fake, real]) == [real]
 
 

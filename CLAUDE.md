@@ -5,7 +5,7 @@ It finds the safest way to travel (bus / metro / train / auto), safe places to w
 and keeps a trusted circle informed. Works on keypad phones (SMS + Tamil voice) and smartphones (web app).
 
 **Golden rule: V1 must work end-to-end for ONE demo route before adding anything else.**
-Demo route: **Anna Nagar West → Nungambakkam** (bus 21G free, plus Metro alternative).
+Demo route: **Anna Nagar West → Nungambakkam** (real MTC bus 40H and others from ChennaiGTFS, free on ordinary buses, plus Metro alternative).
 
 ---
 
@@ -72,9 +72,11 @@ Real where available, otherwise **mock and labelled `"source": "sample"`**.
 
 **routes.json**
 ```json
-{ "id": "21G", "mode": "bus", "free_for_women": true, "fare_inr": 0,
-  "stops": ["Anna Nagar West", "Anna Nagar Arch", "Kilpauk", "Nungambakkam"],
-  "first": "05:00", "last": "22:30", "frequency_min": 12, "source": "sample" }
+{ "id": "MTC-18683", "number": "40H", "mode": "bus", "free_for_women": true, "fare_inr": 0,
+  "free_note": "Free on ordinary (white-board) MTC buses under Vidiyal Payanam. Deluxe / AC buses are paid.",
+  "stops": [{ "name": "Anna Nagar West Depot", "min": 40, "area": "Anna Nagar West" }, "...",
+            { "name": "Nungambakkam Railway Station", "min": 57, "area": "Nungambakkam" }],
+  "departures": ["07:10", "07:20", "..."], "one_way": true, "source": "ChennaiGTFS (MTC)" }
 ```
 Modes: `bus`, `metro`, `train`, `auto`. Metro: fare by station pair. Auto: estimated fare only + booking link.
 
@@ -100,8 +102,8 @@ Max 5 contacts. Both sides must accept.
 
 **trips** (database)
 ```json
-{ "trip_id": "t1", "user_id": "u_hash", "route": "21G", "start": "08:05",
-  "eta": "08:50", "status": "active|reached|alerted" }
+{ "trip_id": "t1", "user_id": "u_hash", "route": "MTC-18683", "start": "08:20",
+  "eta": "08:39", "status": "active|reached|alerted" }
 ```
 
 **request_log** — anonymous only: area, hour, mode, no phone, no name.
@@ -126,10 +128,11 @@ Always label sample data in the UI ("Sample data for demo").
 
 **SMS (≤160 chars, Tanglish/English by default; Tamil script only if user wrote Tamil — Tamil SMS fits ~70 chars)**
 ```
-BUS 21G (FREE) Anna Nagar W stop
-Next ~8:05. Safe wait: Lakshmi SHG kiosk 50m
+BUS 40H at Anna Nagar West Depot
+Next ~8:20. Free for women on white-board buses. Safe wait: Lakshmi SHG Kiosk 691m
 Reply START when you board
 ```
+Never say a specific bus is free. The only wording: "Free for women on ordinary (white-board) buses" (SMS short form: "Free for women on white-board buses").
 Commands: `START`, `REACHED`, `HELP`. Numbered choices for ambiguity: `1 Nungambakkam 2 Nanganallur`.
 HELP reply: `Women helpline 181. Police 100. Your contact is informed.` (only if actually sent)
 
@@ -177,7 +180,7 @@ Fonts (all OFL, keep `OFL.txt` in `/public/fonts`):
 ```
 
 ## 10. Definition of done for V1
-- [ ] SMS "nungambakkam bus" → correct 21G reply with safe place in < 5 s
+- [ ] SMS "nungambakkam bus" → correct real-bus reply (eg 40H / 147B) with safe place in < 5 s
 - [ ] START / REACHED / alert-to-contact works with a real phone
 - [ ] Web: route card + 3+ safe places with working filters
 - [ ] Tamil voice question → spoken Tamil answer
@@ -203,4 +206,17 @@ Fonts (all OFL, keep `OFL.txt` in `/public/fonts`):
 - **Maps**: MapLibre + MapTiler (public `VITE_MAPTILER_KEY` only); illustrated fallback when no key or the style fails to load.
 - **Secrets**: service key, Razorpay secret, Twilio token, textbee key, Gemini, Sarvam stay backend-only. Vite exposes only MapTiler key + Supabase URL/anon key. Razorpay refuses `rzp_live_` keys.
 - **Launch plan (after demo)**: DLT registration + MSG91 or Exotel for production SMS/voice in India.
+- **Real bus data**: `data/gtfs_bus.json` = real MTC routes + timetables for the demo pair, from ChennaiGTFS (ODbL/PDDL, credit UngalSoththu). Rebuild: `python -m backend.seed.import_gtfs <ChennaiGTFS>/data/mtc`. Rows are one-way with exact departures; labelled `source: "ChennaiGTFS (MTC)"`. Free only on ordinary (white-board) buses, so every row carries `free_note`. The old sample 21G is removed. Safe places stay sample.
+- **Port**: backend runs on **8000**; ngrok must match (`ngrok http 8000`) and `PUBLIC_BACKEND_URL` = that tunnel. 8001 is only a Windows fallback (then `ngrok http 8001`).
 - Setup steps: `docs/LIVE_SETUP.md`.
+
+## V2 backlog (text only — do not build until V1 is done)
+- **Companion characters**: she picks one companion per mode (route guide, shop guide, stop guide). The SOS screen is never decorated. Original or CC0 art only (Kenney.nl, Quaternius). No copyrighted characters.
+- **3D map**: MapLibre `fill-extrusion` buildings + tilted camera (look like the Apple Maps 3D city view). The companion moves along the route as a 2.5D sprite (flat animated image), not a 3D model, so it runs on slow-3G phones.
+- **"Open in maps" links**: Apple Maps unified map URLs (https://developer.apple.com/documentation/mapkit/unified-map-urls) and Google Maps URLs for directions to the stop / safe place. Link only; no location sent to us.
+- **Safety rules for companions**: safety info is always shown as text. The companion never changes safety info. The circle never sees the companion. No profiling.
+- **Stealth mode**: hides the companion and shows a neutral screen.
+- **Open data**: OSM Overpass (lit streets, toilets, shops), Nominatim (coordinates → nearby landmark), OpenRouteService or OSRM (walking routes), Open-Meteo (rain alerts; no key).
+- **More real transit**: ChennaiGTFS CMRL metro + suburban rail feeds (same repo) to replace sample metro / train.
+- **API Setu**: DigiLocker verification of trusted contacts (needs API consumer registration + consent framework).
+- **MCP is build-time only**: Figma / Paper for design handoff, docs MCP for MapTiler / MapLibre. Not used at runtime.

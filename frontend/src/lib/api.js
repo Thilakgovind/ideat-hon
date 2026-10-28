@@ -1,4 +1,6 @@
 // Thin client for the SafePath FastAPI backend (proxied by Vite in dev).
+import { accessToken } from '@/lib/supabase'
+
 const BASE = import.meta.env.VITE_API_BASE || ''
 
 export class ApiError extends Error {
@@ -10,10 +12,14 @@ export class ApiError extends Error {
 
 async function request(path, { method = 'GET', body, form } = {}) {
   let res
+  const headers = {}
+  if (body) headers['Content-Type'] = 'application/json'
+  const token = await accessToken() // signed in with Supabase -> backend acts as her; else demo user
+  if (token) headers.Authorization = `Bearer ${token}`
   try {
     res = await fetch(BASE + path, {
       method,
-      headers: body ? { 'Content-Type': 'application/json' } : undefined,
+      headers,
       body: body ? JSON.stringify(body) : form,
     })
   } catch {
@@ -30,6 +36,9 @@ const qs = (params) =>
 export const api = {
   health: () => request('/health'),
   profile: () => request('/api/profile'),
+  me: () => request('/api/me'),
+  saveMe: (b) => request('/api/me', { method: 'PUT', body: b }),
+  authConfig: () => request('/api/auth/config'),
   chat: (text, lang) => request('/api/aval/chat', { method: 'POST', body: { text, lang } }),
   voice: (blob, lang, hint) => {
     const form = new FormData()

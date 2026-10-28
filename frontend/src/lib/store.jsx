@@ -1,19 +1,33 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
 import { api } from '@/lib/api'
+import { supabase } from '@/lib/supabase'
 
-/** App-wide state: profile (no phone), active trip id. Persisted per tab only. */
+/** App-wide state: Supabase session, her profile (masked phone only), active trip id. */
 const Ctx = createContext(null)
 
 export function AppProvider({ children }) {
   const [profile, setProfile] = useState(null)
+  const [me, setMe] = useState(null)
+  const [session, setSession] = useState(null)
   const [tripId, setTripIdState] = useState(() => sessionStorage.getItem('sp_trip'))
   const [demo, setDemo] = useState(null)
 
-  useEffect(() => {
+  const refresh = useCallback(() => {
     api.profile().then(setProfile).catch(() => setProfile(null))
-    api.health().then(setDemo).catch(() => setDemo(null))
+    api.me().then(setMe).catch(() => setMe(null))
   }, [])
+
+  useEffect(() => {
+    api.health().then(setDemo).catch(() => setDemo(null))
+    if (!supabase) { refresh(); return undefined }
+    supabase.auth.getSession().then(({ data }) => { setSession(data.session); refresh() })
+    const { data: sub } = supabase.auth.onAuthStateChange((event, s) => {
+      setSession(s)
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'USER_UPDATED') refresh()
+    })
+    return () => sub.subscription.unsubscribe()
+  }, [refresh])
 
   // Forget a stored trip that the server no longer has (restart) or that has ended.
   useEffect(() => {
@@ -30,7 +44,17 @@ export function AppProvider({ children }) {
     else sessionStorage.removeItem('sp_trip')
   }
 
-  return <Ctx.Provider value={{ profile, tripId, setTripId, health: demo }}>{children}</Ctx.Provider>
+  const signOut = async () => {
+    if (supabase) await supabase.auth.signOut()
+    setTripId(null)
+    refresh()
+  }
+
+  return (
+    <Ctx.Provider value={{ profile, me, session, signedIn: Boolean(session), refresh, signOut, tripId, setTripId, health: demo }}>
+      {children}
+    </Ctx.Provider>
+  )
 }
 
 export const useApp = () => useContext(Ctx)

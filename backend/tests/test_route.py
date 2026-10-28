@@ -16,11 +16,11 @@ def test_demo_route_has_bus_metro_and_auto():
     plan = route.plan("Anna Nagar West", "Nungambakkam", "08:00")
     kinds = {o["kind"] for o in plan["options"]}
     assert {"bus", "bus+metro", "auto"} <= kinds
-    bus = next(o for o in plan["options"] if o["kind"] == "bus")
-    assert bus["legs"][1]["label"] == "21G"
-    assert bus["is_free"] and bus["fare_inr"] == 0
-    assert bus["total_min"] == 35  # walk 3 + bus 30 + walk 2
-    assert bus["next"][0] == "08:12"
+    bus = next(o for o in plan["options"] if o["kind"] == "bus" and o["legs"][1]["label"] == "40H")  # real MTC (ChennaiGTFS)
+    assert bus["legs"][1]["from"] == "Anna Nagar West Depot" and bus["legs"][1]["to"] == "Nungambakkam Railway Station"
+    assert bus["is_free"] and bus["fare_inr"] == 0 and "white-board" in bus["legs"][1]["free_note"]
+    assert bus["total_min"] == 22  # walk 3 + bus 17 + walk 2
+    assert bus["next"][0] == "08:20"  # real timetable, not a made-up frequency
 
 
 def test_bus_metro_fare_and_switch():
@@ -41,7 +41,7 @@ def test_auto_is_estimate_with_night_fare():
 
 def test_late_night_buses_not_offered():
     plan = route.plan("Anna Nagar West", "Nungambakkam", "23:30")
-    assert "21G" in plan["not_running_now"]
+    assert "40H" in plan["not_running_now"]
     assert all(o["kind"] != "bus" for o in plan["options"])
 
 
@@ -55,8 +55,9 @@ def test_train_option_with_ladies_coach():
 def test_return_direction_and_unknown():
     back = route.plan("Nungambakkam", "Anna Nagar West", "08:00")["options"]
     bus = next(o for o in back if o["kind"] == "bus")
-    assert bus["legs"][1]["label"] == "21G" and bus["legs"][1]["stops"][0] == "Nungambakkam"
-    assert bus["legs"][1]["minutes"] == 30
+    bus = next(o for o in back if o["kind"] == "bus" and o["id"] == "bus:MTC-18641:MTC9559")
+    assert bus["legs"][1]["label"] == "40H" and bus["legs"][1]["stops"][0] == "Nungambakkam Railway Station"
+    assert bus["legs"][1]["stops"][-1] == "Anna Nagar West Depot" and bus["legs"][1]["minutes"] == 18
     assert any(o["kind"] == "bus" and any(l.get("label") == "70" for l in o["legs"]) for o in route.plan("Koyambedu", "Anna Nagar West", "21:40")["options"])
     assert route.plan("Fake Nagar", "Nungambakkam")["error"] == "no_match"
     assert route.plan("Kilpauk", "kilpauk")["error"] == "same_place"
@@ -74,21 +75,21 @@ def test_every_option_is_from_data():
         for leg in o["legs"]:
             if leg["mode"] in ("bus", "metro", "train"):
                 assert leg["route_id"] in known
-        assert o["source"] == "sample"
+        assert o["source"] in ("sample", "ChennaiGTFS (MTC)")
 
 
 def test_find_option_replans_on_server():
-    opt, _ = route.find_option("Anna Nagar West", "Nungambakkam", "08:00", "bus:21G:ANW")
+    opt, _ = route.find_option("Anna Nagar West", "Nungambakkam", "08:00", "bus:MTC-18683:MTC9835")
     assert opt and opt["fare_inr"] == 0
     assert route.find_option("Anna Nagar West", "Nungambakkam", "08:00", "bus:FAKE:ANW")[0] is None
 
 
 def test_leg_clock_times_follow_departures():
-    bus = next(o for o in route.plan("Anna Nagar West", "Nungambakkam", "08:00")["options"] if o["kind"] == "bus")
+    bus = next(o for o in route.plan("Anna Nagar West", "Nungambakkam", "08:00")["options"] if o["id"] == "bus:MTC-18683:MTC9835")
     walk, ride, end = bus["legs"]
     assert (walk["start"], walk["end"]) == ("08:00", "08:03")
-    assert (ride["start"], ride["end"]) == ("08:12", "08:42")
-    assert end["end"] == bus["reach_by"] == "08:44"
+    assert (ride["start"], ride["end"]) == ("08:20", "08:37")
+    assert end["end"] == bus["reach_by"] == "08:39"
 
 
 def test_walk_option_and_walk_paths():

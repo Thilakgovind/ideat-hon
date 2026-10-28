@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { OptionCard, transitLegs } from '@/components/Cards'
+import { OptionCard, isReal, transitLegs, useDataNote } from '@/components/Cards'
 import Confirm from '@/components/Confirm'
 import { BackButton, EmptyState, ErrorState, Icon, Loading, SampleLabel, AvalTip } from '@/components/kit'
 import { useStartTrip } from '@/components/StartTrip'
@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils'
 
 export default function Booking() {
   const t = useT()
+  const dataNote = useDataNote()
   const navigate = useNavigate()
   const { profile } = useApp()
   const [params, setParams] = useSearchParams()
@@ -101,7 +102,7 @@ export default function Booking() {
         {plan.loading ? <Loading rows={3} />
           : plan.error ? <ErrorState error={plan.error} onRetry={plan.reload} />
           : plan.data?.error ? <EmptyState title={t("I couldn't find that place", 'அந்த இடம் கிடைக்கவில்லை')} hint={(plan.data.unmatched || []).join(', ')} />
-          : options.length === 0 ? <EmptyState title={t('No ride in the sample timetable at this time', 'இந்த நேரத்தில் பயணம் இல்லை')} hint={t('Try another time', 'வேறு நேரம் முயற்சிக்கவும்')} />
+          : options.length === 0 ? <EmptyState title={t('No ride in the timetable at this time', 'இந்த நேரத்தில் பயணம் இல்லை')} hint={t('Try another time', 'வேறு நேரம் முயற்சிக்கவும்')} />
           : (
             <div className="flex flex-col gap-3">
               {options.map((o) => <OptionCard key={o.id} opt={o} selected={o === selected} onSelect={() => setPicked(o.id)} />)}
@@ -116,7 +117,7 @@ export default function Booking() {
             {tip(selected, plan.data, child, t)}
           </AvalTip>
         )}
-        <SampleLabel />
+        <SampleLabel>{dataNote(isReal(selected))}</SampleLabel>
       </div>
 
       <div className="sticky bottom-0 border-t border-line bg-cream px-4 pt-2.5 pb-[22px]">
@@ -136,7 +137,7 @@ export default function Booking() {
           ))}
         </div>
         <button type="button" onClick={() => { const o = autoSheet; setAutoSheet(null); startTrip({ from: plan.data.from, to: plan.data.to, time: plan.data.time, option_id: o.id }) }}
-          className="mt-3 h-14 w-full rounded-2xl bg-teal text-base font-extrabold text-white">
+          className="sp-btn-safe mt-3 w-full">
           {t('Start Journey Watch', 'பயண கண்காணிப்பு தொடங்கு')}
         </button>
       </Confirm>
@@ -151,7 +152,7 @@ function tip(o, plan, child, t) {
   const bits = []
   if ((o.badges || []).includes('SAFEST')) bits.push(t(`${name} is safest at ${when}.`, `${when}-க்கு ${name} பாதுகாப்பானது.`))
   else bits.push(t(`${name}: ${o.total_min} min.`, `${name}: ${o.total_min} நிமிடம்.`))
-  if (o.is_free && legs.length) bits.push(t("It's free.", 'இது இலவசம்.'))
+  if (o.is_free && legs.length) bits.push(t('Free for women on ordinary (white-board) buses.', 'சாதாரண (வெள்ளை பலகை) பஸ்ஸில் பெண்களுக்கு இலவசம்.'))
   if (o.safe_wait) bits.push(t(`Wait at ${o.safe_wait.name}.`, `${o.safe_wait.name_ta || o.safe_wait.name}-ல் காத்திருங்கள்.`))
   if (child && o.switches === 0) bits.push(t('No switches with your child.', 'குழந்தையுடன் மாற்றம் இல்லை.'))
   if (o.kind === 'auto' && o.night_fare) bits.push(t('Night fare applies.', 'இரவு கட்டணம்.'))

@@ -126,7 +126,7 @@ export default function Connect() {
           <select value={form.relation} onChange={(e) => setForm({ ...form, relation: e.target.value })} className="h-12 rounded-xl border-2 border-line px-2">
             {['mother', 'sister', 'friend', 'colleague', 'neighbour'].map((r) => <option key={r} value={r}>{r}</option>)}
           </select>
-          <button type="submit" className="h-12 rounded-xl bg-plum font-extrabold text-white">{t('Continue', 'தொடர்')}</button>
+          <button type="submit" className="sp-btn-primary">{t('Continue', 'தொடர்')}</button>
         </form>
       </Confirm>
       <Confirm open={sheet?.kind === 'confirm'} busy={busy} onCancel={() => setSheet(null)}

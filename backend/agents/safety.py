@@ -80,8 +80,21 @@ def _ampm(hhmm):
     return f"{h}:{m % 60:02d} {suffix}" if m % 60 else f"{h} {suffix}"
 
 
+NEAR_STOP_M = 900
+
+
 def places_near_stop(code: str) -> list:
-    return [p for p in data.places() if p.get("near_stop") == code]
+    """Places tagged with this stop; for real (GTFS) stops, places within NEAR_STOP_M, with distance."""
+    tagged = [p for p in data.places() if p.get("near_stop") == code]
+    at = None if tagged else data.stop_coords(code)
+    if not at:
+        return tagged
+    near = []
+    for p in data.places():
+        d = data.haversine_m(at[0], at[1], p["lat"], p["lng"])
+        if d <= NEAR_STOP_M:
+            near.append({**p, "distance_m": round(d)})
+    return sorted(near, key=lambda p: p["distance_m"])
 
 
 # ---------- routes ----------
@@ -132,13 +145,20 @@ def score_option(opt: dict, minutes: int, with_child: bool = False) -> dict:
 def _brief_place(p):
     return {"id": p["id"], "name": p["name"], "name_ta": p.get("name_ta"), "type": p["type"],
             "women_run": p.get("women_run", False), "open_now": p["open_now"], "close": p.get("close"),
-            "open_24h": p.get("open_24h", False), "location": p.get("address"), "crowd_now": p["crowd_now"]}
+            "open_24h": p.get("open_24h", False), "location": p.get("address"), "crowd_now": p["crowd_now"],
+            **({"distance_m": p["distance_m"]} if p.get("distance_m") is not None else {})}
+
+
+def _reach(o):
+    """Minutes from the asked time to arrival (handles a trip that crosses midnight)."""
+    return o["total_min"] + o.get("wait_min", 0)
 
 
 def rank_options(options: list, minutes: int, sort: str = "safest", with_child: bool = False) -> list:
     scored = [score_option(o, minutes, with_child) for o in options]
     keys = {
-        "safest": lambda o: (-o["safety_score"], o["total_min"]),
+        # equal safety: the one that gets her there first (real timetables have real waits)
+        "safest": lambda o: (-o["safety_score"], _reach(o), o["total_min"]),
         "cheapest": lambda o: (o["fare_inr"], -o["safety_score"]),
         "fastest": lambda o: (o["total_min"], -o["safety_score"]),
     }

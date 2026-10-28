@@ -57,6 +57,9 @@ export default function App() {
               <Route path="*" element={<Navigate to="/home" replace />} />
             </Routes>
             </Suspense>
+            <p className="px-4 pt-1 pb-3 text-center text-[10px] leading-snug text-mute">
+              Bus routes &amp; timetables: <a href="https://github.com/ungalsoththu/ChennaiGTFS" target="_blank" rel="noreferrer" className="underline">ChennaiGTFS</a> (UngalSoththu), ODbL
+            </p>
           </div>
           <Toaster position="top-center" theme="light" />
         </BrowserRouter>

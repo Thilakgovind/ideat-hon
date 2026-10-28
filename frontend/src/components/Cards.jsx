@@ -12,6 +12,24 @@ const TYPE_LABEL = {
 }
 export const typeLabel = (t) => TYPE_LABEL[t] || t
 
+/** The only free wording we use: the scheme covers ordinary buses, not a specific bus. */
+export function useFreeText() {
+  const t = useT()
+  return t('Free for women on ordinary (white-board) buses', 'சாதாரண (வெள்ளை பலகை) பஸ்ஸில் பெண்களுக்கு இலவசம்')
+}
+
+/** True when the ride comes from the real MTC timetable (ChennaiGTFS), not sample data. */
+export const isReal = (x) => Boolean(x?.source) && x.source !== 'sample'
+
+/** Data label for screens that mix real bus times with sample places. */
+export function useDataNote() {
+  const t = useT()
+  return (real) => (real
+    ? t('Bus times: real MTC timetable (ChennaiGTFS, scheduled, not live). Safe places: sample data.',
+      'பஸ் நேரம்: உண்மையான MTC அட்டவணை (ChennaiGTFS). பாதுகாப்பான இடங்கள்: மாதிரி தரவு.')
+    : undefined)
+}
+
 /** Route card inside AVAL's reply (Main screen). */
 export function RouteCard({ card }) {
   const t = useT()
@@ -19,6 +37,7 @@ export function RouteCard({ card }) {
   const legs = transitLegs(opt)
   const first = legs[0]
   const sw = opt.safe_wait
+  const freeText = useFreeText()
   return (
     <div className="flex flex-col gap-2.5 rounded-[18px] border-2 border-lilac p-3">
       <div className="flex items-center justify-between">
@@ -29,7 +48,7 @@ export function RouteCard({ card }) {
               <span className={`rounded-[10px] px-2.5 py-1 text-base font-extrabold text-white ${l.mode === 'bus' ? 'bg-pink-deep' : l.mode === 'metro' ? 'bg-metro' : l.mode === 'train' ? 'bg-train' : 'bg-[#FFC21C] !text-ink'}`}>{l.label}</span>
             </span>
           ))}
-          {opt.is_free && <Pill className="bg-[#E6F4F2] text-xs font-bold text-[#0B5F59]">FREE · <span className="font-tamil">இலவசம்</span></Pill>}
+          {opt.is_free && <Pill className="bg-[#E6F4F2] text-xs font-bold text-[#0B5F59]">{freeText}</Pill>}
           {!opt.is_free && opt.fare_inr > 0 && <Pill className="bg-lilac text-xs text-plum">{opt.fare_is_estimate ? '~' : ''}₹{opt.fare_inr}</Pill>}
         </div>
         <span className="tabular text-[13px] text-mute">{opt.total_min} min</span>
@@ -41,6 +60,10 @@ export function RouteCard({ card }) {
             <span className="text-mute">{first.mode === 'bus' ? t('Next bus', 'அடுத்த பஸ்') : t('Next train', 'அடுத்த ரயில்')}</span>
             <span className="tabular font-semibold">{opt.next.slice(0, 2).map((x) => clock(x)).join(' · then ')}</span>
           </div>
+          {first.free_note && (
+            <span className="text-xs text-mute">{t('Deluxe / AC buses on this route are paid.', 'டீலக்ஸ் / AC பஸ்ஸில் கட்டணம் உண்டு.')}</span>
+          )}
+          {isReal(opt) && <span className="text-[11px] text-mute">{t('Real MTC timetable · ChennaiGTFS', 'உண்மையான MTC அட்டவணை · ChennaiGTFS')}</span>}
         </div>
       ) : (
         <div className="text-sm text-mute">{t('Door to door · fare is an estimate', 'வீட்டு வாசல் வரை · கட்டணம் மதிப்பீடு')}</div>
@@ -51,7 +74,7 @@ export function RouteCard({ card }) {
           <div className="flex flex-col gap-px">
             <span className="text-[13px] font-bold">{t(`Wait at ${sw.name}`, `${sw.name_ta || sw.name}-ல் காத்திருங்கள்`)}</span>
             <span className="text-xs text-mute">
-              {[sw.women_run && t('women-run', 'பெண்கள் நடத்துவது'), sw.open_now && t('open now', 'இப்போது திறந்துள்ளது'), sw.crowd_now === 'busy' && t('busy', 'கூட்டம்')].filter(Boolean).join(' · ')}
+              {[sw.distance_m && `${sw.distance_m} m`, sw.women_run && t('women-run', 'பெண்கள் நடத்துவது'), sw.open_now && t('open now', 'இப்போது திறந்துள்ளது'), sw.crowd_now === 'busy' && t('busy', 'கூட்டம்')].filter(Boolean).join(' · ')}
             </span>
           </div>
         </div>
@@ -67,6 +90,7 @@ export function OptionCard({ opt, selected, onSelect }) {
   const walkStart = opt.legs[0]?.mode === 'walk' ? opt.legs[0].minutes : 0
   const walkEnd = opt.legs.length > 1 && opt.legs[opt.legs.length - 1].mode === 'walk' ? opt.legs[opt.legs.length - 1].minutes : 0
   const ride = legs.reduce((s, l) => s + l.minutes, 0)
+  const freeText = useFreeText()
   return (
     <button
       type="button"
@@ -83,7 +107,8 @@ export function OptionCard({ opt, selected, onSelect }) {
               <RouteBadge label={l.label} mode={l.mode} className={selected && i === 0 ? 'text-sm' : ''} />
             </span>
           ))}
-          {opt.is_free && legs.length > 0 && <Pill className="bg-safe-bg text-teal-dark">FREE</Pill>}
+          {opt.is_free && legs.length > 0 && <Pill className="bg-safe-bg text-teal-dark">{freeText}</Pill>}
+          {isReal(opt) && <Pill className="bg-[#EAF1FF] text-[11px] text-[#1F4FB0]">{t('Real MTC times', 'உண்மையான நேரம்')}</Pill>}
           {legs.length === 1 && legs[0].mode === 'auto' && <span className="text-xs text-ink-2">{t('Door to door', 'வீட்டு வாசல் வரை')}</span>}
           {(opt.badges || []).filter((b) => b !== 'CHEAPEST').map((b) => (
             <Pill key={b} className={b === 'SAFEST' ? 'bg-safe-bg text-teal-dark' : 'bg-[#FFF1D6] text-[#9A5B00]'}>{b}</Pill>

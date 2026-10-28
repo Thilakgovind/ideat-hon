@@ -81,7 +81,7 @@ export default function LiveTrip() {
             : d.demo_logged ? t('Demo mode: "reached" message logged, not sent by SMS.', 'டெமோ: செய்தி அனுப்பப்படவில்லை.')
             : t('Journey Watch is off. Location sharing stopped.', 'பயண கண்காணிப்பு நிறுத்தப்பட்டது.')}
         </p>
-        <button type="button" onClick={() => navigate('/home')} className="h-14 w-full rounded-2xl bg-teal text-[17px] font-extrabold text-white">{t('Back to home', 'முகப்புக்கு')}</button>
+        <button type="button" onClick={() => navigate('/home')} className="sp-btn-safe w-full">{t('Back to home', 'முகப்புக்கு')}</button>
       </div>
     )
   }
@@ -159,7 +159,7 @@ export default function LiveTrip() {
           <Switch checked={shareLoc} onCheckedChange={setShareLoc} disabled={trip.status !== 'active'} className="data-[state=checked]:bg-teal" />
         </label>
         <div className="grid grid-cols-[1fr_76px] gap-2.5">
-          <button type="button" onClick={reached} disabled={trip.status === 'reached'} className="h-14 rounded-2xl bg-teal text-[17px] font-extrabold text-white disabled:opacity-50">
+          <button type="button" onClick={reached} disabled={trip.status === 'reached'} className="sp-btn-safe">
             {t("I've reached", 'சேர்ந்துவிட்டேன்')}
           </button>
           <Link to={`/sos?trip=${id}`} aria-label="SOS" className="flex h-14 items-center justify-center rounded-2xl bg-sos text-base font-black text-white no-underline">SOS</Link>
