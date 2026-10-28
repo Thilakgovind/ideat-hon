@@ -36,3 +36,30 @@ def test_tag_areas_prefers_names_and_skips_misplaced_stops():
     import_gtfs.tag_areas(stops, areas)
     assert stops[0].get("area") is None
     assert stops[1]["area"] == "Anna Nagar West" and stops[2]["area"] == "Nungambakkam"
+
+
+def test_real_routes_round_trip_through_supabase(monkeypatch):
+    """Seeded rows -> Supabase -> store.load_public -> same 40H plan, no duplicate routes."""
+    from backend import store
+    from backend.seed.generate_sample import build
+    from backend.seed_supabase import rows_from
+    from backend.tests.conftest import FakeResponse
+
+    monkeypatch.setenv("SUPABASE_URL", "https://x.supabase.co")
+    monkeypatch.setenv("SUPABASE_SERVICE_KEY", "k")
+    rows = rows_from(build())  # times already HH:MM:SS, as Postgres returns them
+
+    def fake_get(url, **kw):
+        if kw.get("params", {}).get("limit") == 1:
+            return FakeResponse(200, [{"id": "x"}])
+        table = url.rsplit("/", 1)[-1]
+        start = int(kw["headers"]["Range"].split("-")[0])
+        return FakeResponse(200, rows[table][start:start + 1000])
+    monkeypatch.setattr(store.httpx, "get", fake_get)
+    assert store.load_public()["routes"] == len(rows["routes"])
+
+    ids = [r["id"] for r in data.routes()]
+    assert len(ids) == len(set(ids))  # Supabase copy + gtfs_bus.json never doubled
+    opt = next(o for o in route.plan("Anna Nagar West", "Nungambakkam", "08:00")["options"] if o["id"] == "bus:MTC-18683:MTC9835")
+    assert opt["next"][:2] == ["08:20", "08:40"] and opt["source"] == "ChennaiGTFS (MTC)"
+    assert "white-board" in opt["legs"][1]["free_note"]

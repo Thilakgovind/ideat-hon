@@ -24,9 +24,21 @@ def test_seed_counts():
     assert sum(c.values()) >= 650
 
 
-def test_every_row_is_sample():
+def test_every_row_is_sample_or_labelled_real():
     for t in ORDER:
-        assert all(r["source"] == "sample" for r in ROWS[t]), t
+        for r in ROWS[t]:
+            assert r["source"] == "sample" or (t in ("routes", "stops") and r["source"] == "live"
+                                                and r["data_source"] == "ChennaiGTFS (MTC)"), t
+
+
+def test_real_routes_seeded_with_timetables():
+    real = [r for r in ROWS["routes"] if r["source"] == "live"]
+    stop_ids = {s["id"] for s in ROWS["stops"]}
+    assert any(r["number"] == "40H" for r in real)
+    for r in real:
+        assert r["one_way"] and r["departures"] and "white-board" in r["free_note"]
+        assert all(s["stop_id"] in stop_ids for s in r["stop_sequence"])  # every stop exists (FK-safe)
+    assert all(s["area"] for s in ROWS["stops"])  # stops.area is NOT NULL
 
 
 def test_no_phones_outside_private_tables():

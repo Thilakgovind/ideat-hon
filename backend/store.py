@@ -102,8 +102,10 @@ def load_public() -> dict:
         out = []
         for s in seq or []:
             st = stops.get(s["stop_id"], {})
+            # real routes tag the area per route in the sequence; sample routes use the stop's own area
+            area = s["area"] if "area" in s else st.get("area")
             row = {"name": st.get("name", s["stop_id"]), "code": s["stop_id"], "min": s["min"], "lat": st.get("lat"),
-                   "lng": st.get("lng"), "area": st.get("area")}
+                   "lng": st.get("lng"), "area": area}
             row.update({k: s[k] for k in extra if s.get(k) is not None})
             out.append(row)
         return out
@@ -114,7 +116,10 @@ def load_public() -> dict:
         "operator": r.get("operator"), "stops": stop_list(r["stop_sequence"]), "first": _hm(r.get("first_departure")),
         "last": _hm(r.get("last_departure")), "frequency_minutes": r.get("frequency_min") or 15,
         "walk_start_min": r.get("walk_start_min") or 3, "walk_end_min": r.get("walk_end_min") or 2,
-        "stops_well_lit": r.get("stops_well_lit"), "notes": r.get("notes"), "source": r.get("source", "live"),
+        "stops_well_lit": r.get("stops_well_lit"), "notes": r.get("notes"),
+        "source": r.get("data_source") or r.get("source", "live"),
+        **({"departures": r["departures"], "one_way": True} if r.get("departures") and r.get("one_way") else {}),
+        **({"free_note": r["free_note"]} if r.get("free_note") else {}),
     } for r in routes if r["mode"] == "bus"]
     metro_rules = next((r.get("fare_rules") for r in routes if r["mode"] == "metro" and r.get("fare_rules")), {}) or {}
     metro_lines = [{

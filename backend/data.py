@@ -35,7 +35,9 @@ def reset():
 
 def routes():
     """Sample / Supabase bus routes + real MTC routes from ChennaiGTFS (data/gtfs_bus.json)."""
-    return load("routes")["routes"] + gtfs_buses()
+    base = load("routes")["routes"]
+    have = {r["id"] for r in base}  # Supabase may already hold the real rows: never list a route twice
+    return base + [r for r in gtfs_buses() if r["id"] not in have]
 
 
 def gtfs_buses():

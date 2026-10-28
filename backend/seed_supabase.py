@@ -5,14 +5,17 @@
 
 - Uses SUPABASE_URL + SUPABASE_SERVICE_KEY (backend only). Prints table names and counts only.
 - Upserts by id; trip_events and request_log (no natural id) replace their source='sample' rows.
+- Real MTC routes from data/gtfs_bus.json (ChennaiGTFS) go in as source='live', data_source='ChennaiGTFS (MTC)',
+  with their stops. Needs migration 003_real_transit.sql (departures / one_way / free_note / data_source columns).
 - DEMO_CONTACT_PHONE_1 / _2 (optional) replace the fake phones of Priya's first two contacts.
   Those real numbers go only to Supabase (private table), never to /data or the console.
 """
+import json
 import sys
 
 import httpx
 
-from backend import config
+from backend import config, data
 from backend.agents import route
 from backend.seed.generate_sample import build
 
@@ -64,6 +67,15 @@ def rows_from(b: dict) -> dict:
                                   "night_multiplier": 1.5, "night_hours": "22:00-05:00", "road_factor": route.ROAD_FACTOR,
                                   "booking_links": route.BOOKING_LINKS},
                    "notes": "Estimate only. Book in an auto app.", "source": "sample"})
+    # NOT NULL routes columns: sending null overrides the table default, so fill them here.
+    route_defaults = {"free_for_women": False, "fare_inr": 0, "stop_sequence": [], "one_way": False, "source": "sample"}
+    for r in routes:
+        for k, v in route_defaults.items():
+            if r.get(k) is None:
+                r[k] = v
+    gtfs_stops, gtfs_routes = gtfs_rows(stop_ids)
+    out["stops"] += gtfs_stops
+    routes += gtfs_routes
     out["routes"] = routes
 
     out["transfers"] = [{"id": f"tr{i + 1:02d}", "at_stop": t["code"], "from_mode": t["from"], "to_mode": t["to"],
@@ -105,6 +117,42 @@ def rows_from(b: dict) -> dict:
     return out
 
 
+def _nearest_area(lat, lng):
+    return min(data.areas(), key=lambda a: data.haversine_m(lat, lng, a["lat"], a["lng"]))["name"]
+
+
+def gtfs_rows(existing_stop_ids=()) -> tuple:
+    """Real MTC routes + their stops from data/gtfs_bus.json (empty if the file is missing)."""
+    path = config.DATA_DIR / "gtfs_bus.json"
+    if not path.exists():
+        return [], []
+    feed = json.loads(path.read_text(encoding="utf-8"))
+    stops, routes = {}, []
+    for r in feed["routes"]:
+        for s in r["stops"]:
+            if s["code"] not in stops and s["code"] not in existing_stop_ids:
+                stops[s["code"]] = {"id": s["code"], "name": s["name"], "area": s.get("area") or _nearest_area(s["lat"], s["lng"]),
+                                    "kind": "bus_stop", "lat": s["lat"], "lng": s["lng"], "source": "live",
+                                    "data_source": r["source"]}
+        routes.append({
+            "id": r["id"], "number": r["number"], "mode": "bus", "name": r["name"], "operator": r.get("operator"),
+            "free_for_women": r["free_for_women"], "fare_inr": r["fare_inr"], "fare_others_inr": r.get("fare_others_inr"),
+            # area is per route: the stop that stands for an app area on THIS route
+            "stop_sequence": [{"stop_id": s["code"], "min": s["min"], "area": s.get("area")} for s in r["stops"]],
+            "first_departure": _t(r["first"]), "last_departure": _t(r["last"]), "frequency_min": max(1, r["frequency_minutes"]),
+            "walk_start_min": r.get("walk_start_min"), "walk_end_min": r.get("walk_end_min"), "notes": r.get("notes"),
+            "departures": r["departures"], "one_way": True, "free_note": r.get("free_note"),
+            "source": "live", "data_source": r["source"], "source_url": r.get("source_url")})
+    return list(stops.values()), routes
+
+
+def uniform(rows: list) -> list:
+    """PostgREST bulk insert needs every row to have the same keys (PGRST102).
+    Give each row the full column set of the table; missing values become null."""
+    columns = list(dict.fromkeys(k for r in rows for k in r))
+    return [{k: r.get(k) for k in columns} for r in rows]
+
+
 class Rest:
     def __init__(self):
         url = config.env("SUPABASE_URL").rstrip("/")
@@ -122,6 +170,7 @@ class Rest:
             raise RuntimeError(f"{table}: {what} failed (HTTP {r.status_code} {code})")  # no row data, no keys
 
     def upsert(self, table, rows):
+        rows = uniform(rows)
         for i in range(0, len(rows), BATCH):
             r = self.client.post(f"{self.base}/{table}", params={"on_conflict": "id"}, json=rows[i:i + BATCH],
                                  headers={"Prefer": "resolution=merge-duplicates,return=minimal"})
@@ -129,6 +178,7 @@ class Rest:
 
     def replace_sample(self, table, rows):
         self._check(self.client.delete(f"{self.base}/{table}", params={"source": "eq.sample"}), table, "delete sample rows")
+        rows = uniform(rows)
         for i in range(0, len(rows), BATCH):
             self._check(self.client.post(f"{self.base}/{table}", json=rows[i:i + BATCH], headers={"Prefer": "return=minimal"}),
                         table, "insert")
