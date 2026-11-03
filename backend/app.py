@@ -48,6 +48,10 @@ async def lifespan(_app):
 
 
 app = FastAPI(title="SafePath V1.1 API", version="1.1.0", lifespan=lifespan)
+from .veeramangai import router as veeramangai_router
+app.include_router(veeramangai_router)
+from .vm_workflow import router as vm_workflow_router
+app.include_router(vm_workflow_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origin_regex=r"http://(localhost|127\.0\.0\.1)(:\d+)?",

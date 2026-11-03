@@ -1,0 +1,78 @@
+{
+  "name": "Veeramangai — Supabase Sports Catalog Check",
+  "active": false,
+  "nodes": [
+    {
+      "id": "manual",
+      "name": "Check sports database",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "catalog",
+      "name": "Read through backend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "url": "https://banister-remission-unloved.ngrok-free.dev/api/veeramangai/catalog",
+        "options": {
+          "timeout": 30000
+        }
+      }
+    },
+    {
+      "id": "counts",
+      "name": "Counts and storage status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst sources = Object.values(data.storage || {});\nreturn [{ json: { districts: data.districts.length, sports: data.sports.length, opportunities: data.opportunities.length, resources: data.resources.length, database: sources.length === 5 && sources.every(s => s === 'supabase') ? 'supabase' : 'sample_fallback', notice: data.notice } }];"
+      }
+    }
+  ],
+  "connections": {
+    "Check sports database": {
+      "main": [
+        [
+          {
+            "node": "Read through backend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read through backend": {
+      "main": [
+        [
+          {
+            "node": "Counts and storage status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
+  },
+  "pinData": {},
+  "tags": []
+}

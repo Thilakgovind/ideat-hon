@@ -24,7 +24,9 @@ export function AppProvider({ children }) {
     supabase.auth.getSession().then(({ data }) => { setSession(data.session); refresh() })
     const { data: sub } = supabase.auth.onAuthStateChange((event, s) => {
       setSession(s)
-      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'USER_UPDATED') refresh()
+      // Auth callbacks run under Supabase's session lock. refresh() gets the
+      // session again, so defer it until that lock has been released.
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'USER_UPDATED') setTimeout(refresh, 0)
     })
     return () => sub.subscription.unsubscribe()
   }, [refresh])

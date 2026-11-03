@@ -1,0 +1,114 @@
+{
+  "name": "Veeramangai — Avvai Sports Guide (sample)",
+  "active": false,
+  "nodes": [
+    {
+      "id": "incoming",
+      "name": "Incoming",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "veeramangai-avvai",
+        "authentication": "none",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "clean",
+      "name": "Minimize input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body || {};\nconst prompts = {opportunities: 'Find a trial', funding: 'Help with entry fees', travel: 'Plan travel', support: 'Ask for rest'};\nif (!Object.hasOwn(prompts, body.topic) || !['ta','en'].includes(body.lang)) throw new Error('Invalid topic or language');\nreturn [{json: {text: prompts[body.topic], lang: body.lang}}];"
+      }
+    },
+    {
+      "id": "backend",
+      "name": "Avvai backend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://banister-remission-unloved.ngrok-free.dev/api/veeramangai/chat",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "timeout": 15000
+        }
+      }
+    },
+    {
+      "id": "respond",
+      "name": "Reply",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Incoming": {
+      "main": [
+        [
+          {
+            "node": "Minimize input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Minimize input": {
+      "main": [
+        [
+          {
+            "node": "Avvai backend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Avvai backend": {
+      "main": [
+        [
+          {
+            "node": "Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
+  },
+  "pinData": {},
+  "tags": []
+}

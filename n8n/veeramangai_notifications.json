@@ -1,0 +1,149 @@
+{
+  "name": "Veeramangai — Opted-in Request Updates",
+  "active": false,
+  "nodes": [
+    {
+      "id": "manual",
+      "name": "Process pending updates",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "claim",
+      "name": "Claim pending deliveries",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "method": "POST",
+        "url": "https://banister-remission-unloved.ngrok-free.dev/api/veeramangai/automation/claim",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{}",
+        "options": {
+          "timeout": 20000
+        }
+      }
+    },
+    {
+      "id": "split",
+      "name": "Each delivery",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "fieldToSplitOut": "deliveries",
+        "options": {}
+      }
+    },
+    {
+      "id": "gmail",
+      "name": "Send generic update",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "={{ $json.to }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.message }}",
+        "options": {}
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": false
+    },
+    {
+      "id": "receipt",
+      "name": "Record provider result",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "method": "POST",
+        "url": "https://banister-remission-unloved.ngrok-free.dev/api/veeramangai/automation/receipt",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({delivery_id: $('Each delivery').item.json.delivery_id, claim_id: $('Each delivery').item.json.claim_id, status: $json.id && !$json.error ? 'sent' : 'uncertain', provider_id: $json.id && !$json.error ? $json.id : null}) }}",
+        "options": {
+          "timeout": 20000
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Process pending updates": {
+      "main": [
+        [
+          {
+            "node": "Claim pending deliveries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claim pending deliveries": {
+      "main": [
+        [
+          {
+            "node": "Each delivery",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Each delivery": {
+      "main": [
+        [
+          {
+            "node": "Send generic update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send generic update": {
+      "main": [
+        [
+          {
+            "node": "Record provider result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
+  },
+  "pinData": {}
+}

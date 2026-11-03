@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Toaster } from '@/components/ui/sonner'
 import { LangProvider } from '@/lib/i18n'
 import { AppProvider } from '@/lib/store'
+import { AvvaiCompanion } from '@/components/Avvai'
 
 // One chunk per screen keeps the first load small on slow 3G.
 const AvalChat = lazy(() => import('@/screens/AvalChat'))
@@ -25,6 +26,12 @@ const Ticket = lazy(() => import('@/screens/Ticket'))
 const Tickets = lazy(() => import('@/screens/Ticket').then((m) => ({ default: m.Tickets })))
 const Train = lazy(() => import('@/screens/Train'))
 const Demo = lazy(() => import('@/screens/Demo'))
+const AvvaiStudio = lazy(() => import('@/components/Avvai'))
+const Veeramangai = lazy(() => import('@/screens/Veeramangai'))
+const AvvaiAgentPage = lazy(() => import('@/screens/Veeramangai').then(m => ({ default: m.AvvaiAgentPage })))
+const AthleteSpace = lazy(() => import('@/screens/AthleteSpace'))
+const AthleteLogin = lazy(() => import('@/screens/AthleteSpace').then(m => ({ default: m.AthleteLogin })))
+const SupportWorkspace = lazy(() => import('@/screens/SupportWorkspace'))
 
 export default function App() {
   return (
@@ -32,10 +39,19 @@ export default function App() {
       <AppProvider>
         <BrowserRouter>
           {/* Phone-width column; full width on real phones */}
-          <div className="mx-auto min-h-dvh w-full max-w-[430px] bg-cream shadow-[0_0_40px_rgba(36,19,47,0.12)]">
+          <div className="app-shell mx-auto min-h-dvh w-full max-w-[430px] bg-cream shadow-[0_0_40px_rgba(36,19,47,0.12)]">
             <Suspense fallback={<div className="flex min-h-dvh items-center justify-center text-sm text-mute">SafePath…</div>}>
             <Routes>
-              <Route path="/" element={<Login />} />
+              <Route path="/" element={<Navigate to="/veeramangai" replace />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/veeramangai" element={<AthleteSpace />} />
+              <Route path="/veeramangai/login" element={<AthleteLogin />} />
+              <Route path="/veeramangai/profile" element={<SupportWorkspace key="profile" view="profile" />} />
+              <Route path="/veeramangai/requests" element={<SupportWorkspace key="requests" view="requests" />} />
+              <Route path="/veeramangai/coordinator" element={<SupportWorkspace key="coordinator" view="coordinator" />} />
+              <Route path="/veeramangai/features" element={<Veeramangai />} />
+              <Route path="/veeramangai/agent" element={<AvvaiAgentPage />} />
+              <Route path="/veeramangai/:module" element={<Veeramangai />} />
               <Route path="/home" element={<Home />} />
               <Route path="/aval" element={<AvalChat />} />
               <Route path="/booking" element={<Booking />} />
@@ -54,6 +70,7 @@ export default function App() {
               <Route path="/reach/:id" element={<Reach />} />
               <Route path="/steps" element={<Steps />} />
               <Route path="/demo" element={<Demo />} />
+              <Route path="/avvai-studio" element={<AvvaiStudio />} />
               <Route path="*" element={<Navigate to="/home" replace />} />
             </Routes>
             </Suspense>
@@ -61,6 +78,7 @@ export default function App() {
               Bus routes &amp; timetables: <a href="https://github.com/ungalsoththu/ChennaiGTFS" target="_blank" rel="noreferrer" className="underline">ChennaiGTFS</a> (UngalSoththu), ODbL
             </p>
           </div>
+          <AvvaiCompanion />
           <Toaster position="top-center" theme="light" />
         </BrowserRouter>
       </AppProvider>

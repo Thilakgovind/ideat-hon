@@ -54,7 +54,8 @@ def verify(token: str) -> dict:
     if r.status_code != 200:
         raise AuthError("invalid_token")
     u = r.json()
-    who = {"user_id": user_id_for(u["id"]), "auth_id": u["id"], "phone": u.get("phone") or None}
+    who = {"user_id": user_id_for(u["id"]), "auth_id": u["id"], "phone": u.get("phone") or None,
+           "email": u.get("email") or None, "email_confirmed": bool(u.get("email_confirmed_at"))}
     with _lock:
         _cache[key] = (now + CACHE_SECONDS, who)
     return who

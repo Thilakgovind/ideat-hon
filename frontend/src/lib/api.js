@@ -10,7 +10,7 @@ export class ApiError extends Error {
   }
 }
 
-async function request(path, { method = 'GET', body, form } = {}) {
+export async function request(path, { method = 'GET', body, form } = {}) {
   let res
   const headers = {}
   if (body) headers['Content-Type'] = 'application/json'

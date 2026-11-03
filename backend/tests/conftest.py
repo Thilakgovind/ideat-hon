@@ -17,7 +17,7 @@ def mock_mode_and_clean_state(monkeypatch):
     for keys in config.SERVICE_KEYS.values():
         for k in keys:
             monkeypatch.setenv(k, "")
-    for k in ("SMS_PROVIDER", "PUBLIC_BACKEND_URL", "TEXTBEE_WEBHOOK_SECRET", "N8N_ORCHESTRATOR_URL", "SUPABASE_DB_URL"):
+    for k in ("SMS_PROVIDER", "PUBLIC_BACKEND_URL", "TEXTBEE_WEBHOOK_SECRET", "N8N_ORCHESTRATOR_URL", "SUPABASE_DB_URL", "AVVAI_MODEL_PROVIDER", "OLLAMA_BASE_URL", "OLLAMA_MODEL"):
         monkeypatch.setenv(k, "")
     data.reset()
     store.STATUS.update(mode="memory", checked_at=0, loaded={})
