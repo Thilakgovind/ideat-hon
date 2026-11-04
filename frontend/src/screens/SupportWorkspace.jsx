@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { readDemo } from '@/lib/veeramangai'
 import { request } from '@/lib/api'
 import { useApp } from '@/lib/store'
 import { AthleteNav } from './AthleteSpace'
@@ -34,6 +35,7 @@ export function SupportRequestForm({ module }) {
 
 export default function SupportWorkspace({ view = 'requests' }) {
   const { signedIn } = useApp()
+  const drafts = readDemo('requests', [])
   const [profile, setProfile] = useState(emptyProfile), [catalog, setCatalog] = useState({ districts: [], sports: [] })
   const [workspace, setWorkspace] = useState(null), [items, setItems] = useState([]), [next, setNext] = useState(null)
   const [error, setError] = useState(''), [notice, setNotice] = useState(''), [busy, setBusy] = useState(false)
@@ -73,7 +75,7 @@ export default function SupportWorkspace({ view = 'requests' }) {
   }
   return <div className="vm-app athlete-space"><header className="athlete-top"><Link className="vm-brand" to="/veeramangai">VEERAMANGAI</Link><Link to="/veeramangai/profile">My profile</Link></header><main className="athlete-main">
     <h1>{view === 'profile' ? 'YOUR PROFILE.' : coordinator ? 'COORDINATOR DESK.' : 'MY REQUESTS.'}</h1>
-    {!signedIn ? <p><Link to="/veeramangai/login">Log in</Link> to save a profile and submit requests. <Link to="/veeramangai/features">Explore the demo</Link>.</p> : <>
+    {!signedIn ? <section className="avvai-guest-workspace"><h2>{view === 'profile' ? 'Make this space yours.' : 'Your drafts, ready to review.'}</h2><p>Create an account to save a profile and submit requests to a participating coordinator.</p><Link className="vm-primary" to="/veeramangai/login">Log in or create an account</Link><p><Link to="/veeramangai/features">Continue exploring</Link></p>{view === 'requests' && <><p>Guest drafts stay in this browser session. They have not been submitted and are not automatically transferred to your account.</p><div className="athlete-request-list">{drafts.map(d=><article key={d.id}><span className="vm-badge">Draft · not submitted</span><h2>{d.need}</h2><p>{d.note}</p><Link to={`/veeramangai/${d.kind}`}>Review this support option</Link></article>)}</div>{!drafts.length && <p>No drafts yet. Explore funding, travel or private support to prepare one.</p>}</>}</section> : <>
       {error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}{!workspace && !error && <p role="status">Loading your saved workspace…</p>}
       {workspace && !workspace.coordinator_configured && <p>A participating coordinator has not been connected yet. You can save your profile; submissions will be available after setup.</p>}
       {workspace?.is_coordinator && <p><Link to="/veeramangai/coordinator">Open coordinator desk</Link></p>}

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { ArrowUpRight, Home, Compass, ClipboardList, Sparkles, UserRound } from 'lucide-react'
+import { ArrowUpRight, Home, Compass, ClipboardList, Sparkles, UserRound, Mic } from 'lucide-react'
 import { Avvai } from '@/components/Avvai'
+import { useT } from '@/lib/i18n'
 import { useApp } from '@/lib/store'
 import { supabase } from '@/lib/supabase'
 import { request } from '@/lib/api'
@@ -11,11 +12,13 @@ import './Veeramangai.css'
 import './AthleteSpace.css'
 
 export function AthleteNav() {
+  const t = useT()
+  const labels = { Home: 'முகப்பு', Explore: 'தேடுக', Requests: 'கோரிக்கைகள்', Avvai: 'அவ்வை', Profile: 'சுயவிவரம்' }
   return <nav className="athlete-nav" aria-label="Athlete navigation">{[
     ['/veeramangai', 'Home', Home], ['/veeramangai/features', 'Explore', Compass],
-    ['/veeramangai/requests', 'Requests', ClipboardList], ['/veeramangai/agent', 'Avvai', Sparkles],
+    ['/veeramangai/voice', 'Avvai', Mic], ['/veeramangai/requests', 'Requests', ClipboardList],
     ['/veeramangai/profile', 'Profile', UserRound],
-  ].map(([path, title, Icon]) => <NavLink end key={path} to={path}><Icon size={20} /><span>{title}</span></NavLink>)}</nav>
+  ].map(([path, title, Icon]) => <NavLink end key={path} to={path} aria-label={t(title, labels[title])}><Icon size={20} /><span>{t(title, labels[title])}</span></NavLink>)}</nav>
 }
 export default function AthleteSpace({ view = 'home' }) {
   const { signedIn, me } = useApp()

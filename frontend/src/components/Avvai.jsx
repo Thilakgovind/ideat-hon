@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import './Avvai.css'
 
-const FRAMES = { front: [0], back: [1], left: [2], right: [3], walk: [4, 5], run: [6, 7], jump: [9, 8, 8, 9], roll: [10], wave: [11], dance: [11, 8, 0, 8] }
+const FRAMES = { front: [0], back: [1], left: [2], right: [3], walk: [4, 5], run: [6, 7], jump: [9, 8, 8, 9], roll: [10], wave: [11, 0, 11, 8], dance: [11, 8, 0, 8] }
 
 export function Avvai({ action = 'front', size = 112, label = 'Avvai, your sports companion' }) {
   const [step, setStep] = useState(0)
@@ -23,7 +23,7 @@ export function AvvaiCompanion() {
   const [following, setFollowing] = useState(false)
   const [action, setAction] = useState('wave')
   const follower = useRef(null)
-  const sensitive = /sos|payment|private|aval/.test(pathname) || /\/(agent|support|login)$/.test(pathname)
+  const sensitive = pathname === '/veeramangai' || /sos|payment|private|aval/.test(pathname) || /\/(agent|voice|support|login)$/.test(pathname)
   useEffect(() => {
     if (!following || hidden || sensitive || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
     let target = { x: window.innerWidth - 75, y: window.innerHeight - 170 }

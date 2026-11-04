@@ -1,20 +1,32 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /** Hold-to-talk recorder. Resolves with an audio Blob, or null if the mic is unavailable. */
-export function useRecorder() {
+export function useRecorder({ requireAudio = false } = {}) {
   const rec = useRef(null)
   const chunks = useRef([])
   const started = useRef(0)
   const [recording, setRecording] = useState(false)
+  const mounted = useRef(true)
+  useEffect(() => {
+    mounted.current = true
+    return () => {
+      mounted.current = false
+      rec.current?.stream.getTracks().forEach(track => track.stop())
+    }
+  }, [])
 
   async function start() {
     started.current = Date.now()
     if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
-      setRecording(true)
-      return
+      setRecording(!requireAudio)
+      return false
     }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      if (!mounted.current) {
+        stream.getTracks().forEach(track => track.stop())
+        return false
+      }
       chunks.current = []
       const r = new MediaRecorder(stream)
       r.ondataavailable = (e) => e.data.size && chunks.current.push(e.data)
@@ -23,7 +35,8 @@ export function useRecorder() {
     } catch {
       rec.current = null // permission denied: we still run the demo flow without audio
     }
-    setRecording(true)
+    if (mounted.current) setRecording(Boolean(rec.current) || !requireAudio)
+    return Boolean(rec.current)
   }
 
   function stop() {

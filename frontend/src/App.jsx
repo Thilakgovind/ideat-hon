@@ -5,6 +5,8 @@ import { Toaster } from '@/components/ui/sonner'
 import { LangProvider } from '@/lib/i18n'
 import { AppProvider } from '@/lib/store'
 import { AvvaiCompanion } from '@/components/Avvai'
+import './avvai-theme.css'
+import './field-space.css'
 
 // One chunk per screen keeps the first load small on slow 3G.
 const AvalChat = lazy(() => import('@/screens/AvalChat'))
@@ -28,10 +30,15 @@ const Train = lazy(() => import('@/screens/Train'))
 const Demo = lazy(() => import('@/screens/Demo'))
 const AvvaiStudio = lazy(() => import('@/components/Avvai'))
 const Veeramangai = lazy(() => import('@/screens/Veeramangai'))
+const AvvaiVoice = lazy(() => import('@/screens/AvvaiVoice'))
 const AvvaiAgentPage = lazy(() => import('@/screens/Veeramangai').then(m => ({ default: m.AvvaiAgentPage })))
-const AthleteSpace = lazy(() => import('@/screens/AthleteSpace'))
 const AthleteLogin = lazy(() => import('@/screens/AthleteSpace').then(m => ({ default: m.AthleteLogin })))
 const SupportWorkspace = lazy(() => import('@/screens/SupportWorkspace'))
+const AppInformation = lazy(() => import('@/screens/AppInformation'))
+const Wellbeing = lazy(() => import('@/screens/Wellbeing'))
+const Connections = lazy(() => import('@/screens/Connections'))
+const AvvaiHome = lazy(() => import('@/screens/AvvaiHome'))
+const SupportDirectory = lazy(() => import('@/screens/AvvaiHome').then(m => ({ default: m.SupportDirectory })))
 
 export default function App() {
   return (
@@ -40,16 +47,21 @@ export default function App() {
         <BrowserRouter>
           {/* Phone-width column; full width on real phones */}
           <div className="app-shell mx-auto min-h-dvh w-full max-w-[430px] bg-cream shadow-[0_0_40px_rgba(36,19,47,0.12)]">
-            <Suspense fallback={<div className="flex min-h-dvh items-center justify-center text-sm text-mute">SafePath…</div>}>
+            <Suspense fallback={<div className="flex min-h-dvh items-center justify-center text-sm text-mute">Avvai is getting your space ready…</div>}>
             <Routes>
               <Route path="/" element={<Navigate to="/veeramangai" replace />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/veeramangai" element={<AthleteSpace />} />
+              <Route path="/veeramangai" element={<AvvaiHome />} />
+              <Route path="/veeramangai/information" element={<AppInformation />} />
+              <Route path="/veeramangai/wellbeing" element={<Wellbeing />} />
+              <Route path="/veeramangai/connections" element={<Connections />} />
+              <Route path="/veeramangai/directory" element={<SupportDirectory />} />
               <Route path="/veeramangai/login" element={<AthleteLogin />} />
               <Route path="/veeramangai/profile" element={<SupportWorkspace key="profile" view="profile" />} />
               <Route path="/veeramangai/requests" element={<SupportWorkspace key="requests" view="requests" />} />
               <Route path="/veeramangai/coordinator" element={<SupportWorkspace key="coordinator" view="coordinator" />} />
-              <Route path="/veeramangai/features" element={<Veeramangai />} />
+              <Route path="/veeramangai/features" element={<AvvaiHome key="explore" explore />} />
+              <Route path="/veeramangai/voice" element={<AvvaiVoice />} />
               <Route path="/veeramangai/agent" element={<AvvaiAgentPage />} />
               <Route path="/veeramangai/:module" element={<Veeramangai />} />
               <Route path="/home" element={<Home />} />

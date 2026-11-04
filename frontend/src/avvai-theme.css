@@ -1,0 +1,259 @@
+/* Avvai's calm, whitespace-led interface, informed by Hacksprint's token system. */
+body .app-shell:has(.vm-app){background:#fff}
+body .vm-app{--ink:#202820;--paper:#fff;background:#fff;color:#202820;font-family:'Noto Sans','Noto Sans Tamil',sans-serif}
+body .vm-app h1,body .vm-app h2,body .vm-app h3,body .vm-app .vm-brand{font-family:'Noto Sans','Noto Sans Tamil',sans-serif;font-weight:650;letter-spacing:-.035em}
+body .vm-app h1{font-size:clamp(32px,4vw,56px);line-height:1.16}
+body .vm-app p{line-height:1.75}
+body .vm-app .vm-eyebrow{font-size:10px;letter-spacing:.12em;color:#737b73}
+body .vm-app .vm-primary,body .vm-app .vm-pill{background:#263d30;color:white!important;border-radius:12px;min-height:48px;padding:13px 20px;font-size:13px}
+body .vm-app button,body .vm-app a{transition:background .15s,box-shadow .15s}
+body .vm-app :focus-visible{outline:2px solid #326849;outline-offset:4px}
+body .vm-app .vm-badge{background:#f2f4ef;color:#586552;border-radius:7px;font-size:11px}
+body .vm-app .vm-header,body .vm-app .athlete-top{max-width:1200px;border-color:#eceee9;padding:24px 32px}
+body .vm-app .vm-brand{font-size:20px}
+body .vm-app .vm-intro{max-width:1200px;padding:60px 32px 32px}
+body .vm-app .vm-grid{max-width:1200px;padding:24px 32px 56px;gap:20px}
+body .vm-app .vm-feature{background:#f7f8f4;color:#202820;border:1px solid #e9ece6;border-radius:16px}
+body .vm-app .vm-feature:hover{transform:none;box-shadow:0 8px 24px #203d300a}
+body .vm-app .vm-feature-copy{padding:24px}
+body .vm-app .vm-feature h2{font-size:24px;text-transform:none}
+body .vm-app .vm-module{max-width:1136px;margin:32px auto;border-radius:18px;background:#f4f6ef;color:#202820}
+body .vm-app .vm-module .vm-art{height:360px}
+body .vm-app .vm-module h1{font-size:42px}
+body .vm-app .vm-workspace{max-width:1200px;gap:28px}
+body .vm-app .vm-guide-card,body .vm-app .vm-avvai-banner{background:#f3f6ed;border-radius:16px}
+body .vm-app .vm-form,body .vm-app .vm-list-card,body .vm-app .vm-chat{border:1px solid #e7eae3;border-radius:16px}
+body .vm-app .vm-options button,body .vm-app .vm-filters button{border-color:#e0e5dc;border-radius:10px;min-height:48px}
+body .vm-app .vm-agent-layout{max-width:1200px;gap:48px;padding-top:48px}
+body .vm-app .vm-agent-intro h1{font-size:46px}
+body .vm-app .vm-chat-heading{border-color:#eceee9}
+body .vm-app .vm-welcome h2{font-size:26px}
+body .vm-app .vm-message{background:#f3f6ef}
+body .vm-app .vm-user{background:#263d30;color:#fff}
+body .vm-app .athlete-nav{background:#fff;color:#202820;box-shadow:0 4px 25px #20282010;border:1px solid #e6eae2;border-radius:18px;bottom:max(12px,env(safe-area-inset-bottom));padding:8px 16px}
+body .vm-app .athlete-nav a{color:#737c70;min-height:48px;border-radius:10px}
+body .vm-app .athlete-nav a.active{color:#23482f;background:#eef4e8}
+body .vm-app .athlete-main{max-width:1200px}
+body .vm-app .athlete-profile{border:1px solid #e7eae3;border-radius:16px}
+body .vm-app .athlete-login-art{background:#f2f5e9;color:#263d30}
+body .vm-app .athlete-login-form h2{font-family:inherit;font-size:32px}
+.avvai-top{max-width:1184px;margin:auto;padding:26px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eceee9}
+.avvai-wordmark{font-size:30px;font-weight:750;letter-spacing:-1.8px}
+.avvai-wordmark span{display:block;font-size:10px;letter-spacing:0;font-weight:400;color:#7b8277;margin-top:3px}
+.avvai-account{display:flex;gap:9px;align-items:center;font-size:12px;padding:12px;background:#f5f6f2;border-radius:12px}
+.avvai-main{max-width:1184px;margin:auto;padding:52px 32px 120px}
+.avvai-heading>p:last-child{color:#727a70;font-size:15px;margin-top:20px}
+body .avvai-heading h1{font-size:clamp(34px,4.6vw,58px);margin:18px 0;letter-spacing:-.055em}
+.avvai-heading h1 span{color:#858d7f}
+.avvai-start{margin:36px 0 54px;padding:32px 40px;background:#f1f5e8;border:1px solid #e7eddc;border-radius:18px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.avvai-label{display:flex;gap:7px;align-items:center;font-size:10px;letter-spacing:.1em;color:#647257}
+.avvai-start h2{font-size:28px;margin:16px 0 10px}
+.avvai-start p{font-size:13px;color:#6b7662;margin-bottom:23px}
+.avvai-section-title{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:24px}
+.avvai-section-title h2{font-size:25px;margin-top:10px}
+.avvai-search{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e3e7de;border-radius:12px;padding:0 14px;color:#858c7d;max-width:100%}
+.avvai-search input{background:transparent;min-width:0;width:100%;border:0;padding:14px 0;font-size:13px;color:#263d30;outline-offset:0}
+.avvai-paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.avvai-path{position:relative;padding:25px;border:1px solid #e8ebe4;border-radius:15px;display:block;min-height:198px}
+.avvai-path:hover{background:#fafbf8;box-shadow:0 5px 18px #263d3008}
+.avvai-icon{display:grid;place-items:center;width:45px;height:45px;border-radius:13px;color:#3b5743}
+.mint{background:#e9f4ec}.sand{background:#fbf3e0}.sky{background:#edf2fa}.lilac{background:#f0edfa}.rose{background:#faf0ef}
+.avvai-path h3{font-size:16px;margin:20px 0 7px}
+.avvai-path p{font-size:12px;color:#78816f;max-width:90%}
+.avvai-path-arrow{position:absolute;right:22px;top:28px;color:#8a9381}
+.avvai-note{margin-top:36px;border-top:1px solid #e9ece4;padding-top:28px;display:flex;align-items:start;gap:15px}
+.avvai-note>svg{flex-shrink:0;color:#657958}.avvai-note strong{font-size:13px}.avvai-note p{font-size:12px;color:#7c8477;margin-top:5px;max-width:540px}.avvai-note>a{display:flex;gap:6px;white-space:nowrap;margin-left:auto;font-size:12px}
+.avvai-directory>p{color:#737d6a;max-width:650px}.avvai-directory-search{display:flex;gap:12px;margin:30px 0}.avvai-directory-search .avvai-search{flex:1;max-width:550px}.avvai-results{padding:28px;border:1px solid #e6eae0;border-radius:16px}.avvai-results h2{font-size:23px;margin:18px 0}.avvai-results p{font-size:14px;margin:12px 0}.avvai-results article{padding:20px 0;border-top:1px solid #e9ece4}
+@media(max-width:700px){.avvai-top{padding:20px}.avvai-main{padding:32px 20px 120px}.avvai-start{padding:24px;margin:28px 0 36px}.avvai-start>.avvai-sprite{width:100px!important;height:100px!important}.avvai-start h2{font-size:23px}.avvai-start p br{display:none}.avvai-section-title{display:block}.avvai-section-title .avvai-search{margin-top:20px}.avvai-paths{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.avvai-path{padding:18px;min-height:195px}.avvai-path h3{font-size:15px}.avvai-path p{max-width:100%;font-size:12px}.avvai-path-arrow{top:24px;right:17px}.avvai-note{flex-wrap:wrap}.avvai-note>div{flex:1}.avvai-note>a{margin-left:35px}.avvai-directory-search{flex-direction:column}body .vm-app .vm-module{margin:20px}body .vm-app .vm-agent-intro h1{font-size:34px}}
+@media(max-width:370px){.avvai-paths{grid-template-columns:1fr}.avvai-start>.avvai-sprite{display:none}}
+/* Heritage edition: colour comes from the artwork; the interface stays quiet. */
+body .app-shell:has(.vm-app){background:#f5f1e9;box-shadow:none}
+body .vm-app{--ink:#302b25;--paper:#f5f1e9;background:#f5f1e9;color:#302b25;font-family:'Satoshi','Noto Sans Tamil','Noto Sans',sans-serif}
+body .vm-app h1,body .vm-app h2,body .vm-app .vm-brand{font-family:'Clash Display','Noto Sans Tamil',sans-serif;font-weight:600;letter-spacing:-.025em}
+body .vm-app h3{font-family:'Satoshi','Noto Sans Tamil',sans-serif;font-weight:700}
+html[lang=ta] body .vm-app,html[lang=ta] body .vm-app h1,html[lang=ta] body .vm-app h2{font-family:'Noto Sans Tamil',sans-serif;letter-spacing:0}
+body .vm-app .vm-primary,body .vm-app .vm-pill{background:#314c3d;color:#fffaf0!important;box-shadow:none;border-radius:3px;min-height:48px;font-size:15px;padding:14px 22px}
+body .vm-app .vm-primary:hover,body .vm-app .vm-pill:hover{background:#213b2c}
+body .vm-app :focus-visible{outline:2px solid #8e3c2e;outline-offset:4px}
+body .vm-app a,body .vm-app button{transition:background .16s,color .16s}
+body .vm-app button:disabled{opacity:.5;cursor:not-allowed}
+body .vm-app .vm-eyebrow{color:#776855;letter-spacing:.11em;font-size:11px}
+.avvai-top{border-color:#d7cebe;padding-top:20px;padding-bottom:20px;gap:16px}.avvai-top-actions,.avvai-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.avvai-controls button{display:flex;align-items:center;gap:6px;min-height:44px;padding:8px 10px;border:1px solid #cfc5b5;border-radius:3px;background:transparent;font-size:13px;color:#514638}.avvai-controls button[aria-pressed=true]{background:#e0e7dd}.avvai-account{min-height:44px;background:#e5dfd2;border-radius:3px;color:#40382d;font-size:14px;font-weight:600}.avvai-wordmark{font-family:'Clash Display',sans-serif;font-size:34px;letter-spacing:-1px;color:#34473b}.avvai-wordmark span{color:#776e60;font-size:11px}
+.avvai-main{padding-top:36px}.avvai-editorial-intro{display:flex;align-items:center;justify-content:space-between;gap:35px;padding:20px 0 44px}.avvai-editorial-intro>div:first-child{max-width:750px}.avvai-editorial-intro h1{font-size:clamp(34px,4.5vw,64px)!important;line-height:1.08!important;margin:18px 0}.avvai-editorial-intro p{color:#736552;font-size:16px}.avvai-editorial-intro .vm-primary{margin-top:24px;display:inline-flex}.avvai-companion-small{flex:0 0 180px;text-align:center}.avvai-companion-small p{font-size:12px;max-width:180px}.avvai-companion-small>.avvai-sprite{margin:auto}
+.heritage-intro{border-top:1px solid #c9bda9;padding-top:30px;margin-bottom:24px}.heritage-intro h2{font-size:36px;margin:12px 0}.heritage-intro p{color:#756653;font-size:15px}.heritage-image{position:relative}.heritage-image>img{width:100%;height:auto;display:block}.heritage-selectors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:8px}.heritage-selectors button{min-height:52px;font-family:'Satoshi','Noto Sans Tamil',sans-serif;font-weight:600;font-size:14px;padding:10px;background:#e8e1d4;border-bottom:3px solid transparent;color:#554736}.heritage-selectors button[aria-pressed=true]{background:#314c3d;color:#fff9ef;border-color:#314c3d}.heritage-story{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;padding:28px 0;border-bottom:1px solid #c9bda9}.heritage-story h3{font-family:'Noto Serif Tamil',Georgia,serif!important;font-size:25px;margin:12px 0}.heritage-story p{font-size:15px;color:#5c5143}.heritage-story a:not(.vm-primary){display:inline-block;font-size:12px;text-decoration:underline;color:#6b5946;margin-top:14px}.heritage-story .vm-primary{display:inline-flex;margin-top:20px}.heritage-caption{font-size:11px!important;color:#847666;margin:12px 0}
+.avvai-journey{display:flex;gap:24px;justify-content:space-between;border-bottom:1px solid #d7cebe;padding:24px 0;margin-bottom:44px}.avvai-journey>a{display:flex;align-items:center;gap:12px;flex:1}.avvai-step-number{font-size:23px;color:#98876e;font-family:'Clash Display',sans-serif}.avvai-journey strong{font-size:14px}.avvai-journey p{font-size:12px;margin-top:4px;color:#847661}.avvai-journey svg{display:none}.avvai-section-title h2{font-size:30px}.avvai-search{background:transparent;border-color:#c7bba7;border-radius:3px;color:#685a49}.avvai-search input{font-size:15px;color:#3b3328}
+.avvai-paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:44px;row-gap:0}.avvai-path{min-height:0;padding:23px 70px 23px 0;border:0;border-bottom:1px solid #d7cebe;border-radius:0;background:transparent}.avvai-path:hover{background:#ece6da;box-shadow:none}.avvai-path h3{margin:0 0 7px;font-size:19px}.avvai-path p{font-size:14px;color:#7c6b55;max-width:100%}.avvai-open-label{position:absolute;right:10px;top:30px;font-size:12px;color:#866c4c;text-decoration:underline}
+.avvai-connect-banner{margin:36px 0 0;padding:28px 0;border-bottom:1px solid #c9bda9;display:flex;justify-content:space-between;align-items:center;gap:30px}.avvai-connect-banner h2{font-size:29px;margin:12px 0}.avvai-connect-banner p{font-size:14px;color:#7a6a54}.avvai-connect-banner>a{flex-shrink:0}.avvai-note{border-top:0}.avvai-note p{color:#7a6a54}.avvai-note strong{color:#544737}
+body .vm-app .athlete-nav{background:#eee8dc;box-shadow:none;border:1px solid #c9bda9;border-radius:3px;backdrop-filter:none}body .vm-app .athlete-nav a{color:#75654f;border-radius:2px}body .vm-app .athlete-nav a.active{background:#dce3d7;color:#29452f}body .vm-app .athlete-nav svg{display:none}body .vm-app .athlete-nav a span{font-size:13px}
+body .vm-app .vm-header,body .vm-app .athlete-top{border-color:#d7cebe;background:#f5f1e9}body .vm-app .vm-feature{border:0;border-radius:0;background:#ece5d8;color:#302b25}body .vm-app .vm-feature:hover{transform:none;box-shadow:none}body .vm-app .vm-module{border-radius:0;background:#e7e0d2}body .vm-app .vm-guide-card,body .vm-app .vm-avvai-banner{background:#e4e6da;border-radius:3px}body .vm-app .vm-form,body .vm-app .vm-list-card,body .vm-app .athlete-profile{border-color:#cfc4b1;border-radius:3px;background:#f9f5ec}body .vm-app .vm-options button,body .vm-app .vm-filters button{border-radius:3px;border-color:#c5b69c}
+body .vm-app .vm-chat{border:1px solid #c5b69c;border-radius:4px;background:#faf7f0;box-shadow:none;overflow:hidden}body .vm-app .vm-chat-heading{background:#e3e7dc;border-color:#c5cdbb;padding:20px}body .vm-app .vm-agent-intro h1{color:#384e3f}body .vm-app .vm-message{background:#e8dfce;color:#473a2a;border-radius:4px;font-size:15px;animation:avvai-reveal .2s ease}body .vm-app .vm-user{background:#3b5645;color:#fff9ed}body .vm-app .vm-composer{background:#f5efe2;border-top:1px solid #cfc4b1;padding:16px;gap:8px}body .vm-app .vm-composer input{border:1px solid #cabca4;border-radius:3px;background:#faf7f0;font-size:16px;padding:12px}body .vm-app .vm-composer button{background:#3b5645;color:#fff9ed;border-radius:3px;min-height:44px;min-width:44px}.avvai-typing{display:inline-flex;gap:4px;margin-right:10px}.avvai-typing i{width:5px;height:5px;background:#657658;border-radius:50%;animation:avvai-dot 1s infinite}.avvai-typing i:nth-child(2){animation-delay:.2s}.avvai-typing i:nth-child(3){animation-delay:.4s}body .vm-app .vm-chat-error{padding:14px;background:#f5ded3;color:#823f27}body .vm-app .vm-chat-error button{display:block;text-decoration:underline;margin-top:8px}
+body .vm-app .athlete-login-art{background:#dedbc8;color:#394635}body .vm-app .athlete-login-form{background:#f5f1e9}.avvai-connection-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin:32px 0}.avvai-connection-card{padding:24px 0;border-top:1px solid #c9bda9}.avvai-connection-card>svg{display:none}.avvai-connection-card h2{font-size:25px;margin:15px 0}.avvai-connection-card p{color:#75654f;font-size:15px;margin-bottom:20px}.avvai-shortcuts{display:flex;gap:24px;flex-wrap:wrap;margin:24px 0}.avvai-legal{display:flex;gap:24px;flex-wrap:wrap;border-top:1px solid #d7cebe;padding-top:20px;margin-top:30px;font-size:12px;color:#776855}
+@keyframes avvai-reveal{from{opacity:0}to{opacity:1}}@keyframes avvai-dot{50%{opacity:.25}}
+@media(max-width:700px){.avvai-top{flex-wrap:wrap;padding:16px}.avvai-top-actions{gap:7px}.avvai-controls{gap:5px}.avvai-controls button span{display:none}.avvai-controls button{padding:8px;font-size:12px}.avvai-wordmark{font-size:29px}.avvai-wordmark span{font-size:10px}.avvai-main{padding-top:22px}.avvai-editorial-intro{gap:15px;padding:8px 0 30px}.avvai-companion-small{flex-basis:95px}.avvai-companion-small>.avvai-sprite{width:95px!important;height:95px!important}.avvai-companion-small p{display:none}.avvai-editorial-intro p{font-size:14px}.avvai-editorial-intro h1{font-size:34px!important}.heritage-intro h2{font-size:28px}.heritage-selectors button{font-size:11px;padding:8px 3px}.heritage-story{grid-template-columns:1fr;gap:22px;padding-top:20px}.heritage-story h3{font-size:23px}.avvai-journey{flex-direction:column;gap:19px}.avvai-paths{grid-template-columns:1fr}.avvai-path{min-height:0;padding-top:20px;padding-bottom:20px}.avvai-path h3{font-size:18px}.avvai-connect-banner{flex-direction:column;align-items:start}.avvai-connection-grid{grid-template-columns:1fr;gap:10px}body .vm-app .vm-agent-intro>.avvai-sprite{width:130px!important;height:130px!important}body .vm-app .vm-agent-layout{padding-top:24px;gap:20px}body .vm-app .vm-composer{padding:10px;gap:6px}body .vm-app .vm-messages{min-height:330px}}
+@media(prefers-reduced-motion:reduce){body .vm-app *,body .vm-app *:before,body .vm-app *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.wellbeing-main{max-width:780px;margin:auto;padding:46px 24px 130px}.wellbeing-main h1{font-size:clamp(34px,5vw,56px);margin:16px 0}.wellbeing-main>p{color:#6d5f50}.wellbeing-tabs{display:flex;border-bottom:1px solid #b6a997;margin:36px 0 30px}.wellbeing-tabs button{padding:15px 28px;background:transparent;color:#665948;font-size:17px;border-bottom:3px solid transparent}.wellbeing-tabs button[aria-selected=true]{border-color:#314c3d;color:#233d30;font-weight:700}.wellbeing-main section h2{font-size:29px;margin-bottom:10px}.wellbeing-main section h3{font-size:18px;margin:28px 0 10px}.wellbeing-main section>p{color:#756957;font-size:15px}.wellbeing-choices{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}.wellbeing-choices button{min-height:48px;border:1px solid #bcb09e;background:#f9f5ed;padding:12px 18px;font-size:15px}.wellbeing-choices button[aria-pressed=true]{background:#314c3d;color:#fffaf0;border-color:#314c3d}.wellbeing-action{border-top:1px solid #cabfaa;border-bottom:1px solid #cabfaa;padding:20px 0;margin:26px 0;display:flex;gap:16px;align-items:center;flex-wrap:wrap}.wellbeing-action p{width:100%;font-weight:700}.wellbeing-action a{text-decoration:underline;color:#2d513b}.wellbeing-note{font-size:13px!important;line-height:1.7!important}.wellbeing-save{display:flex;gap:15px;flex-wrap:wrap;margin-top:32px}.wellbeing-save button{min-height:48px;padding:12px 18px;border:1px solid #314c3d}.wellbeing-save button:first-child{background:#314c3d;color:white}.wellbeing-save p{width:100%;font-size:13px}.wellbeing-home{border-top:1px solid #c9bda9;border-bottom:1px solid #c9bda9;padding:28px 0;margin:22px 0 40px}.wellbeing-home h2{font-family:'Clash Display','Noto Sans Tamil',sans-serif;font-size:36px;margin:10px 0}.wellbeing-home p{font-size:15px;color:#776957}.wellbeing-home .vm-primary{display:inline-flex;margin-top:18px}
+.wellbeing-two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}.wellbeing-two a{display:block;background:#314c3d;color:#fffaf0;padding:22px;min-height:110px;font-size:22px;font-family:'Clash Display','Noto Sans Tamil',sans-serif}.wellbeing-two a:nth-child(2){background:#a25943}.wellbeing-two span{display:block;font-family:'Satoshi','Noto Sans Tamil',sans-serif;font-size:13px;margin-top:10px;opacity:.85}.wellbeing-guidance{border-top:1px solid #cabfaa;padding:22px 0}.wellbeing-guidance>button{background:#314c3d;color:white;padding:14px 20px;min-height:48px}.wellbeing-guidance>div{padding:20px 0}.wellbeing-guidance>div h2{font-size:23px}.wellbeing-guidance>div p{font-size:15px}.wellbeing-guidance a{text-decoration:underline;color:#314c3d}.wellbeing-guidance>p{font-size:12px;color:#776957;margin-top:12px}@media(max-width:560px){.wellbeing-two{grid-template-columns:1fr}.wellbeing-two a{min-height:95px}}
+/* Compact app home: the two main actions live above optional depth. */
+body .avvai-home{background:#111014;color:#f7f4f1}body .avvai-home .avvai-top{border-color:#38323a}body .avvai-home .avvai-wordmark{color:#fff}body .avvai-home .avvai-wordmark span{color:#aaa0a7}body .avvai-home .avvai-account,body .avvai-home .avvai-controls button{background:#242128;border:1px solid #4a414c;color:#f7f4f1}body .avvai-home .vm-eyebrow{color:#c5a3c2}body .avvai-home .avvai-main{max-width:950px;padding-top:16px}body .avvai-home .avvai-editorial-intro{min-height:205px;padding:24px 0 10px}body .avvai-home .avvai-editorial-intro h1{font-size:clamp(32px,4vw,49px)!important;max-width:560px;margin:8px 0}body .avvai-home .avvai-editorial-intro p{color:#c9bfc8}body .avvai-home .avvai-companion-small{flex-basis:120px}body .avvai-home .avvai-companion-small>.avvai-sprite{width:118px!important;height:118px!important}body .avvai-home .avvai-companion-small p{display:none}body .avvai-home .wellbeing-home{border:0;margin:16px 0 22px;padding:0}body .avvai-home .wellbeing-home h2{font-size:31px;margin:5px 0}body .avvai-home .wellbeing-home>p:not(.vm-eyebrow){display:none}body .avvai-home .wellbeing-two{gap:10px;margin:16px 0 0}body .avvai-home .wellbeing-two a{border-radius:18px;padding:22px;min-height:185px;display:flex;flex-direction:column;justify-content:end;background:#af74ca;color:#141018;font-size:26px;line-height:1.08}body .avvai-home .wellbeing-two a:nth-child(2){background:#f0a883}body .avvai-home .wellbeing-two a span{opacity:.75;font-size:13px;line-height:1.3}body .avvai-home .vm-primary{border-radius:8px;background:#e9d0e7;color:#1c1520!important}body .avvai-home .avvai-journey{border:0;border-top:1px solid #3a323b;gap:8px;margin:20px 0 10px;padding:14px 0}body .avvai-home .avvai-journey>a{background:#242128;padding:14px;border-radius:10px;color:#f7f1f5;min-height:65px}body .avvai-home .avvai-journey .avvai-step-number{font-size:16px;color:#cbafc7}body .avvai-home .avvai-journey p{display:none}body .avvai-home .avvai-journey strong{font-size:13px}body .avvai-home .avvai-history,body .avvai-home .avvai-more{border-top:1px solid #3a323b;margin:12px 0}body .avvai-home .avvai-history>summary,body .avvai-home .avvai-more>summary{list-style:none;cursor:pointer;padding:18px 3px;display:flex;justify-content:space-between;align-items:center;font-size:16px;font-weight:700}body .avvai-home .avvai-history>summary::-webkit-details-marker,body .avvai-home .avvai-more>summary::-webkit-details-marker{display:none}body .avvai-home .avvai-history>summary span,body .avvai-home .avvai-more>summary span{font-size:12px;font-weight:400;color:#bba9b9}body .avvai-home .heritage-intro{border:0}body .avvai-home .heritage-story{border-color:#483d49}body .avvai-home .heritage-intro p,body .avvai-home .heritage-story p,body .avvai-home .heritage-caption{color:#b8abb5}body .avvai-home .heritage-selectors button{background:#2c2630;color:#fff;border:0}body .avvai-home .heritage-selectors button[aria-pressed=true]{background:#ad70c7;color:#17101c}body .avvai-home .avvai-section-title{margin-top:20px}body .avvai-home .avvai-search{background:#242128;border-color:#4a414c}body .avvai-home .avvai-search input{color:#fff}body .avvai-home .avvai-path{border-color:#3a323b;color:#f7f1f5}body .avvai-home .avvai-path:hover{background:#262129}body .avvai-home .avvai-path p{color:#b8abb5}body .avvai-home .avvai-open-label{color:#dbb5d8}body .avvai-home .avvai-connect-banner{border-color:#3a323b;margin:6px 0;padding:18px 0}body .avvai-home .avvai-connect-banner h2{font-size:19px;margin:6px 0}body .avvai-home .avvai-connect-banner p{display:none}body .avvai-home .avvai-note{display:none}body .avvai-home .avvai-legal{border-color:#3a323b;margin-top:10px}body .avvai-home .avvai-legal a{color:#b8abb5}body .avvai-home .athlete-nav{background:#211d24;border-color:#3e3440}body .avvai-home .athlete-nav a{color:#d4c4d0}body .avvai-home .athlete-nav a.active{background:#a978bd;color:#17101c}@media(max-width:700px){body .avvai-home .avvai-main{padding:10px 18px 110px}body .avvai-home .avvai-editorial-intro{min-height:160px}body .avvai-home .avvai-editorial-intro h1{font-size:30px!important}body .avvai-home .avvai-editorial-intro p{display:none}body .avvai-home .avvai-editorial-intro .vm-primary{margin-top:14px}body .avvai-home .wellbeing-two{grid-template-columns:1fr 1fr;gap:8px}body .avvai-home .wellbeing-two a{min-height:155px;font-size:20px;padding:15px}body .avvai-home .avvai-journey{flex-direction:row;gap:5px}body .avvai-home .avvai-journey>a{min-width:0;padding:9px 6px;gap:5px}body .avvai-home .avvai-journey strong{font-size:10px}body .avvai-home .avvai-journey .avvai-step-number{font-size:12px}body .avvai-home .avvai-history>summary span,body .avvai-home .avvai-more>summary span{display:none}body .avvai-home .avvai-connect-banner{align-items:center;flex-direction:row}body .avvai-home .avvai-connect-banner>a{font-size:11px;padding:9px;min-height:42px}}
+/* One visual system across agent, account, requests, support and directory screens. */
+body .vm-app:not(.avvai-home){background:#131116;color:#f8f4f7;min-height:100dvh;position:relative;isolation:isolate}
+body .vm-app:not(.avvai-home):before{content:'';position:fixed;right:-20vw;top:12vh;width:55vw;height:55vw;max-width:650px;max-height:650px;border-radius:50%;background:#653b7455;filter:blur(85px);pointer-events:none;z-index:-1;animation:avvai-glow 12s ease-in-out infinite alternate}
+body .vm-app:not(.avvai-home) .vm-header,body .vm-app:not(.avvai-home) .athlete-top,body .vm-app:not(.avvai-home) .avvai-top{background:#131116e8;border-color:#463b49;color:#f8f4f7}
+body .vm-app:not(.avvai-home) h1,body .vm-app:not(.avvai-home) h2,body .vm-app:not(.avvai-home) h3,body .vm-app:not(.avvai-home) .vm-brand,body .vm-app:not(.avvai-home) .avvai-wordmark{color:#f8f4f7}
+body .vm-app:not(.avvai-home) p,body .vm-app:not(.avvai-home) label{color:#d1c1cf}
+body .vm-app:not(.avvai-home) .vm-eyebrow{color:#e2a9cb}
+body .vm-app:not(.avvai-home) .vm-primary,body .vm-app:not(.avvai-home) .vm-pill{background:#c18cce;color:#1b1420!important;border-radius:10px;font-weight:700}
+body .vm-app:not(.avvai-home) .vm-primary:hover,body .vm-app:not(.avvai-home) .vm-pill:hover{background:#ddb1e3}
+body .vm-app:not(.avvai-home) .vm-text-link,body .vm-app:not(.avvai-home) a:not(.vm-primary):not(.vm-pill){color:#edc6e8}
+body .vm-app:not(.avvai-home) .vm-chat,body .vm-app:not(.avvai-home) .vm-form,body .vm-app:not(.avvai-home) .vm-guide-card,body .vm-app:not(.avvai-home) .athlete-profile,body .vm-app:not(.avvai-home) .vm-list-card,body .vm-app:not(.avvai-home) .avvai-results{background:#211d25;border:1px solid #534257;border-radius:16px;color:#f8f4f7}
+body .vm-app:not(.avvai-home) .vm-chat-heading{background:#372a3d;border-color:#534257}body .vm-app:not(.avvai-home) .vm-chat-heading span{color:#e0c5dd}
+body .vm-app:not(.avvai-home) .vm-message{background:#3c3041;color:#fff;border-radius:17px 17px 17px 5px;animation:avvai-msg .28s ease-out both}body .vm-app:not(.avvai-home) .vm-user{background:#a46db0;color:#18121b;border-radius:17px 17px 5px 17px}
+body .vm-app:not(.avvai-home) .vm-options button,body .vm-app:not(.avvai-home) .vm-filters button,body .vm-app:not(.avvai-home) .wellbeing-choices button{background:#312936;border-color:#745b78;color:#f8f4f7;border-radius:11px}body .vm-app:not(.avvai-home) .wellbeing-choices button[aria-pressed=true],body .vm-app:not(.avvai-home) .vm-options button[aria-pressed=true]{background:#c18cce;color:#1b1420}
+body .vm-app:not(.avvai-home) input,body .vm-app:not(.avvai-home) textarea,body .vm-app:not(.avvai-home) select{background:#2c2630;border:1px solid #6a556f;color:#fff;border-radius:9px}body .vm-app:not(.avvai-home) input::placeholder{color:#b3a3b4}
+body .vm-app:not(.avvai-home) .vm-composer{background:#211d25;border-color:#534257}body .vm-app:not(.avvai-home) .vm-composer button{background:#b882c5;color:#201625;border-radius:10px}
+body .vm-app:not(.avvai-home) .vm-module{background:#33273a;color:#f8f4f7;border-radius:16px}body .vm-app:not(.avvai-home) .vm-feature{background:#33273a;border-radius:16px}body .vm-app:not(.avvai-home) .vm-workspace,body .vm-app:not(.avvai-home) .athlete-main{color:#f8f4f7}
+body .vm-app:not(.avvai-home) .athlete-nav{background:#251f29;border-color:#59465c;border-radius:14px}body .vm-app:not(.avvai-home) .athlete-nav a{color:#e1cee0}body .vm-app:not(.avvai-home) .athlete-nav a.active{background:#b482c2;color:#201625}
+body .vm-app:not(.avvai-home) .wellbeing-main{background:transparent}body .vm-app:not(.avvai-home) .wellbeing-tabs{border-color:#57455b}body .vm-app:not(.avvai-home) .wellbeing-tabs button{color:#d4bfd1}body .vm-app:not(.avvai-home) .wellbeing-tabs button[aria-selected=true]{color:#fff;border-color:#d39bce}body .vm-app:not(.avvai-home) .wellbeing-action,body .vm-app:not(.avvai-home) .wellbeing-guidance{border-color:#57455b}body .vm-app:not(.avvai-home) .wellbeing-guidance>button,body .vm-app:not(.avvai-home) .wellbeing-save button:first-child{background:#c18cce;color:#211526}
+body .vm-app:not(.avvai-home) .avvai-controls button{background:#2c2630;color:#fff;border-color:#6a556f}body .vm-app:not(.avvai-home) .vm-badge{background:#4d3c52;color:#f6e2f2}
+.avvai-flow{display:flex;gap:8px;padding:12px 18px;border-bottom:1px solid #534257;background:#201a24;overflow-x:auto}.avvai-flow span{font-size:11px;white-space:nowrap;color:#edc6e8;padding:5px 9px;background:#3b2e41;border-radius:20px}
+@keyframes avvai-glow{from{transform:translate(-8%,0);opacity:.4}to{transform:translate(7%,10%);opacity:.85}}@keyframes avvai-msg{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){body .vm-app:not(.avvai-home):before,body .vm-app:not(.avvai-home) .vm-message{animation:none}}
+/* Chat polish: spacious reading, real progress labels, and a brighter restrained palette. */
+body .vm-app:not(.avvai-home){background:#111015;color:#fff9f7}body .vm-app:not(.avvai-home):before{background:radial-gradient(circle,#c67aa15a 0%,#855b9b24 45%,transparent 70%);filter:blur(55px)}
+body .vm-app:not(.avvai-home) .vm-chat{background:#1d1b22;border-color:#5a465a;box-shadow:0 16px 48px #0005}
+body .vm-app:not(.avvai-home) .vm-chat-heading{background:#25212c;border-color:#544254;gap:14px}
+body .vm-app:not(.avvai-home) .vm-chat-heading strong{font-family:'Clash Display','Noto Sans Tamil',sans-serif;font-size:24px}
+body .vm-app:not(.avvai-home) .vm-messages{background:linear-gradient(145deg,#211b29 0%,#1b1922 55%,#201c24 100%)}
+body .vm-app:not(.avvai-home) .vm-message{max-width:84%;padding:18px 20px;background:#352d3d;color:#fff9f7;line-height:1.6;border-radius:19px 19px 19px 5px}
+body .vm-app:not(.avvai-home) .vm-user{background:#d093b8;color:#231821;border-radius:19px 19px 5px 19px}
+body .vm-app:not(.avvai-home) .vm-message p{color:inherit;font-size:15px;line-height:1.65}
+body .vm-app:not(.avvai-home) .vm-message a{color:#f4b6d0!important;text-decoration:underline;font-size:13px}
+body .vm-app:not(.avvai-home) .vm-message button{color:#f4c2db}
+body .vm-app:not(.avvai-home) .vm-composer{background:#25212c;border-color:#544254;padding:14px}
+body .vm-app:not(.avvai-home) .vm-composer input{background:#17151b;border-color:#665267;color:#fff;padding:14px 15px}
+body .vm-app:not(.avvai-home) .vm-composer button{background:#e29abf;color:#21151d}
+body .vm-app:not(.avvai-home) .vm-composer button:last-child{background:#b7ddc9;color:#14221c}
+body .vm-app:not(.avvai-home) .vm-options button:hover{background:#503c56}
+body .vm-app:not(.avvai-home) .vm-agent-intro h1{color:#f1bdd9}
+.avvai-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;overflow:visible;padding:0;background:#28232e;border-color:#544254}
+.avvai-flow span{min-width:0;white-space:normal;overflow-wrap:anywhere;border-radius:0;background:transparent;border-right:1px solid #544254;color:#dcb9d6;padding:11px 8px;text-align:center;font-size:11px;line-height:1.3}
+.avvai-flow span:last-child{border-right:0;color:#b7ddc9}
+body .vm-app:not(.avvai-home) .vm-thinking{color:#f0c1dc}
+@media(max-width:700px){body .vm-app:not(.avvai-home) .vm-agent-layout{padding:12px 0 100px;max-width:100%}body .vm-app:not(.avvai-home) .vm-agent-intro{padding:0 20px 10px}body .vm-app:not(.avvai-home) .vm-agent-intro h1{font-size:28px;margin:8px 85px 10px 0}body .vm-app:not(.avvai-home) .vm-agent-intro .vm-eyebrow{margin-top:14px}body .vm-app:not(.avvai-home) .vm-agent-intro>p:not(.vm-eyebrow){margin-bottom:4px}body .vm-app:not(.avvai-home) .vm-chat{margin:12px 0 0;border-left:0;border-right:0;border-radius:0;min-height:570px;height:calc(100dvh - 260px);box-shadow:none}body .vm-app:not(.avvai-home) .vm-chat-heading{padding:13px 18px}body .vm-app:not(.avvai-home) .vm-chat-heading .vm-badge{max-width:95px;line-height:1.2}body .vm-app:not(.avvai-home) .vm-messages{padding:18px 16px;gap:12px}body .vm-app:not(.avvai-home) .vm-message{max-width:92%;padding:15px 17px}body .vm-app:not(.avvai-home) .vm-composer{padding:10px}body .vm-app:not(.avvai-home) .vm-composer input{font-size:16px}.avvai-flow span{font-size:10px;padding:9px 4px}}
+
+/* Small iPhone-sized polish: translucent controls, tactile cards and mascot motion. */
+@media(max-width:700px){
+  body .vm-app .athlete-nav{bottom:max(9px,env(safe-area-inset-bottom));width:calc(100% - 24px);max-width:420px;padding:7px 9px;border:1px solid #ffffff32;border-radius:22px;background:#26212dca;backdrop-filter:blur(20px) saturate(135%);-webkit-backdrop-filter:blur(20px) saturate(135%);box-shadow:0 12px 34px #0005}
+  body .vm-app .athlete-nav a{min-width:0;flex:1;border-radius:15px;min-height:51px;transition:transform .18s,background .18s}
+  body .vm-app .athlete-nav a:active{transform:scale(.92)}
+  body .vm-app .athlete-nav a.active{background:#d7acd9;color:#211523}
+  body .vm-app .avvai-controls button,body .vm-app .avvai-account{background:#ffffff18;border:1px solid #ffffff45;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:11px;color:#fff;box-shadow:inset 0 1px #ffffff30}
+  body .vm-app .wellbeing-two a,body .vm-app .avvai-journey>a{box-shadow:inset 0 1px #ffffff5c,0 6px 20px #0002;transition:transform .18s,box-shadow .18s}
+  body .vm-app .wellbeing-two a:active,body .vm-app .avvai-journey>a:active{transform:scale(.97);box-shadow:inset 0 1px #ffffff5c}
+  body .vm-app:not(.avvai-home) .vm-chat-heading .vm-badge{background:#ffffff25;border:1px solid #ffffff24;backdrop-filter:blur(10px)}
+}
+body .vm-app .avvai-sprite.avvai-wave{animation:avvai-greet 3.1s ease-in-out infinite;transform-origin:50% 80%;will-change:transform}
+body .vm-app .avvai-sprite.avvai-front{animation:avvai-breathe 3.4s ease-in-out infinite;transform-origin:50% 80%}
+@keyframes avvai-greet{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-7px) rotate(2deg)}}
+@keyframes avvai-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+@media(prefers-reduced-motion:reduce){body .vm-app .avvai-sprite.avvai-wave,body .vm-app .avvai-sprite.avvai-front{animation:none}}
+.avvai-voice{overflow:hidden}.voice-main{max-width:760px;margin:auto;padding:25px 24px 130px}.voice-back,.voice-launch{display:flex;align-items:center;gap:9px;color:#f6cce9!important;font-size:14px}.voice-launch{padding:12px 18px;background:#3a2b41;border-bottom:1px solid #68536d;font-weight:700}.voice-stage{text-align:center;padding:28px 10px 20px}.voice-stage h1{font-family:'Clash Display','Noto Sans Tamil',sans-serif!important;font-size:clamp(28px,5vw,42px)!important;max-width:500px;margin:15px auto 25px}.voice-character{position:relative;width:260px;height:260px;margin:25px auto;display:grid;place-items:center}.voice-character .avvai-sprite{position:relative;z-index:2}.voice-ring{position:absolute;inset:12px;border:1px solid #cd8fbf88;border-radius:50%;animation:voice-pulse 3s ease-out infinite}.voice-ring:nth-child(2){inset:0;animation-delay:1s}.is-listening .voice-ring{border-color:#f6a67c;animation-duration:1.2s}.is-thinking .voice-ring{border-color:#b5dfcb;animation-duration:2s}.voice-record{width:76px;height:76px;margin:0 auto;display:grid;place-items:center;background:#e5a5ce;color:#201422;border:0;border-radius:50%;box-shadow:0 0 0 9px #e5a5ce25;transition:transform .2s,box-shadow .2s}.voice-record:hover{transform:scale(1.06)}.voice-record:active{transform:scale(.94)}.voice-hint{font-size:14px;color:#d7c4d2;margin-top:22px}.voice-error{background:#592e42;padding:15px}.voice-answer{background:#29232e;border:1px solid #69546d;border-radius:18px;padding:24px;margin-top:30px}.voice-answer h2{font-size:21px;margin:12px 0 25px}.voice-answer>p:not(.vm-eyebrow){font-size:15px}.voice-answer button,.voice-answer a{display:inline-flex;gap:8px;align-items:center;padding:10px 0;margin-right:25px;color:#f4c0df!important}.voice-answer .vm-eyebrow{margin-top:15px}@keyframes voice-pulse{0%{transform:scale(.9);opacity:.8}80%{transform:scale(1.12);opacity:.2}100%{transform:scale(1.14);opacity:0}}@media(prefers-reduced-motion:reduce){.voice-ring{animation:none}.voice-record{transition:none}}@media(max-width:560px){.voice-main{padding:17px 18px 120px}.voice-stage{padding-top:22px}.voice-character{width:230px;height:230px;margin:20px auto}.voice-character>.avvai-sprite{width:165px!important;height:165px!important}.voice-answer{padding:20px}}
+/* Reference-informed phone treatment: near-black canvas, clear yellow action, compact tasks. */
+body .vm-app{--avvai-night:#10131c;--avvai-panel:#1a1f2b;--avvai-ink:#f8f8f4;--avvai-yellow:#ffdc4f;--avvai-blue:#4964d9}
+body .avvai-home,body .vm-app:not(.avvai-home){background:var(--avvai-night);color:var(--avvai-ink)}
+body .vm-app:not(.avvai-home):before{background:radial-gradient(circle,#3552aa36 0%,transparent 70%);filter:blur(80px)}
+body .vm-app .vm-primary,body .avvai-home .vm-primary,body .vm-app:not(.avvai-home) .vm-primary,body .vm-app:not(.avvai-home) .vm-pill{background:var(--avvai-yellow);color:#16191d!important;border-radius:12px;font-weight:800;box-shadow:0 6px 22px #ffdc4f19}
+body .vm-app .vm-primary:hover,body .vm-app:not(.avvai-home) .vm-primary:hover{background:#ffe677}
+body .vm-app:not(.avvai-home) .vm-chat,body .vm-app:not(.avvai-home) .vm-form,body .vm-app:not(.avvai-home) .athlete-profile,body .vm-app:not(.avvai-home) .avvai-results{background:var(--avvai-panel);border-color:#343d50}
+body .vm-app:not(.avvai-home) .vm-chat-heading,body .vm-app:not(.avvai-home) .vm-composer{background:#202635;border-color:#343d50}
+body .vm-app:not(.avvai-home) .vm-messages{background:#161b27}
+body .vm-app:not(.avvai-home) .vm-message{background:#293248;color:#f8f8f4}body .vm-app:not(.avvai-home) .vm-user{background:#435dd1;color:#fff}
+body .vm-app:not(.avvai-home) .vm-composer button,body .vm-app:not(.avvai-home) .vm-composer button:last-child{background:var(--avvai-yellow);color:#151821}
+body .vm-app:not(.avvai-home) .vm-agent-intro h1,body .vm-app:not(.avvai-home) .vm-eyebrow{color:var(--avvai-yellow)}
+body .vm-app:not(.avvai-home) .vm-header,body .vm-app:not(.avvai-home) .athlete-top,body .vm-app:not(.avvai-home) .avvai-top{background:#10131ce8;border-color:#343d50}
+body .vm-app:not(.avvai-home) .vm-badge{background:#343d50;color:#ffeb96}
+body .vm-app:not(.avvai-home) .athlete-nav,body .avvai-home .athlete-nav{background:#1c2231dc;border-color:#48546a}body .vm-app:not(.avvai-home) .athlete-nav a.active,body .avvai-home .athlete-nav a.active{background:var(--avvai-yellow);color:#171a20}
+body .avvai-home .wellbeing-two a{background:#4a65db;color:white}body .avvai-home .wellbeing-two a:nth-child(2){background:#edaa6c;color:#1b1b20}
+body .avvai-home .avvai-journey>a{background:#1c2434}body .avvai-home .avvai-top{border-color:#343d50}body .avvai-home .avvai-controls button,body .avvai-home .avvai-account{background:#242b3a;border-color:#4b5567;color:#fff}
+body .vm-app:not(.avvai-home) .wellbeing-choices button[aria-pressed=true],body .vm-app:not(.avvai-home) .vm-options button[aria-pressed=true]{background:var(--avvai-yellow);color:#1b1d22}
+body .vm-app:not(.avvai-home) .vm-module{background:#1f2838}body .vm-app:not(.avvai-home) .vm-guide-card{background:#1e2934;border-color:#354657}body .vm-app:not(.avvai-home) .vm-list-card{background:#1d2632;border-color:#354657}
+body .vm-app:not(.avvai-home) .vm-message a,body .vm-app:not(.avvai-home) .voice-back,body .vm-app:not(.avvai-home) .voice-launch{color:#ffe27c!important}
+body .vm-app:not(.avvai-home) .voice-launch{background:#222b3c;border-color:#3b4860}body .vm-app:not(.avvai-home) .voice-record{background:var(--avvai-yellow);color:#151a20;box-shadow:0 0 0 9px #ffdc4f1b}
+body .vm-app:not(.avvai-home) .voice-ring{border-color:#ffdc4f8c}body .vm-app:not(.avvai-home) .voice-ring:nth-child(2){border-color:#6079e5a8}body .vm-app:not(.avvai-home) .voice-answer{background:#1c2534;border-color:#465473}
+.avvai-flow{background:#202837;border-color:#3e4e66}.avvai-flow span{background:transparent;border-color:#3e4e66;color:#cfd8ff}.avvai-flow span:last-child{color:#ffe27c}
+@media(prefers-reduced-motion:reduce){body .vm-app .avvai-sprite{animation:none!important}}
+/* A task-first phone dashboard: voice and the next action are immediately visible. */
+.avvai-home .avvai-editorial-intro,.avvai-home .avvai-journey{display:none}
+.avvai-phone-dashboard{max-width:660px;margin:0 auto 30px}
+.avvai-dash-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:5px 0 23px}
+.avvai-dash-heading h1{font-size:clamp(27px,5vw,38px)!important;line-height:1.12;margin:9px 0 0;max-width:430px}
+.avvai-dash-kicker{color:#ffdc4f;font-size:11px;font-weight:800;letter-spacing:.12em}
+.avvai-dash-actions{display:grid;grid-template-columns:1.2fr 1fr;gap:10px}
+.avvai-dash-actions a{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;min-height:150px;padding:17px;border-radius:19px;text-decoration:none;transition:transform .18s ease,filter .18s ease}
+.avvai-dash-actions a:hover{transform:translateY(-3px);filter:brightness(1.08)}
+.avvai-dash-actions a:active{transform:scale(.97)}
+.avvai-dash-actions svg{margin-bottom:auto}
+.avvai-dash-actions strong{font-size:17px;line-height:1.12}
+.avvai-dash-actions span{font-size:11px;margin-top:7px;opacity:.78}
+.avvai-dash-voice{background:#ffdc4f;color:#16191d!important}
+.avvai-dash-chat{background:#4964d9;color:white!important}
+.avvai-dash-shortcuts{display:grid;gap:7px;margin-top:17px}
+.avvai-dash-shortcuts a{display:flex;align-items:center;gap:12px;min-height:50px;padding:0 15px;border:1px solid #354052;border-radius:12px;background:#1a2230;color:#f4f5f9;font-size:14px;text-decoration:none}
+.avvai-dash-shortcuts a svg:last-child{margin-left:auto;color:#ffdc4f}
+.avvai-home .wellbeing-home{max-width:660px;margin:36px auto 0}
+@media(max-width:560px){.avvai-home .avvai-main{padding-top:24px}.avvai-dash-actions a{min-height:140px}.avvai-dash-heading .avvai-sprite{width:90px!important;height:90px!important}}
+/* Munim reference: light working surface, dark prompt panel, yellow voice action. */
+body .app-shell:has(.vm-app),body .vm-app,body .avvai-home,body .vm-app:not(.avvai-home){background:#f6f5f2;color:#17191d}
+body .vm-app:not(.avvai-home):before{display:none}
+body .avvai-home .avvai-top,body .vm-app:not(.avvai-home) .avvai-top{background:#f6f5f2;border-color:#e5e4df}
+body .avvai-home .avvai-wordmark,body .vm-app:not(.avvai-home) .avvai-wordmark{color:#16171d}
+body .avvai-home .avvai-controls button,body .avvai-home .avvai-account{background:#fff;color:#202027;border-color:#e7e7e2}
+body .avvai-home .avvai-main{padding-top:20px}
+.avvai-home .avvai-phone-dashboard{max-width:570px;margin:0 auto}
+.avvai-home .avvai-dash-heading{margin-bottom:18px}
+.avvai-home .avvai-dash-heading h1{color:#17191d;font-size:29px!important;line-height:1.1;max-width:240px}
+.avvai-home .avvai-dash-kicker{color:#666560}
+.avvai-week-card{background:#15151b;color:#fff;padding:21px;border-radius:18px;min-height:183px;box-shadow:0 10px 25px #11111114}
+.avvai-week-top{display:flex;justify-content:space-between;align-items:center;color:#bfc0c4;font-size:10px;font-weight:700;letter-spacing:.12em}
+.avvai-week-card h2{font-size:25px!important;margin:16px 0 6px;color:#fff}
+.avvai-week-card p{font-size:12px;line-height:1.5;color:#c1c1c8;max-width:360px}
+.avvai-week-card>a{display:inline-flex;align-items:center;gap:8px;background:#ffdb38;color:#17171c!important;padding:11px 15px;margin-top:16px;border-radius:999px;font-size:13px;font-weight:800;text-decoration:none}
+.avvai-week-card>a svg:last-child{margin-left:5px}
+.avvai-dash-pills{display:flex;gap:8px;margin:13px 0 18px;overflow:auto}
+.avvai-dash-pills a{white-space:nowrap;background:#ffda39;color:#1a1a1b;padding:9px 13px;border-radius:999px;font-size:12px;font-weight:700;text-decoration:none}
+.avvai-feature-banner{display:flex;flex-direction:column;justify-content:space-between;min-height:155px;background:#6559ef;color:#fff!important;padding:18px;border-radius:16px;text-decoration:none;box-shadow:0 8px 21px #6559ef24}
+.avvai-feature-banner>span{font-size:10px;font-weight:800;letter-spacing:.1em;opacity:.85}
+.avvai-feature-banner strong{font-size:20px;line-height:1.13;max-width:270px;margin:13px 0}
+.avvai-feature-banner em{display:flex;align-items:center;gap:5px;font-size:12px;font-style:normal;font-weight:700}
+.avvai-home-list-title{display:flex;justify-content:space-between;align-items:center;margin:25px 0 11px}
+.avvai-home-list-title h2{font-size:18px!important;color:#1b1c20}
+.avvai-home-list-title a{display:flex;align-items:center;gap:3px;color:#5f5f64;font-size:12px;text-decoration:none}
+.avvai-home-list{display:grid;gap:8px}
+.avvai-home-list>a{display:flex;align-items:center;gap:11px;min-height:62px;padding:10px 13px;background:#fff;border:1px solid #e7e7e3;border-radius:13px;color:#202125;text-decoration:none}
+.avvai-home-list>a>span:nth-child(2){display:grid;gap:3px;flex:1}
+.avvai-home-list strong{font-size:13px}.avvai-home-list small{font-size:11px;color:#777980}
+.avvai-list-icon{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#f0ecff;color:#6155d7;font-size:21px}
+.avvai-home-list>a:nth-child(2) .avvai-list-icon{background:#fff1e3;color:#d67c2d}
+.avvai-home-list>a:nth-child(3) .avvai-list-icon{background:#fff5c9;color:#a67d00}
+body .avvai-home .wellbeing-home,body .avvai-home .avvai-history,body .avvai-home .avvai-connect-banner,body .avvai-home .avvai-note,body .avvai-home .avvai-legal{max-width:570px;margin-left:auto;margin-right:auto}
+body .avvai-home .wellbeing-home{display:none}
+body .vm-app .athlete-nav,body .vm-app:not(.avvai-home) .athlete-nav,body .avvai-home .athlete-nav{background:#fff;border:1px solid #e7e7e3;box-shadow:0 9px 30px #00000014;border-radius:18px}
+body .vm-app .athlete-nav a,body .vm-app:not(.avvai-home) .athlete-nav a,body .avvai-home .athlete-nav a{color:#777980}
+body .vm-app .athlete-nav a.active,body .vm-app:not(.avvai-home) .athlete-nav a.active,body .avvai-home .athlete-nav a.active{background:transparent;color:#18191d}
+body .vm-app .athlete-nav a:nth-child(3){position:relative;top:-13px;background:#ffda39!important;color:#17191d!important;border-radius:50%;flex:0 0 52px;min-width:52px;width:52px;height:52px;padding:0;box-shadow:0 5px 15px #f5c72a55}
+body .vm-app .athlete-nav a:nth-child(3) span{position:absolute;top:55px;font-size:10px}
+body .vm-app .athlete-nav a:nth-child(3) svg{width:23px;height:23px}
+body .vm-app:not(.avvai-home) .voice-main{background:#f6f5f2}
+body .vm-app:not(.avvai-home) .voice-stage h1{color:#1c1d22}
+body .vm-app:not(.avvai-home) .voice-hint{color:#6d6e74}
+body .vm-app:not(.avvai-home) .voice-record{background:#ffda39;color:#19191d}
+body .vm-app:not(.avvai-home) .voice-ring{border-color:#ffda39aa}
+body .vm-app:not(.avvai-home) .voice-ring:nth-child(2){border-color:#665cec99}
+body .vm-app:not(.avvai-home) .voice-back{color:#22252b!important}
+@media(max-width:560px){body .vm-app .athlete-nav{bottom:8px;max-width:390px;padding:5px 8px}body .vm-app .athlete-nav a{font-size:10px}.avvai-week-card{min-height:190px}}
+body .vm-app .athlete-nav svg{display:block}
+body .vm-app .athlete-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+body .vm-app .athlete-nav a span{font-size:10px}
+body .vm-app .athlete-nav a:nth-child(3) span{display:none}
+body .vm-app:not(.avvai-home) .avvai-wordmark{color:#1b1c22}
+body .vm-app:not(.avvai-home) .voice-stage .vm-eyebrow{color:#6f60df}
