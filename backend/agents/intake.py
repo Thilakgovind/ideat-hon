@@ -231,9 +231,9 @@ def parse(text: str, names=(), llm=None) -> dict:
         obj = None
     parsed = validate(obj)
     if parsed is None:
-        return {"intent": "unknown", "from": None, "to": None, "time": None, "with_child": False,
-                "lang": detect_lang(text), "place_type": None, "place_name": None, "confidence": 0.0,
-                "source": "gemini", "fallback": True, "reason": "llm_invalid_json"}
+        # Keep deterministic rule parsing when Gemini is unavailable or returns
+        # malformed JSON. A provider failure must not make a valid route vanish.
+        return {**fast, "source": "rules", "llm_error": "llm_invalid_json"}
     parsed["lang"] = parsed["lang"] or detect_lang(text)
     parsed["source"] = "gemini"
     if parsed.get("place_name"):

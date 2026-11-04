@@ -27,9 +27,9 @@ export default function AvvaiVoice() {
     setBusy(true);setError('')
     try{
       const form=new FormData();form.append('audio',blob,'speech.webm');form.append('lang',lang)
-      const response=await fetch('/api/veeramangai/voice',{method:'POST',body:form,signal:AbortSignal.timeout(60000)})
+      const response=await fetch('/api/aval/voice',{method:'POST',body:form,signal:AbortSignal.timeout(60000)})
       if(!response.ok)throw new Error('Voice service unavailable')
-      const result=await response.json();setAnswer(result)
+      const result=await response.json();result.reply=result.reply?.text || '';setAnswer(result)
       await speak({audioBase64:result.audio_base64,text:result.reply,lang})
     }catch{setError(t('Voice could not answer. Try again or type to Avvai.','குரல் பதில் கிடைக்கவில்லை. மீண்டும் முயலுங்கள் அல்லது எழுதுங்கள்.'))}finally{setBusy(false)}
   }
