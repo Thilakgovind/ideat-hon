@@ -100,6 +100,52 @@ class Submission(StrictModel):
     consent_to_share: Literal[True]
 
 
+class OfferDraftRequest(StrictModel):
+    opportunity_id: str = Field(min_length=1, max_length=100)
+    consent_to_prepare: bool = False
+
+
+class OfferClaim(StrictModel):
+    event_id: UUID
+    opportunity_id: str = Field(min_length=1, max_length=100)
+    category: Category
+    consent_to_share: Literal[True]
+    notes: str = Field('', max_length=500)
+
+
+@router.post("/offers/draft")
+def offer_draft(body: OfferDraftRequest, who=Depends(identity)):
+    from .offer_draft import build
+    profiles = db.call("vm_athlete_profiles", params={"select": "display_name,district_id,sport_id,language",
+                                                       "user_id": "eq." + who["auth_id"], "limit": 1})
+    if not profiles:
+        raise HTTPException(409, "Save your athlete profile first.")
+    offers = db.call("vm_opportunities", params={"select": "*", "id": "eq." + body.opportunity_id, "limit": 1})
+    if not offers:
+        raise HTTPException(404, "Opportunity not found.")
+    result = build(profiles[0], offers[0], consent=body.consent_to_prepare)
+    return {**result, 'notice': 'No application was submitted. Review and confirm separately.'}
+
+
+@router.post("/offers/claim")
+def claim_offer(body: OfferClaim, tasks: BackgroundTasks, who=Depends(identity)):
+    """Submit only a user-confirmed claim for a verified, open opportunity."""
+    profiles = db.call("vm_athlete_profiles", params={"select": "user_id", "user_id": "eq." + who["auth_id"], "limit": 1})
+    if not profiles:
+        raise HTTPException(409, "Save your athlete profile first.")
+    offers = db.call("vm_opportunities", params={"select": "id,source,status", "id": "eq." + body.opportunity_id, "limit": 1})
+    if not offers or offers[0].get('source') != 'verified' or offers[0].get('status') != 'open':
+        raise HTTPException(422, "Only verified open offers can be claimed.")
+    cid = coordinator_id()
+    if not cid:
+        raise HTTPException(503, "A participating coordinator must be configured before submitting requests.")
+    result = db.rpc("vm_request_change", p_actor=who["auth_id"], p_event=str(body.event_id), p_action="submit",
+                    p_data={"category": body.category, "opportunity_id": body.opportunity_id,
+                            "coordinator_id": cid, "notes": body.notes})
+    tasks.add_task(notify, body.event_id)
+    return {**result, 'claim': 'submitted_after_consent'}
+
+
 class Transition(StrictModel):
     event_id: UUID
     expected_status: Literal["submitted", "reviewing"]

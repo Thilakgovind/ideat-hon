@@ -5,9 +5,14 @@ No health histories are stored. Health answers bypass generative paraphrasing.
 ASC = 'https://www.ausport.gov.au/clearinghouse/evidence/women-in-sport/factors/menstrual-cycle'
 ACOG = 'https://www.acog.org/womens-health/faqs/the-healthy-female-athlete'
 IOC = 'https://bjsm.bmj.com/content/57/17/1073'
+TELE_MANAS = 'https://dghs.mohfw.gov.in/national-mental-health-programme.php'
+ERSS_112 = 'https://112.gov.in/'
+TN_HEALTH = 'https://www.tnhealth.org/treatment.htm'
 # IDs are stable scenario families for group-disjoint evaluation.
 POLICIES = [
- ('urgent','I fainted during training.',('fainted','chest pain','cannot breathe','severe bleeding','மயக்கம்'), 'Stop exercise and get urgent medical help now. Ask someone nearby to stay with you. I cannot determine the cause here.',ACOG),
+ ('mental_crisis','I want to die and may hurt myself.',('want to die','kill myself','suicide','self harm','self-harm','உயிரை விட','தற்கொலை'), 'If you may hurt yourself now or are in immediate danger, call 112 or go to the nearest emergency department. If you can stay safe for the moment, call Tele-MANAS at 14416 or 1800-89-14416 for mental-health support. Move near a trusted person and do not stay alone. This chat cannot provide crisis care.',TELE_MANAS),
+ ('mental_support','I feel hopeless and need mental-health support.',('hopeless','panic attack','panic','anxious','anxiety','depressed','depression','mental health','மன அழுத்தம்','கவலை'), 'You deserve support, and this chat cannot diagnose you. Consider a qualified counsellor or mental-health professional. Tele-MANAS is available at 14416 or 1800-89-14416; if there is immediate danger, call 112. You choose what to share.',TELE_MANAS),
+ ('urgent','I fainted during training.',('fainted','chest pain','cannot breathe','severe bleeding','மயக்கம்','mayakkam','mayakam'), 'Stop exercise and get urgent medical help now. Ask someone nearby to stay with you. I cannot determine the cause here.',ACOG),
  ('cramps','My period cramps affect practice.',('cramp','period pain','வயிற்று வலி'), 'You can request rest or a lighter session based on how you feel. Persistent, severe or unusual pain deserves a clinician’s assessment. You do not need to tell your coach a menstrual reason.',ASC),
  ('missing_period','I missed my periods while training.',('missed period','missing period','no period','periods stopped'), 'Missed periods should not be dismissed as proof of fitness. Arrange a clinician’s assessment; several causes are possible, including insufficient energy intake. I cannot diagnose the cause.',ACOG),
  ('phase','Tell me my best workout from my cycle phase.',('cycle phase','hormonal phase','hormone phase','follicular','luteal','ovulation'), 'A calendar or cycle phase cannot reliably determine your best workout or hormone levels. Discuss your symptoms, recovery and training goals with your coach or clinician. There is no universal phase-based schedule.',ASC),
@@ -39,6 +44,6 @@ def match(text):
     for pid,question,words,answer,source in POLICIES:
         if any(word in lower for word in words):
             return {'policy_id':pid,'reply':answer,'sources':[source] if source else [],
-                    'level':'urgent' if pid=='urgent' else 'support',
+                    'level':'urgent' if pid in ('urgent','mental_crisis') else 'support',
                     'module':'funding' if pid=='fees' else 'travel' if pid=='journey' else 'opportunities' if pid=='opportunity' else 'support'}
     return None

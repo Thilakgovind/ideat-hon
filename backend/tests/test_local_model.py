@@ -13,12 +13,14 @@ def test_remote_ollama_url_refused(monkeypatch):
 
 def test_local_selection_bypasses_cloud_and_keeps_names_out(monkeypatch):
     monkeypatch.setenv('AVVAI_MODEL_PROVIDER','ollama')
+    # Isolate the local fallback path; production guidance prefers n8n when configured.
+    monkeypatch.setenv('VM_N8N_GUIDE_URL', '')
     def generate(instruction,lang):
         assert 'Priya' not in instruction and '5000011111' not in instruction
-        return {'reply':'Prepare a fee request.','provider':'ollama','model':'qwen2.5:3b'}
+        return {'reply':instruction,'provider':'ollama','model':'qwen2.5:3b'}
     monkeypatch.setattr(m,'generate',generate)
-    result=v.assistant(v.Message(text='Priya 5000011111 needs fee help'))
-    assert result['orchestration']=='local_backend' and result['provider']=='ollama'
+    result=v.chat(v.Message(text='Priya 5000011111 needs fee help'))
+    assert result['provider']=='ollama'
 
 def test_local_failure_returns_fixed_reply(monkeypatch):
     monkeypatch.setenv('AVVAI_MODEL_PROVIDER','ollama')

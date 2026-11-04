@@ -1,0 +1,14 @@
+{
+  "status": "experimental_development_only",
+  "rows": 152,
+  "splits": {
+    "train": 106,
+    "validation": 26,
+    "test": 20
+  },
+  "training_categories": {
+    "app_task": 72,
+    "safety": 34
+  },
+  "warning": "Synthetic prompts, English answers, translations not independently reviewed. Development splits are not an independent release holdout."
+}

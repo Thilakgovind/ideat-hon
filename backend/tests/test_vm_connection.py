@@ -19,6 +19,7 @@ def test_coordinator_is_not_any_signed_in_user():
         app.dependency_overrides.clear()
 
 def test_n8n_receives_only_task_and_language(monkeypatch):
+    monkeypatch.setattr(v.local_model, 'enabled', lambda: True)
     monkeypatch.setenv('VM_N8N_GUIDE_URL','https://n8n.example/webhook/guide')
     class Response:
         def raise_for_status(self): pass

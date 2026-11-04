@@ -98,14 +98,16 @@ def rows_from(b: dict) -> dict:
     out["places"], out["reviews"] = places, reviews
 
     users, contacts = [], []
-    real = [config.env("DEMO_CONTACT_PHONE_1"), config.env("DEMO_CONTACT_PHONE_2")]
+    # Preserve the documented Twilio test-number override for deterministic
+    # unit tests; real deployment numbers are injected only by seed().
+    test_real = [config.env("DEMO_CONTACT_PHONE_1"), config.env("DEMO_CONTACT_PHONE_2")]
     for u in b["circle_json"]["users"]:
         users.append({"id": u["user_id"], "display_name": u["display_name"], "phone": None, "home_area": u.get("home_area"),
                       "start_area": u.get("start_area"), "lang": "en", "source": "sample"})
         for i, c in enumerate(u["contacts"]):
             phone = c.get("phone")
-            if u["user_id"] == "u_demo" and i < 2 and real[i]:
-                phone = real[i]  # your verified test number, from .env only
+            if u["user_id"] == "u_demo" and i < 2 and (test_real[i] or "").startswith("+1500555"):
+                phone = test_real[i]
             contacts.append({"id": c["id"], "user_id": u["user_id"], "label": c["label"], "label_ta": c.get("label_ta"),
                              "relation": c.get("relation"), "phone": phone, "accepted": c.get("accepted", False),
                              "status": c.get("status"), "area": c.get("area"), "lat": c.get("lat"), "lng": c.get("lng"),
@@ -192,6 +194,14 @@ class Rest:
 
 def seed(rest=None) -> dict:
     rows = rows_from(build())
+    # Real demo contacts are a deployment-only override. Keep rows_from/build()
+    # deterministic and privacy-testable; inject them only immediately before
+    # the private Supabase write.
+    real = [config.env("DEMO_CONTACT_PHONE_1"), config.env("DEMO_CONTACT_PHONE_2")]
+    demo_contacts = [c for c in rows["circle_contacts"] if c["user_id"] == "u_demo"]
+    for i, phone in enumerate(real):
+        if phone and i < len(demo_contacts):
+            demo_contacts[i]["phone"] = phone
     rest = rest or Rest()
     for table in ORDER:
         (rest.replace_sample if table in REPLACE_SAMPLE else rest.upsert)(table, rows[table])

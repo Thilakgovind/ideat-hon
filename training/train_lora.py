@@ -7,8 +7,12 @@ def main():
     p.add_argument('--base-model',type=Path)
     p.add_argument('--check',action='store_true')
     args=p.parse_args()
-    import torch
     import importlib.util
+    if importlib.util.find_spec('torch') is None:
+        print('CUDA_GPU: NOT CHECKED; torch missing')
+        print('TRAINING_PACKAGES: MISSING; use the packaged Colab notebook')
+        return 0 if args.check else 1
+    import torch
     gpu=torch.cuda.is_available()
     packages=all(importlib.util.find_spec(x) for x in ('transformers','peft','datasets'))
     print('CUDA_GPU: '+('OK' if gpu else 'MISSING'))

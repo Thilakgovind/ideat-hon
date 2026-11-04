@@ -1,0 +1,16 @@
+.git
+.codex
+.claude
+.venv
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+**/.env
+**/.env.*
+**/*.log
+frontend/dist
+training
+supabase/.temp
+**/*.zip
+**/*.safetensors
+**/*.gguf

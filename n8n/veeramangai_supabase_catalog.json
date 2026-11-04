@@ -23,7 +23,7 @@
         0
       ],
       "parameters": {
-        "url": "https://banister-remission-unloved.ngrok-free.dev/api/veeramangai/catalog",
+        "url": "={{ $env.AVVAI_BACKEND_URL + '/api/veeramangai/catalog' }}",
         "options": {
           "timeout": 30000
         }

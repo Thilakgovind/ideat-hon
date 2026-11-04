@@ -1,0 +1,19 @@
+file 'C:/Users/THILAK GOVIND/OneDrive/Desktop/murdermurugaveni/video/output/scene_00.png'
+duration 7
+file 'C:/Users/THILAK GOVIND/OneDrive/Desktop/murdermurugaveni/video/output/scene_01.png'
+duration 10
+file 'C:/Users/THILAK GOVIND/OneDrive/Desktop/murdermurugaveni/video/output/scene_02.png'
+duration 10
+file 'C:/Users/THILAK GOVIND/OneDrive/Desktop/murdermurugaveni/video/output/scene_03.png'
+duration 10
+file 'C:/Users/THILAK GOVIND/OneDrive/Desktop/murdermurugaveni/video/output/scene_04.png'
+duration 8
+file 'C:/Users/THILAK GOVIND/OneDrive/Desktop/murdermurugaveni/video/output/scene_05.png'
+duration 9
+file 'C:/Users/THILAK GOVIND/OneDrive/Desktop/murdermurugaveni/video/output/scene_06.png'
+duration 10
+file 'C:/Users/THILAK GOVIND/OneDrive/Desktop/murdermurugaveni/video/output/scene_07.png'
+duration 10
+file 'C:/Users/THILAK GOVIND/OneDrive/Desktop/murdermurugaveni/video/output/scene_08.png'
+duration 7
+file 'C:/Users/THILAK GOVIND/OneDrive/Desktop/murdermurugaveni/video/output/scene_08.png'

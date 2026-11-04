@@ -87,20 +87,21 @@ python -m backend.check_n8n
 ```
 
 Import `n8n/veeramangai_avvai.json` as a **new inactive workflow**.
-The guide webhook is public, matching the public backend guidance endpoint.
-It accepts only an allowlisted topic and language, forwards a fixed prompt, and
-has no ability to access private profiles, send messages, approve requests or pay.
-In Avvai backend, replace the placeholder HTTPS origin with the current public
-backend URL; retain `/api/veeramangai/chat`. Test before publishing/activating.
+Set the n8n environment variable `AVVAI_BACKEND_URL` to the current public
+backend HTTPS origin. The workflow uses that variable; it contains no tunnel
+URL and should not be edited per deployment.
+The guide webhook accepts either the app contract (`text`, `lang`) or an
+allowlisted topic (`topic`, `lang`), truncates text to 1500 characters, and has
+no ability to access private profiles, send messages, approve requests or pay.
+Test the webhook and the backend response before publishing/activating.
 
 Input schema: `{ "topic": "opportunities|funding|travel|support", "lang": "ta|en" }`.
-The workflow sends only a fixed task prompt to the backend. Free-text health
-details, names, phones, and unknown fields are discarded. Successful/error
-execution saving is disabled in the import template. There is no payment,
-application, approval or SMS node. The app currently calls the backend directly;
-The guide is now published at `/webhook/veeramangai-avvai`; the app sends requests
-to `/api/veeramangai/assistant`, which forwards topic/language to the webhook and
-falls back to backend guidance if n8n fails. Raw chat text stays out of n8n.
+The workflow forwards only the bounded guide text and language to the backend.
+Successful/error execution saving is disabled in the import template. There is
+no payment, application, approval or SMS node. The app sends requests to
+`/api/veeramangai/assistant`, which forwards topic/language to the webhook and
+falls back to backend guidance if n8n fails; the demo chat path can forward the
+user's bounded text through `/api/demo/chat` when configured.
 
 The notification import `n8n/veeramangai_notifications.json` is a separate,
 inactive worker. Bind both HTTP Request nodes to an n8n Header Auth credential
@@ -109,12 +110,13 @@ Bind Send generic update to the account's Gmail OAuth credential. No credentials
 are embedded in the file. Only enable VM_NOTIFICATIONS_ENABLED after binding and
 testing consent with controlled accounts. The worker claims pending rows, sends
 generic updates, and records the Gmail ID or `uncertain` on error. It never
-automatically retries uncertain deliveries. Manual execution currently drains
-up to 20 pending rows; no schedule or event webhook is activated by this import.
+automatically retries uncertain deliveries. The inactive import includes a
+one-minute schedule plus the manual trigger; activate it only after credentials,
+the worker secret, and consent-controlled test accounts are verified.
 
 For a database read check, import `n8n/veeramangai_supabase_catalog.json` as a
-separate workflow. Replace the placeholder URL in Read through backend, then
-execute manually. It returns public catalog counts and `supabase` or
+separate workflow. It uses `AVVAI_BACKEND_URL`; execute it manually after that
+variable is configured. It returns public catalog counts and `supabase` or
 `sample_fallback`; a successful HTTP request alone does not prove live storage.
 This workflow uses the backend as the Supabase boundary and contains no API keys.
 It does not migrate, seed, create projects, send messages or approve requests.

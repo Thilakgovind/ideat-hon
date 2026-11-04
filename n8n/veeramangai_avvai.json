@@ -3,7 +3,14 @@
   "active": false,
   "nodes": [
     {
-      "id": "incoming",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "veeramangai-avvai",
+        "responseMode": "responseNode",
+        "authentication": "none",
+        "options": {}
+      },
+      "id": "d8335580-ed13-4808-8ce9-b87ae692bca5",
       "name": "Incoming",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
@@ -11,36 +18,22 @@
         0,
         0
       ],
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "veeramangai-avvai",
-        "authentication": "none",
-        "responseMode": "responseNode",
-        "options": {}
-      }
+      "webhookId": "401e8384-dfa2-45e8-9803-40a025c06a8c"
     },
     {
-      "id": "clean",
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body || {};\nconst prompts = {opportunities: 'Find a trial', funding: 'Help with entry fees', travel: 'Plan travel', support: 'Ask for rest'};\nconst text = typeof body.text === 'string' && body.text.trim() ? body.text.trim() : prompts[body.topic];\nif (!text || (body.topic && !Object.hasOwn(prompts, body.topic))) throw new Error('Invalid text or topic');\nif (body.lang && !['ta','en'].includes(body.lang)) throw new Error('Invalid language');\nreturn [{json: {text: text.slice(0, 1500), lang: body.lang || 'en'}}];"
+      },
+      "id": "d598e28f-f4f9-43d4-aaa8-b76c93c45704",
       "name": "Minimize input",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
         240,
         0
-      ],
-      "parameters": {
-        "jsCode": "const body = $input.first().json.body || {};\nconst prompts = {opportunities: 'Find a trial', funding: 'Help with entry fees', travel: 'Plan travel', support: 'Ask for rest'};\nif (!Object.hasOwn(prompts, body.topic) || !['ta','en'].includes(body.lang)) throw new Error('Invalid topic or language');\nreturn [{json: {text: prompts[body.topic], lang: body.lang}}];"
-      }
+      ]
     },
     {
-      "id": "backend",
-      "name": "Avvai backend",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        480,
-        0
-      ],
       "parameters": {
         "method": "POST",
         "url": "https://banister-remission-unloved.ngrok-free.dev/api/veeramangai/chat",
@@ -48,24 +41,32 @@
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json) }}",
         "options": {
-          "timeout": 15000
+          "timeout": 60000
         }
-      }
+      },
+      "id": "c57d7ed9-a08b-46a3-b519-20b0eeb1d0b1",
+      "name": "Avvai backend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        0
+      ]
     },
     {
-      "id": "respond",
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "7a78f24a-765d-4565-b5bf-332b8a89aee9",
       "name": "Reply",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.4,
       "position": [
         720,
         0
-      ],
-      "parameters": {
-        "respondWith": "json",
-        "responseBody": "={{ JSON.stringify($json) }}",
-        "options": {}
-      }
+      ]
     }
   ],
   "connections": {
@@ -108,7 +109,5 @@
     "saveDataSuccessExecution": "none",
     "saveDataErrorExecution": "none",
     "saveManualExecutions": false
-  },
-  "pinData": {},
-  "tags": []
+  }
 }

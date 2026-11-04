@@ -3,18 +3,94 @@
   "active": false,
   "nodes": [
     {
-      "id": "manual",
+      "parameters": {},
+      "id": "3f418a54-8e7d-4af0-8e11-9f75801c2457",
       "name": "Process pending updates",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
         0,
         0
-      ],
-      "parameters": {}
+      ]
     },
     {
-      "id": "claim",
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "8302ae21-4391-40eb-892a-87f8d7e3950d",
+      "name": "Every minute",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "deliveries",
+        "options": {}
+      },
+      "id": "1e0fef6c-bd87-42c8-bac3-f45fc16313f6",
+      "name": "Each delivery",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        480,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.to }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.message }}",
+        "options": {}
+      },
+      "id": "7337d7da-12ab-4487-b48e-e525b75b0b0b",
+      "name": "Send generic update",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        720,
+        0
+      ],
+      "retryOnFail": false,
+      "webhookId": "9957704f-24d9-4d3f-a794-15c2f303c983",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://banister-remission-unloved.ngrok-free.dev/api/veeramangai/automation/receipt",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({delivery_id: $('Each delivery').item.json.delivery_id, claim_id: $('Each delivery').item.json.claim_id, status: $json.id && !$json.error ? 'sent' : 'uncertain', provider_id: $json.id && !$json.error ? $json.id : null}) }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "id": "7414732d-15f5-4f54-b713-a5b3588e276c",
+      "name": "Record provider result",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        0
+      ]
+    },
+    {
+      "id": "claim-pending-deliveries",
       "name": "Claim pending deliveries",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -23,10 +99,10 @@
         0
       ],
       "parameters": {
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
         "method": "POST",
         "url": "https://banister-remission-unloved.ngrok-free.dev/api/veeramangai/automation/claim",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "{}",
@@ -34,88 +110,9 @@
           "timeout": 20000
         }
       }
-    },
-    {
-      "id": "split",
-      "name": "Each delivery",
-      "type": "n8n-nodes-base.splitOut",
-      "typeVersion": 1,
-      "position": [
-        480,
-        0
-      ],
-      "parameters": {
-        "fieldToSplitOut": "deliveries",
-        "options": {}
-      }
-    },
-    {
-      "id": "gmail",
-      "name": "Send generic update",
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
-      "position": [
-        720,
-        0
-      ],
-      "parameters": {
-        "resource": "message",
-        "operation": "send",
-        "sendTo": "={{ $json.to }}",
-        "subject": "={{ $json.subject }}",
-        "emailType": "text",
-        "message": "={{ $json.message }}",
-        "options": {}
-      },
-      "onError": "continueRegularOutput",
-      "retryOnFail": false
-    },
-    {
-      "id": "receipt",
-      "name": "Record provider result",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        960,
-        0
-      ],
-      "parameters": {
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "method": "POST",
-        "url": "https://banister-remission-unloved.ngrok-free.dev/api/veeramangai/automation/receipt",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({delivery_id: $('Each delivery').item.json.delivery_id, claim_id: $('Each delivery').item.json.claim_id, status: $json.id && !$json.error ? 'sent' : 'uncertain', provider_id: $json.id && !$json.error ? $json.id : null}) }}",
-        "options": {
-          "timeout": 20000
-        }
-      }
     }
   ],
   "connections": {
-    "Process pending updates": {
-      "main": [
-        [
-          {
-            "node": "Claim pending deliveries",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Claim pending deliveries": {
-      "main": [
-        [
-          {
-            "node": "Each delivery",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Each delivery": {
       "main": [
         [
@@ -137,6 +134,39 @@
           }
         ]
       ]
+    },
+    "Process pending updates": {
+      "main": [
+        [
+          {
+            "node": "Claim pending deliveries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every minute": {
+      "main": [
+        [
+          {
+            "node": "Claim pending deliveries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claim pending deliveries": {
+      "main": [
+        [
+          {
+            "node": "Each delivery",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -144,6 +174,5 @@
     "saveDataSuccessExecution": "none",
     "saveDataErrorExecution": "none",
     "saveManualExecutions": false
-  },
-  "pinData": {}
+  }
 }

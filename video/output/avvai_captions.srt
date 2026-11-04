@@ -1,0 +1,64 @@
+1
+00:00:00,000 --> 00:00:05,000
+I am Meena, a fictional athlete representing questions we want to test.
+
+2
+00:00:05,000 --> 00:00:09,000
+I love running. But getting to a trial is not just about training.
+
+3
+00:00:09,000 --> 00:00:14,000
+I need to know the route, the cost, and whether I can get home safely.
+
+4
+00:00:14,000 --> 00:00:18,000
+Sometimes the opportunity itself reaches me too late,
+
+5
+00:00:18,000 --> 00:00:22,000
+buried in messages and different websites.
+
+6
+00:00:22,000 --> 00:00:27,000
+I want a place where I can ask about my period, recovery,
+
+7
+00:00:27,000 --> 00:00:31,000
+or how I am feeling, without being judged.
+
+8
+00:00:31,000 --> 00:00:36,000
+I do not want someone deciding for me. I want clear choices.
+
+9
+00:00:36,000 --> 00:00:41,000
+Could one companion help me find the right support when I need it?
+
+10
+00:00:41,000 --> 00:00:46,000
+With Avvai, I can speak in Tamil, Tanglish, or English.
+
+11
+00:00:46,000 --> 00:00:51,000
+I can look for an opportunity, plan my travel, explore funding,
+
+12
+00:00:51,000 --> 00:00:56,000
+and open a private wellbeing conversation.
+
+13
+00:00:56,000 --> 00:01:00,000
+Avvai shows me an option. I decide what to do.
+
+14
+00:01:00,000 --> 00:01:05,000
+This is our working prototype.
+
+15
+00:01:05,000 --> 00:01:10,000
+Now we need to listen to real athletes and test these assumptions,
+
+16
+00:01:10,000 --> 00:01:15,000
+then improve Avvai with them.
+

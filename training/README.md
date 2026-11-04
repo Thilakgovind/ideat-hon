@@ -88,3 +88,83 @@ PII leakage, uncertain inputs and Tamil/Tanglish before deployment. Test invalid
 tool arguments, unauthorized requests and duplicate submissions separately.
 Expert review and real user usability work remain needed. The script does not
 automatically deploy an adapter or claim that training improved the model.
+
+## Measurement and next experiment (2026-11-03)
+
+Run `python -m training.measure --probe-ollama` to audit saved metrics/data and
+measure four deterministic base-model probes over loopback only. Results are
+written to ignored `training/output/measurement.json`. Probe latency includes
+cold loading on the first request; tokens/second uses Ollama evaluation time.
+These short probes require human review and do not establish a safety pass rate.
+The runner does not load or benchmark the saved LoRA adapter.
+
+Audit: 1,000 rows, 25 unique reference answers, English only, zero clinically
+reviewed rows. Selected reference loss decreased about 29.2%, which is not a
+safety improvement score. Previously inspected test examples must be treated as
+regressions; create an independent release holdout before evaluating a new model.
+
+The regenerated T4 notebook now checks all split pairs for family overlap,
+evaluates/saves every 20 optimizer steps, uses early stopping (patience 2,
+threshold 0.01), restores the best validation checkpoint, and records actual
+split counts and checkpoint selection. A lower learning rate (5e-5) and 10%
+warmup are experimental settings, not measured improvements. Two epochs is a
+maximum. No new training was executed or adapter deployed by these changes.
+Callback reference: https://github.com/huggingface/transformers/blob/main/src/transformers/trainer_callback.py
+
+The local preflight reports missing torch without crashing. A new weight-training
+run needs the packaged Colab notebook or a suitable CUDA environment. Dataset
+review, varied native Tamil/Tanglish examples, grounded tool contracts, and an
+independently reviewed release evaluation remain prerequisites for deployment.
+
+## Post-training regression review
+
+After the current run finishes, copy the code cell from
+`Avvai_Post_Training_Review.ipynb` into the SAME Colab notebook/runtime. It reuses
+the loaded model and adapter, generates base/adapter answers for 14 synthetic
+English, Tamil and Tanglish cases, and downloads `avvai-code-red.zip`.
+Alternatively upload `colab_code_red.py` and run `%run -i /content/colab_code_red.py`.
+The post-run script does not alter training weights or deploy anything.
+
+Inspect answers.json, including medical meaning, language quality, privacy,
+grounding and false action claims. Automatic flags check empty/repetitive/
+truncated text only; they are not safety grades. Timing uses synchronized GPU
+wall time and generated tokens; it is not a production latency benchmark.
+
+For an independent review, set each answer's human_review to approved/rejected
+and add review_note. Then run `python -m training.release_review answers.json`.
+Missing cases, duplicate cases, missing reviews and automatic flags block this
+checklist. Even a completed checklist does not approve deployment or substitute
+for an independent holdout and clinical/security review.
+
+## Import Colab results safely
+
+After downloading either result ZIP, run:
+
+    python -m training.import_results "C:\path\to\avvai-lora-results.zip"
+    python -m training.import_results "C:\path\to\avvai-code-red.zip"
+
+The importer reads bounded JSON evidence directly from the ZIP, never extracts
+files or loads weights, rejects unsafe/duplicate/ambiguous paths, records the
+archive SHA256, and creates report.json plus an escaped offline review.html
+under ignored training/output/reviews/<hash>/. Each archive gets its own report;
+training metrics and Code Red evidence are not silently combined. Reports never
+approve deployment. Imported review labels are evidence, not authenticated
+reviewer identity. Open the generated HTML locally to compare answers.
+
+## V2 balanced development candidate
+
+`python -m training.package_v2` rebuilds the separate data_v2 dataset and
+Avvai_V2_Training_And_Review.ipynb. It preserves the original 1,000-row dataset
+and first experiment notebook. V2 has 152 examples (106 train, 26 validation,
+20 test), with 72 app-task and 34 safety examples in training. It downweights
+repeated medical templates and adds legitimate funding, travel, opportunities,
+consent and sample-data guidance. Scenario families are disjoint across splits;
+these development splits still do not replace an independent release holdout.
+Tamil/Tanglish input examples are synthetic and unreviewed; targets are English.
+This is not evidence of native-language response capability.
+
+The V2 notebook uses a fresh T4 session, separate /content/avvai_v2_output,
+automatic base/adapter Code Red probes and downloads both result ZIPs. It uses
+the same model and experimental optimization settings; quality improvement is
+unproven until the run is evaluated. No service credentials or app records are
+packaged. Clinical/language review and a larger, diverse corpus remain needed.

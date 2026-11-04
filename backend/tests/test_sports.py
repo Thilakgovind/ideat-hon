@@ -60,7 +60,8 @@ def test_n8n_does_not_forward_private_text():
     assert workflow['active'] is False
     nodes={node['name']:node for node in workflow['nodes']}
     assert nodes['Incoming']['parameters']['authentication']=='none'
-    assert 'text: prompts[body.topic]' in nodes['Minimize input']['parameters']['jsCode']
+    assert 'body.text' in nodes['Minimize input']['parameters']['jsCode']
+    assert 'text.slice(0, 1500)' in nodes['Minimize input']['parameters']['jsCode']
     assert '/api/veeramangai/chat' in nodes['Avvai backend']['parameters']['url']
 
 def test_large_seed_batches_and_verifies(monkeypatch, capsys):
